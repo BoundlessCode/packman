@@ -5,7 +5,7 @@ const program = require('commander');
 const { initializeCommand } = require('../lib/core/initializer');
 initializeCommand(program, 'download-tgz');
 
-const commands = require('../lib/download-tgz/commands');
+const commands = require('../lib/npm/download-tgz/commands');
 
 program
     .command('package-lock <uri>')

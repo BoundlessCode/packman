@@ -5,7 +5,7 @@ const program = require('commander');
 const { initializeCommand } = require('../lib/core/initializer');
 initializeCommand(program, 'publish-npm');
 
-const commands = require('../lib/publish/commands');
+const commands = require('../lib/npm/publish/commands');
 
 program
     .command('npm <packagePath>')

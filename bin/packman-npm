@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+
+const { initializeCommand } = require('../lib/core/initializer');
+initializeCommand(program, 'npm');
+
+program
+    .command('download-tgz', 'Download package tarballs').alias('d')
+    .command('publish', 'Publish package tarballs').alias('p')
+    .parse(process.argv);

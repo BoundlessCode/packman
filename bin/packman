@@ -6,6 +6,5 @@ const { initializeProgram } = require('../lib/core/initializer');
 initializeProgram(program);
 
 program
-    .command('download-tgz', 'Download package tarballs').alias('d')
-    .command('publish', 'Publish package tarballs').alias('p')
+    .command('npm', 'Manage npm packages')
     .parse(process.argv);
