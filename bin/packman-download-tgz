@@ -17,7 +17,7 @@ process.on('beforeExit', () => {
     console.log(`completed in ${Date.now() - start}ms`.green);
 });
 
-const commands = require('../lib/commands');
+const commands = require('../lib/download-tgz/commands');
 
 program.version(packageJson.version);
 
