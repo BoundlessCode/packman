@@ -24,8 +24,7 @@
   },
   "main": "lib/downloader.js",
   "bin": {
-    "packman": "bin/packman",
-    "download-tgz": "bin/download-tgz"
+    "packman": "bin/packman"
   },
   "files": [
     "lib",
