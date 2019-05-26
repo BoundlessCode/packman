@@ -8,8 +8,10 @@
             "type": "node",
             "request": "launch",
             "name": "download package",
-            "program": "${workspaceFolder}/bin/download-tgz",
+            "program": "${workspaceFolder}/bin/packman",
             "args": [
+                "npm",
+                "download",
                 "package",
                 "node-tgz-downloader",
                 "--devDependencies"
@@ -19,8 +21,10 @@
             "type": "node",
             "request": "launch",
             "name": "download search",
-            "program": "${workspaceFolder}/bin/download-tgz",
+            "program": "${workspaceFolder}/bin/packman",
             "args": [
+                "npm",
+                "download",
                 "search",
                 "tgz",
                 "--devDependencies"
@@ -30,8 +34,10 @@
             "type": "node",
             "request": "launch",
             "name": "download local package-lock",
-            "program": "${workspaceFolder}/bin/download-tgz",
+            "program": "${workspaceFolder}/bin/packman",
             "args": [
+                "npm",
+                "download",
                 "package-lock",
                 "./package-lock.json",
                 "--directory",
@@ -42,8 +48,10 @@
             "type": "node",
             "request": "launch",
             "name": "download remote package-lock",
-            "program": "${workspaceFolder}/bin/download-tgz",
+            "program": "${workspaceFolder}/bin/packman",
             "args": [
+                "npm",
+                "download",
                 "package-lock",
                 "https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package-lock.json"
             ]
@@ -52,8 +60,10 @@
             "type": "node",
             "request": "launch",
             "name": "download local package-json",
-            "program": "${workspaceFolder}/bin/download-tgz",
+            "program": "${workspaceFolder}/bin/packman",
             "args": [
+                "npm",
+                "download",
                 "package-json",
                 "./package.json",
                 "--devDependencies"
@@ -63,8 +73,10 @@
             "type": "node",
             "request": "launch",
             "name": "download remote package-json",
-            "program": "${workspaceFolder}/bin/download-tgz",
+            "program": "${workspaceFolder}/bin/packman",
             "args": [
+                "npm",
+                "download",
                 "package-json",
                 "https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package.json",
                 "--devDependencies"

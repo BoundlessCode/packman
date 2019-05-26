@@ -35,19 +35,19 @@ downloader.downloadFromPackageLock('path/to/package-lock');
 from local file:
 
 ```bash
-download-tgz package-lock path/to/package-lock.json
+packman npm download package-lock path/to/package-lock.json
 ```
 
 from url:
 
 ```bash
-download-tgz package-lock https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package-lock.json
+packman npm download package-lock https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package-lock.json
 ```
 
 #### package name
 
 ```base
-download-tgz package @angular/cli --devDependencies --peerDependencies
+packman npm download package @angular/cli --devDependencies --peerDependencies
 ```
 
 #### package.json
@@ -55,13 +55,13 @@ download-tgz package @angular/cli --devDependencies --peerDependencies
 from local file:
 
 ```bash
-download-tgz package-json path/to/package.json
+packman npm download package-json path/to/package.json
 ```
 
 from url:
 
 ```bash
-download-tgz package-json https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package.json
+packman npm download package-json https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package.json
 ```
 
 #### search keyword
@@ -69,7 +69,7 @@ download-tgz package-json https://raw.githubusercontent.com/Meir017/node-tgz-dow
 downloads the packages returned from an npm search query (https://registry.npmjs.org/-/v1/search?)
 
 ```base
-download-tgz search tgz
+packman npm download search tgz
 ```
 
 [npm-image]: https://img.shields.io/npm/v/node-tgz-downloader.svg
