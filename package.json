@@ -14,13 +14,13 @@
     "registry"
   ],
   "dependencies": {
-    "colors": "^1.3.0",
-    "commander": "^2.16.0",
+    "colors": "^1.3.3",
+    "commander": "^2.20.0",
     "mkdirp": "^0.5.1",
-    "request": "^2.87.0",
-    "request-promise": "^4.2.2",
-    "semver": "^5.5.0",
-    "tar": "^4.4.6"
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "semver": "^5.7.0",
+    "tar": "^4.4.8"
   },
   "main": "lib/downloader.js",
   "bin": {
@@ -36,9 +36,9 @@
     "url": "https://github.com/Meir017/node-tgz-downloader.git"
   },
   "devDependencies": {
-    "@types/jasmine": "^2.8.9",
-    "jasmine": "^3.2.0",
+    "@types/jasmine": "^2.8.16",
+    "jasmine": "^3.4.0",
     "jasmine-console-reporter": "^3.1.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.3"
   }
 }
