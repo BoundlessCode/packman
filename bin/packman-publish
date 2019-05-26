@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+require('colors');
+
+const program = require('commander');
+const packageJson = require('../package.json');
+
+console.info('packman is eating publish-npm'.cyan);
+
+const commandName = 'publish-npm';
+
+const start = Date.now();
+process.on('unhandledRejection', error => {
+    console.info(`packman died trying to eat ${commandName}`.cyan);
+    console.log(`[${'unhandledRejection'.red}]: ${error.message}`, error);
+})
+process.on('beforeExit', () => {
+    console.info(`packman ate ${commandName}`.cyan);
+    console.log(`completed in ${Date.now() - start}ms`.green);
+});
+
+const commands = require('../lib/publish/commands');
+
+program.version(packageJson.version);
+
+program
+    .command('npm <packagePath>')
+    .description('use npm to publish tarballs at the specified path to the registry')
+    .option('--registry [registry]')
+    .action((packagePath, command) => commands.publishNpmCommand({ packagePath, ...command }));
+
+program
+    .command('nexus <packagePath>')
+    .description('use the nexus api to publish tarballs at the specified path to the registry')
+    .option('--registry [registry]')
+    .action((packagePath, command) => commands.publishNexusApiCommand({ packagePath, ...command }));
+
+program.parse(process.argv);

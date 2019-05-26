@@ -20,4 +20,5 @@ process.on('beforeExit', () => {
 program
     .version(packageJson.version)
     .command('download-tgz', 'Download package tarballs').alias('d')
+    .command('publish', 'Publish package tarballs').alias('p')
     .parse(process.argv);
