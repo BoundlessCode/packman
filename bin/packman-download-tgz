@@ -5,15 +5,17 @@ require('colors');
 const program = require('commander');
 const packageJson = require('../package.json');
 
-console.info('packman is eating download-tgz'.cyan);
+const commandName = 'download-tgz';
+
+console.info(`packman is eating ${commandName}`.cyan);
 
 const start = Date.now();
 process.on('unhandledRejection', error => {
-    console.info('packman died trying to eat download-tgz'.cyan);
+    console.info(`packman died trying to eat ${commandName}`.cyan);
     console.log(`[${'unhandledRejection'.red}]: ${error.message}`, error);
 })
 process.on('beforeExit', () => {
-    console.info('packman ate download-tgz'.cyan);
+    console.info(`packman ate ${commandName}`.cyan);
     console.log(`completed in ${Date.now() - start}ms`.green);
 });
 
