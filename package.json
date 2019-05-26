@@ -19,7 +19,7 @@
     "mkdirp": "^0.5.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "semver": "^5.7.0",
+    "semver": "^6.1.0",
     "tar": "^4.4.8"
   },
   "main": "lib/downloader.js",
@@ -36,7 +36,7 @@
     "url": "https://github.com/Meir017/node-tgz-downloader.git"
   },
   "devDependencies": {
-    "@types/jasmine": "^2.8.16",
+    "@types/jasmine": "^3.3.12",
     "jasmine": "^3.4.0",
     "jasmine-console-reporter": "^3.1.0",
     "rimraf": "^2.6.3"
