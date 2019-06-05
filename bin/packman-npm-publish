@@ -8,15 +8,15 @@ initializeCommand(program, 'publish');
 const commands = require('../lib/npm/publish/commands');
 
 program
-    .command('npm <packagePath>')
+    .command('npm <packagesPath>')
     .description('use npm to publish tarballs at the specified path to the registry')
     .option('--registry [registry]')
-    .action((packagePath, command) => commands.publishNpmCommand({ packagePath, ...command }));
+    .action((packagesPath, command) => commands.publishNpmCommand({ packagesPath, ...command }));
 
 program
-    .command('nexus <packagePath>')
+    .command('nexus <packagesPath>')
     .description('use the nexus api to publish tarballs at the specified path to the registry')
     .option('--registry [registry]')
-    .action((packagePath, command) => commands.publishNexusApiCommand({ packagePath, ...command }));
+    .action((packagesPath, command) => commands.publishNexusApiCommand({ packagesPath, ...command }));
 
 program.parse(process.argv);
