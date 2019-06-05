@@ -91,6 +91,24 @@
                 "test/**/*spec.js",
                 "--reporter=jasmine-console-reporter"
             ]
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "migrate package",
+            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "args": [
+                "package",
+                "launch",
+                "--source",
+                "https://registry.npmjs.org/",
+                "--target",
+                "https://fake.registry/"
+            ],
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        },
     ]
 }

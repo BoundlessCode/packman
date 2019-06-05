@@ -8,4 +8,5 @@ initializeCommand(program, 'npm');
 program
     .command('download', 'Download package tarballs').alias('d')
     .command('publish', 'Publish package tarballs').alias('p')
+    .command('migrate', 'Migrate packages from one registry to another').alias('m')
     .parse(process.argv);
