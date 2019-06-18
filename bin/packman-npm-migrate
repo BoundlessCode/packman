@@ -16,4 +16,11 @@ program
     .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
     .action((name, version, command) => commands.migratePackageCommand(name, version, command));
 
+program
+    .command('package-lock <uri>')
+    .description('migrate packages specified in a package-lock.json file to the target registry')
+    .option('--directory [directory]')
+    .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
+    .action((uri, command) => commands.migratePackageLockCommand(uri, command));
+
 program.parse(process.argv);
