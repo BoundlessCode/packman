@@ -95,15 +95,31 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "migrate package",
+            "name": "migrate package to fake registry",
             "program": "${workspaceFolder}/bin/packman-npm-migrate",
             "args": [
                 "package",
-                "launch",
+                "lodash",
                 "--source",
                 "https://registry.npmjs.org/",
                 "--target",
                 "https://fake.registry/"
+            ],
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "migrate package to current registry",
+            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "args": [
+                "package",
+                "lodash",
+                "--source",
+                "https://registry.npmjs.org/",
             ],
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
