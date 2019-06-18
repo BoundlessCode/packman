@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2018 Meir017
+Copyright for portions of project @boco/packman are held by @Meir017, 2018 as part of project node-tgz-downloader.
+All other copyright for project @boco/packman are held by Noam Kfir <noam@boundlesscode.com>, 2019.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
