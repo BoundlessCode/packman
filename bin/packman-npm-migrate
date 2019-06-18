@@ -2,6 +2,7 @@
 
 const program = require('commander');
 
+const log = require('../lib/core/logger');
 const { initializeCommand } = require('../lib/core/initializer');
 initializeCommand(program, 'migrate');
 
@@ -14,10 +15,10 @@ program
     .option('-s, --source <sourceRegistry>', 'the source registry from which to migrate packages (mandatory)')
     .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
     .action((name, version, { source, target }) => {
-        console.log('name', name);
-        console.log('version', version);
-        console.log('source', source);
-        console.log('target', target);
+        log(['migrate package'], 'name', name);
+        log(['migrate package'], 'version', version);
+        log(['migrate package'], 'source', source);
+        log(['migrate package'], 'target', target);
         commands.migratePackageCommand(name, version, source, target);
     });
 

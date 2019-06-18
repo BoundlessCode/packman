@@ -1,1 +1,0 @@
-* extract `logger` to `core`
