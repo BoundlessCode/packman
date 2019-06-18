@@ -2,7 +2,6 @@
 
 const program = require('commander');
 
-const log = require('../lib/core/logger');
 const { initializeCommand } = require('../lib/core/initializer');
 initializeCommand(program, 'migrate');
 
