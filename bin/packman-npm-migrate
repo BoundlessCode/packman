@@ -10,7 +10,6 @@ const commands = require('../lib/npm/migrate/commands');
 
 program
     .command('package <name> [version]')
-    // .command('<sourceRegistry> [targetRegistry]')
     .description('migrate packages from one registry to another')
     .option('-s, --source <sourceRegistry>', 'the source registry from which to migrate packages (mandatory)')
     .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
