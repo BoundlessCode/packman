@@ -1,8 +1,12 @@
 {
-  "name": "node-tgz-downloader",
-  "description": "Downloads all of the node_modules based on a package-lock.json file",
-  "authors": "Meir017",
-  "version": "3.11.0",
+  "name": "@boco/packman",
+  "description": "Bulk download, publish, and migrate packages and their dependencies from the command line",
+  "author": "Noam Kfir <noam@boundlesscode.com>",
+  "contributors": [
+    "Noam Kfir <noam@boundlesscode.com>",
+    "Meir017"
+  ],
+  "version": "0.1.0",
   "scripts": {
     "test": "jasmine test/**/*spec.js --reporter=jasmine-console-reporter"
   },
@@ -11,7 +15,11 @@
     "npm",
     "package.json",
     "package-lock",
-    "registry"
+    "registry",
+    "download",
+    "publish",
+    "migrate",
+    "tarballs"
   ],
   "dependencies": {
     "colors": "^1.3.3",
@@ -24,7 +32,6 @@
     "semver": "^6.1.0",
     "tar": "^4.4.8"
   },
-  "main": "lib/downloader.js",
   "bin": {
     "packman": "bin/packman"
   },
