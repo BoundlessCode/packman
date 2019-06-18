@@ -32,4 +32,14 @@ program
     .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
     .action((uri, command) => commands.migratePackageJsonCommand(uri, command));
 
+program
+    .command('search <keyword>')
+    .description('migrate packages returned by an npm registry search to the target registry')
+    .option('--directory [directory]')
+    .option('--devDependencies')
+    .option('--peerDependencies')
+    .option('-s, --source <sourceRegistry>', 'the source registry from which to migrate packages (mandatory)')
+    .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
+    .action((keyword, command) => commands.migrateSearchCommand(keyword, command));
+
 program.parse(process.argv);

@@ -126,5 +126,21 @@
                 "<node_internals>/**/*.js"
             ]
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "migrate search to current registry",
+            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "args": [
+                "search",
+                "jquery",
+                "--source",
+                "https://registry.npmjs.org/",
+            ],
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        },
     ]
 }
