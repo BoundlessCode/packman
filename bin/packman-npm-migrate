@@ -14,12 +14,6 @@ program
     .description('migrate packages from one registry to another')
     .option('-s, --source <sourceRegistry>', 'the source registry from which to migrate packages (mandatory)')
     .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
-    .action((name, version, { source, target }) => {
-        log(['migrate package'], 'name', name);
-        log(['migrate package'], 'version', version);
-        log(['migrate package'], 'source', source);
-        log(['migrate package'], 'target', target);
-        commands.migratePackageCommand(name, version, source, target);
-    });
+    .action((name, version, command) => commands.migratePackageCommand(name, version, command));
 
 program.parse(process.argv);
