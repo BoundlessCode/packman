@@ -53,7 +53,7 @@
                 "npm",
                 "download",
                 "package-lock",
-                "https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package-lock.json"
+                "https://raw.githubusercontent.com/BoundlessCode/packman/master/package-lock.json"
             ]
         },
         {
@@ -78,7 +78,7 @@
                 "npm",
                 "download",
                 "package-json",
-                "https://raw.githubusercontent.com/Meir017/node-tgz-downloader/master/package.json",
+                "https://raw.githubusercontent.com/BoundlessCode/packman/master/package.json",
                 "--devDependencies"
             ]
         },
