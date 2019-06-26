@@ -42,4 +42,12 @@ program
     .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
     .action((keyword, command) => commands.migrateSearchCommand(keyword, command));
 
+program
+    .command('all')
+    .description('migrate packages returned by the /-/all endpoint to the target registry')
+    .option('--directory [directory]')
+    .option('-s, --source <sourceRegistry>', 'the source registry from which to migrate packages (mandatory)')
+    .option('-t, --target <targetRegistry>', 'the target registry the packages will be migrated, defaults to current registry')
+    .action((command) => commands.migrateAllCommand(command));
+
 program.parse(process.argv);

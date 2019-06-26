@@ -139,5 +139,20 @@
                 "<node_internals>/**/*.js"
             ]
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "migrate all to current registry",
+            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "args": [
+                "all",
+                "--source",
+                "http://localhost:4873/",
+            ],
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        },
     ]
 }
