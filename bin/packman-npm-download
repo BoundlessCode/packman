@@ -38,6 +38,13 @@ program
     .action((keyword, command) => commands.searchCommand(keyword, command));
 
 program
+    .command('all')
+    .description('download tarballs for all packages hosted by the registry')
+    .option('--registry [registry]')
+    .option('--directory [directory]')
+    .action((command) => commands.allCommand(command));
+
+program
     .command('generate <name> [version]')
     .description('generates the download links for a giving package and a version')
     .option('--outputFile [outputFile]')
