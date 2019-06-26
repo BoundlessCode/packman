@@ -8,10 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "download package",
-            "program": "${workspaceFolder}/bin/packman",
+            "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
-                "npm",
-                "download",
                 "package",
                 "node-tgz-downloader",
                 "--devDependencies"
@@ -21,10 +19,8 @@
             "type": "node",
             "request": "launch",
             "name": "download search",
-            "program": "${workspaceFolder}/bin/packman",
+            "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
-                "npm",
-                "download",
                 "search",
                 "tgz",
                 "--devDependencies"
@@ -34,10 +30,8 @@
             "type": "node",
             "request": "launch",
             "name": "download local package-lock",
-            "program": "${workspaceFolder}/bin/packman",
+            "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
-                "npm",
-                "download",
                 "package-lock",
                 "./package-lock.json",
                 "--directory",
@@ -48,10 +42,8 @@
             "type": "node",
             "request": "launch",
             "name": "download remote package-lock",
-            "program": "${workspaceFolder}/bin/packman",
+            "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
-                "npm",
-                "download",
                 "package-lock",
                 "https://raw.githubusercontent.com/BoundlessCode/packman/master/package-lock.json"
             ]
@@ -60,10 +52,8 @@
             "type": "node",
             "request": "launch",
             "name": "download local package-json",
-            "program": "${workspaceFolder}/bin/packman",
+            "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
-                "npm",
-                "download",
                 "package-json",
                 "./package.json",
                 "--devDependencies"
@@ -73,10 +63,8 @@
             "type": "node",
             "request": "launch",
             "name": "download remote package-json",
-            "program": "${workspaceFolder}/bin/packman",
+            "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
-                "npm",
-                "download",
                 "package-json",
                 "https://raw.githubusercontent.com/BoundlessCode/packman/master/package.json",
                 "--devDependencies"
