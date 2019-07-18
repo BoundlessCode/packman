@@ -1,4 +1,4 @@
-const commands = require('../lib/commands');
+const commands = require('../lib/npm/download/commands');
 
 const rimraf = require('rimraf');
 const fs = require('fs');
@@ -6,7 +6,7 @@ const path = require('path');
 
 const tarballsDirectory = './test-tarballs';
 
-require('../lib/logger').ignore = true;
+require('../lib/core/logger').ignore = true;
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
 
