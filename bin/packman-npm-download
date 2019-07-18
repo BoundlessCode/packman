@@ -48,7 +48,7 @@ const commandsObject = [
     },
     {
         name: 'generate <name> [version]',
-        description: 'generates the download links for a giving package and a version',
+        description: 'generates the download links for a given package and version',
         options: [
             options.outputFile,
             ...options.dependenciesOptions,
@@ -57,7 +57,7 @@ const commandsObject = [
     },
     {
         name: 'from-generated <uri>',
-        description: 'download tarballs using a generated file created by the generate command',
+        description: 'download tarballs using a file created by the generate command',
         options: [
             options.directoryOption,
         ],
