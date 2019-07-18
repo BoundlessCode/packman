@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+
+const { initializeCommand } = require('../lib/core/initializer');
+initializeCommand(program, 'nexus');
+
+program
+    .command('publish', 'Publish package tarballs').alias('p')
+    .parse(process.argv);

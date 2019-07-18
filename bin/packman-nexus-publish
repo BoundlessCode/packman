@@ -2,12 +2,12 @@
 
 const { initializeCommand, options } = require('../lib/core/initializer');
 
-const commands = require('../lib/npm/publish/commands');
+const commands = require('../lib/nexus/publish/commands');
 
 const commandsObject = [
     {
         name: 'tarballs <packagesPath>',
-        description: 'use npm to publish tarballs at the specified path to the registry',
+        description: 'use the nexus api to publish tarballs at the specified path to the registry',
         options: [
             options.registryOption,
         ],

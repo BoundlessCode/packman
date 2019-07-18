@@ -7,4 +7,5 @@ initializeProgram(program);
 
 program
     .command('npm', 'Manage npm packages')
+    .command('nexus', 'Manage packages hosted on Nexus using the Nexus API')
     .parse(process.argv);
