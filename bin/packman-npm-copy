@@ -1,53 +1,61 @@
 #!/usr/bin/env node
 
-const program = require('commander');
-
-const { initializeCommand } = require('../lib/core/initializer');
-initializeCommand(program, 'copy');
+const { initializeCommand, options } = require('../lib/core/initializer');
 
 const commands = require('../lib/npm/copy/commands');
 
-program
-    .command('package <name> [version]')
-    .description('copy packages from one registry to another')
-    .option('--directory [directory]', 'the local directory in which to store the downloaded packages')
-    .option('-s, --source <sourceRegistry>', 'the source registry from which to copy packages (mandatory)')
-    .option('-t, --target <targetRegistry>', 'the target registry the packages will be copied to, defaults to current registry')
-    .action((name, version, command) => commands.copyPackageCommand(name, version, command));
+const commandsObject = [
+    {
+        name: 'package <name> [version]',
+        description: 'copy packages from one registry to another',
+        options: [
+            options.directoryOption,
+            options.sourceRegistryOption,
+            options.targetRegistryOption,
+        ],
+        action: (name, version, command) => commands.copyPackageCommand(name, version, command),
+    },
+    {
+        name: 'package-lock <uri>',
+        description: 'copy packages specified in a package-lock.json file to the target registry',
+        options: [
+            options.directoryOption,
+            options.targetRegistryOption,
+        ],
+        action: (uri, command) => commands.copyPackageLockCommand(uri, command),
+    },
+    {
+        name: 'package-json <uri>',
+        description: 'copy packages specified in a package.json file to the target registry',
+        options: [
+            options.directoryOption,
+            ...options.dependenciesOptions,
+            options.sourceRegistryOption,
+            options.targetRegistryOption,
+        ],
+        action: (uri, command) => commands.copyPackageJsonCommand(uri, command),
+    },
+    {
+        name: 'search <keyword>',
+        description: 'copy packages returned by an npm registry search to the target registry',
+        options: [
+            options.directoryOption,
+            ...options.dependenciesOptions,
+            options.sourceRegistryOption,
+            options.targetRegistryOption,
+        ],
+        action: (keyword, command) => commands.copySearchCommand(keyword, command),
+    },
+    {
+        name: 'all',
+        description: 'copy packages returned by the /-/all endpoint to the target registry',
+        options: [
+            options.directoryOption,
+            options.sourceRegistryOption,
+            options.targetRegistryOption,
+        ],
+        action: (command) => commands.copyAllCommand(command),
+    },
+]
 
-program
-    .command('package-lock <uri>')
-    .description('copy packages specified in a package-lock.json file to the target registry')
-    .option('--directory [directory]')
-    .option('-t, --target <targetRegistry>', 'the target registry the packages will be copied to, defaults to current registry')
-    .action((uri, command) => commands.copyPackageLockCommand(uri, command));
-
-program
-    .command('package-json <uri>')
-    .description('copy packages specified in a package.json file to the target registry')
-    .option('--directory [directory]')
-    .option('--devDependencies')
-    .option('--peerDependencies')
-    .option('-s, --source <sourceRegistry>', 'the source registry from which to copy packages (mandatory)')
-    .option('-t, --target <targetRegistry>', 'the target registry the packages will be copied to, defaults to current registry')
-    .action((uri, command) => commands.copyPackageJsonCommand(uri, command));
-
-program
-    .command('search <keyword>')
-    .description('copy packages returned by an npm registry search to the target registry')
-    .option('--directory [directory]')
-    .option('--devDependencies')
-    .option('--peerDependencies')
-    .option('-s, --source <sourceRegistry>', 'the source registry from which to copy packages (mandatory)')
-    .option('-t, --target <targetRegistry>', 'the target registry the packages will be copied to, defaults to current registry')
-    .action((keyword, command) => commands.copySearchCommand(keyword, command));
-
-program
-    .command('all')
-    .description('copy packages returned by the /-/all endpoint to the target registry')
-    .option('--directory [directory]')
-    .option('-s, --source <sourceRegistry>', 'the source registry from which to copy packages (mandatory)')
-    .option('-t, --target <targetRegistry>', 'the target registry the packages will be copied to, defaults to current registry')
-    .action((command) => commands.copyAllCommand(command));
-
-program.parse(process.argv);
+initializeCommand('copy', commandsObject);

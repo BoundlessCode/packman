@@ -1,61 +1,68 @@
 #!/usr/bin/env node
 
-const program = require('commander');
-
-const { initializeCommand } = require('../lib/core/initializer');
-initializeCommand(program, 'download');
+const { initializeCommand, options } = require('../lib/core/initializer');
 
 const commands = require('../lib/npm/download/commands');
 
-program
-    .command('package-lock <uri>')
-    .description('download tarballs based on a package-lock.json')
-    .option('--directory [directory]')
-    .action((uri, command) => commands.packageLockCommand(uri, command));
+const commandsObject = [
+    {
+        name: 'package-lock <uri>',
+        description: 'download tarballs based on a package-lock.json',
+        options: [
+            options.directoryOption,
+        ],
+        action: (uri, command) => commands.packageLockCommand(uri, command),
+    },
+    {
+        name: 'package <name> [version]',
+        description: 'download tarballs based on a package and a version',
+        options: [
+            ...options.commonPackageOptions,
+        ],
+        action: (name, version, command) => commands.packageCommand(name, version, command),
+    },
+    {
+        name: 'package-json <uri>',
+        description: 'download tarballs based on a package.json',
+        options: [
+            ...options.commonPackageOptions,
+        ],
+        action: (uri, command) => commands.packageJsonCommand(uri, command),
+    },
+    {
+        name: 'search <keyword>',
+        description: 'download tarballs based on a npm registry search results',
+        options: [
+            ...options.commonPackageOptions,
+        ],
+        action: (keyword, command) => commands.searchCommand(keyword, command),
+    },
+    {
+        name: 'all',
+        description: 'download tarballs for all packages hosted by the registry',
+        options: [
+            options.registryOption,
+            options.directoryOption,
+        ],
+        action: (command) => commands.allCommand(command),
+    },
+    {
+        name: 'generate <name> [version]',
+        description: 'generates the download links for a giving package and a version',
+        options: [
+            options.outputFile,
+            ...options.dependenciesOptions,
+        ],
+        action: (name, version, command) => commands.generateCommand(name, version, command),
+    },
+    {
+        name: 'from-generated <uri>',
+        description: 'download tarballs using a generated file created by the generate command',
+        options: [
+            options.directoryOption,
+        ],
+        action: (uri, command) => commands.fromGeneratedCommand(uri, command),
+    },
+];
 
-program
-    .command('package <name> [version]')
-    .description('download tarballs based on a package and a version')
-    .option('--directory [directory]')
-    .option('--devDependencies')
-    .option('--peerDependencies')
-    .action((name, version, command) => commands.packageCommand(name, version, command));
-
-program
-    .command('package-json <uri>')
-    .description('download tarballs based on a package.json')
-    .option('--directory [directory]')
-    .option('--devDependencies')
-    .option('--peerDependencies')
-    .action((uri, command) => commands.packageJsonCommand(uri, command));
-
-program
-    .command('search <keyword>')
-    .description('download tarballs based on a npm registry search results')
-    .option('--directory [directory]')
-    .option('--devDependencies')
-    .option('--peerDependencies')
-    .action((keyword, command) => commands.searchCommand(keyword, command));
-
-program
-    .command('all')
-    .description('download tarballs for all packages hosted by the registry')
-    .option('--registry [registry]')
-    .option('--directory [directory]')
-    .action((command) => commands.allCommand(command));
-
-program
-    .command('generate <name> [version]')
-    .description('generates the download links for a giving package and a version')
-    .option('--outputFile [outputFile]')
-    .option('--devDependencies')
-    .option('--peerDependencies')
-    .action((name, version, command) => commands.generateCommand(name, version, command));
-
-program
-    .command('from-generated <uri>')
-    .description('download tarballs using a generated file created by the generate command')
-    .option('--directory [directory]')
-    .action((uri, command) => commands.fromGeneratedCommand(uri, command));
-
-program.parse(process.argv);
+initializeCommand('download', commandsObject);

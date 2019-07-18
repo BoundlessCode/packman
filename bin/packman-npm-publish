@@ -1,22 +1,26 @@
 #!/usr/bin/env node
 
-const program = require('commander');
-
-const { initializeCommand } = require('../lib/core/initializer');
-initializeCommand(program, 'publish');
+const { initializeCommand, options } = require('../lib/core/initializer');
 
 const commands = require('../lib/npm/publish/commands');
 
-program
-    .command('npm <packagesPath>')
-    .description('use npm to publish tarballs at the specified path to the registry')
-    .option('--registry [registry]')
-    .action((packagesPath, command) => commands.publishNpmCommand({ packagesPath, ...command }));
+const commandsObject = [
+    {
+        name: 'npm <packagesPath>',
+        description: 'use npm to publish tarballs at the specified path to the registry',
+        options: [
+            options.registryOption,
+        ],
+        action: ((packagesPath, command) => commands.publishNpmCommand({ packagesPath, ...command })),
+    },
+    {
+        name: 'nexus <packagesPath>',
+        description: 'use the nexus api to publish tarballs at the specified path to the registry',
+        options: [
+            options.registryOption,
+        ],
+        action: ((packagesPath, command) => commands.publishNexusApiCommand({ packagesPath, ...command })),
+    },
+];
 
-program
-    .command('nexus <packagesPath>')
-    .description('use the nexus api to publish tarballs at the specified path to the registry')
-    .option('--registry [registry]')
-    .action((packagesPath, command) => commands.publishNexusApiCommand({ packagesPath, ...command }));
-
-program.parse(process.argv);
+initializeCommand('publish', commandsObject);
