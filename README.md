@@ -3,7 +3,7 @@
 
 # @boco/packman
 
-Bulk download, publish, and migrate packages and their dependencies from the command line.
+Bulk download, publish, and copy packages and their dependencies by using the command line.
 
 Currently supports npm but future support for pypi and other package managers is planned.
 
@@ -21,7 +21,7 @@ npm install @boco/packman -g
 There are three layers of commands.
 
 1. The first layer are named after the package managers: `npm`, `pypi`, etc.
-2. The second layer are the names of the operations: `download`, `publish`, `migrate`, etc.
+2. The second layer are the names of the operations: `download`, `publish`, `copy`, etc.
 3. The third and last layer are modes of operation: `package`, `package-lock`, etc.
 
 We don't nest deeper than three layers.
@@ -147,25 +147,25 @@ You can publish to a different registry by using the `--registry` argument.
 packman npm publish npm --registry http://localhost:4873/
 ```
 
-### Migrate packages
+### Copy packages
 
-The `packman npm migrate` command essentially downloads all the specified packages from a *source* registry and publishes them to a *target* registry.
+The `packman npm copy` command essentially downloads all the specified packages from a *source* registry and publishes them to a *target* registry.
 
 * The *source* registry must be specified, except for the package-lock mode.
 * The default *target* registry is always the current registry, determined by running `npm get registry`. It can be overridden by passing the `--target` argument.
 
-For the most part, the `migrate` subcommands and arguments mirror the `download` subcommands and arguments, but there are a few important differences:
+For the most part, the `copy` subcommands and arguments mirror the `download` subcommands and arguments, but there are a few important differences:
 
-* `download` uses the current registry as its source, whereas `migrate` uses it as its target, by default.
-* `migrate` adds `--source` and `--target` arguments (as necessary)
-* `migrate` generates a new timestamped tarballs directory for each operation, whereas `download` always just defaults to `tarballs`
+* `download` uses the current registry as its source, whereas `copy` uses it as its target, by default.
+* `copy` adds `--source` and `--target` arguments (as necessary)
+* `copy` generates a new timestamped tarballs directory for each operation, whereas `download` always just defaults to `tarballs`
 
 #### package name [and version]
 
 ##### by name:
 
 ```base
-packman npm migrate package lodash --source https://registry.npmjs.org/
+packman npm copy package lodash --source https://registry.npmjs.org/
 ```
 
 Will download and then publish the latest version of the package.
@@ -173,13 +173,13 @@ Will download and then publish the latest version of the package.
 ##### by name and version:
 
 ```base
-packman npm migrate package lodash 4.17 --source https://registry.npmjs.org/
+packman npm copy package lodash 4.17 --source https://registry.npmjs.org/
 ```
 
 ##### by name, including `devDependencies` and `peerDependencies`:
 
 ```base
-packman npm migrate package lodash --devDependencies --peerDependencies --source https://registry.npmjs.org/
+packman npm copy package lodash --devDependencies --peerDependencies --source https://registry.npmjs.org/
 ```
 
 #### package-lock.json
@@ -189,13 +189,13 @@ The `--source` argument is not supported for the `package-lock` command because 
 ##### from local file:
 
 ```bash
-packman npm migrate package-lock ./path/to/package-lock.json
+packman npm copy package-lock ./path/to/package-lock.json
 ```
 
 ##### from url:
 
 ```bash
-packman npm migrate package-lock https://path/to/package-lock.json
+packman npm copy package-lock https://path/to/package-lock.json
 ```
 
 #### package.json
@@ -203,13 +203,13 @@ packman npm migrate package-lock https://path/to/package-lock.json
 ##### from local file:
 
 ```bash
-packman npm migrate package-json ./path/to/package.json --source https://registry.npmjs.org/
+packman npm copy package-json ./path/to/package.json --source https://registry.npmjs.org/
 ```
 
 ##### from url:
 
 ```bash
-packman npm migrate package-json https://path/to/package.json --source https://registry.npmjs.org/
+packman npm copy package-json https://path/to/package.json --source https://registry.npmjs.org/
 ```
 
 #### search keyword:
@@ -217,7 +217,7 @@ packman npm migrate package-json https://path/to/package.json --source https://r
 downloads the packages returned from an npm search query (https://registry.npmjs.org/-/v1/search?)
 
 ```base
-packman npm migrate search lodash --source https://registry.npmjs.org/
+packman npm copy search lodash --source https://registry.npmjs.org/
 ```
 
 Keep in mind that all of the packages returned in the search results *and their dependencies* will be downloaded and then published.

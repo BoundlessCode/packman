@@ -92,8 +92,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "migrate package to fake registry",
-            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "name": "copy package to fake registry",
+            "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "package",
                 "lodash",
@@ -110,8 +110,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "migrate package to current registry",
-            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "name": "copy package to current registry",
+            "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "package",
                 "lodash",
@@ -126,8 +126,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "migrate search to current registry",
-            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "name": "copy search to current registry",
+            "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "search",
                 "jquery",
@@ -142,8 +142,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "migrate all to current registry",
-            "program": "${workspaceFolder}/bin/packman-npm-migrate",
+            "name": "copy all to current registry",
+            "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "all",
                 "--source",

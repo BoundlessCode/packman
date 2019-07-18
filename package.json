@@ -1,6 +1,6 @@
 {
   "name": "@boco/packman",
-  "description": "Bulk download, publish, and migrate packages and their dependencies from the command line",
+  "description": "Bulk download, publish, and copy packages and their dependencies by using the command line",
   "author": "Noam Kfir <noam@boundlesscode.com>",
   "contributors": [
     "Noam Kfir <noam@boundlesscode.com>",
@@ -19,6 +19,7 @@
     "download",
     "publish",
     "migrate",
+    "copy",
     "tarballs"
   ],
   "dependencies": {
