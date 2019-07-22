@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "download package",
+            "name": "npm download package",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "package",
@@ -18,7 +18,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "download search",
+            "name": "npm download search",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "search",
@@ -29,7 +29,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "download local package-lock",
+            "name": "npm download local package-lock",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "package-lock",
@@ -41,7 +41,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "download remote package-lock",
+            "name": "npm download remote package-lock",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "package-lock",
@@ -51,7 +51,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "download local package-json",
+            "name": "npm download local package-json",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "package-json",
@@ -62,7 +62,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "download remote package-json",
+            "name": "npm download remote package-json",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "package-json",
@@ -73,7 +73,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "download all",
+            "name": "npm download all",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "all"
@@ -92,7 +92,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "copy package to fake registry",
+            "name": "npm copy package to fake registry",
             "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "package",
@@ -110,7 +110,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "copy package to current registry",
+            "name": "npm copy package to current registry",
             "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "package",
@@ -126,7 +126,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "copy search to current registry",
+            "name": "npm copy search to current registry",
             "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "search",
@@ -142,7 +142,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "copy all to current registry",
+            "name": "npm copy all to current registry",
             "program": "${workspaceFolder}/bin/packman-npm-copy",
             "args": [
                 "all",
