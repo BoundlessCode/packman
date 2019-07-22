@@ -1,12 +1,23 @@
 #!/usr/bin/env node
 
-const program = require('commander');
-
 const { initializeCommand } = require('../lib/core/initializer');
-initializeCommand(program, 'npm');
 
-program
-    .command('download', 'Download package tarballs').alias('d')
-    .command('publish', 'Publish package tarballs').alias('p')
-    .command('copy', 'Download packages from one registry and publish to another').alias('c')
-    .parse(process.argv);
+const commandsObject = [
+    {
+        name: 'download',
+        description: 'Download package tarballs',
+        alias: 'd',
+    },
+    {
+        name: 'publish',
+        description: 'Publish package tarballs',
+        alias: 'p',
+    },
+    {
+        name: 'copy',
+        description: 'Download packages from one registry and publish to another',
+        alias: 'c',
+    },
+];
+
+initializeCommand('npm', commandsObject);
