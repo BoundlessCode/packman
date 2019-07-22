@@ -1,18 +1,13 @@
 #!/usr/bin/env node
 
-const { initializeCommand, options } = require('../lib/core/initializer');
+const { initializeCommand } = require('../lib/core/initializer');
 
-const commands = require('../lib/nexus/publish/commands');
+const NexusPublishTarballsCommand = require('../lib/nexus/publish/NexusPublishTarballsCommand');
 
-const commandsObject = [
-    {
-        name: 'tarballs <packagesPath>',
-        description: 'use the nexus api to publish tarballs at the specified path to the registry',
-        options: [
-            options.registryOption,
-        ],
-        action: ((packagesPath, command) => commands.publishTarballsCommand({ packagesPath, ...command })),
-    },
+const nestedCommands = [
+    new NexusPublishTarballsCommand(),
 ];
 
-initializeCommand('publish', commandsObject);
+const definitions = nestedCommands.map(c => c.definition);
+
+initializeCommand('publish', definitions);

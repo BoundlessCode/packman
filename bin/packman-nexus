@@ -2,7 +2,7 @@
 
 const { initializeCommand } = require('../lib/core/initializer');
 
-const commandsObject = [
+const definitions = [
     {
         name: 'publish',
         description: 'Publish package tarballs',
@@ -10,4 +10,4 @@ const commandsObject = [
     },
 ];
 
-initializeCommand('nexus', commandsObject);
+initializeCommand('nexus', definitions);

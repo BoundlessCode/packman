@@ -1,61 +1,21 @@
 #!/usr/bin/env node
 
-const { initializeCommand, options } = require('../lib/core/initializer');
+const { initializeCommand } = require('../lib/core/initializer');
 
-const commands = require('../lib/npm/copy/commands');
+const NpmCopyPackageCommand = require('../lib/npm/copy/NpmCopyPackageCommand');
+const NpmCopyPackageLockCommand = require('../lib/npm/copy/NpmCopyPackageLockCommand');
+const NpmCopyPackageJsonCommand = require('../lib/npm/copy/NpmCopyPackageJsonCommand');
+const NpmCopySearchCommand = require('../lib/npm/copy/NpmCopySearchCommand');
+const NpmCopyAllCommand = require('../lib/npm/copy/NpmCopyAllCommand');
 
-const commandsObject = [
-    {
-        name: 'package <name> [version]',
-        description: 'copy packages from one registry to another',
-        options: [
-            options.directoryOption,
-            options.sourceRegistryOption,
-            options.targetRegistryOption,
-        ],
-        action: (name, version, command) => commands.copyPackageCommand(name, version, command),
-    },
-    {
-        name: 'package-lock <uri>',
-        description: 'copy packages specified in a package-lock.json file to the target registry',
-        options: [
-            options.directoryOption,
-            options.targetRegistryOption,
-        ],
-        action: (uri, command) => commands.copyPackageLockCommand(uri, command),
-    },
-    {
-        name: 'package-json <uri>',
-        description: 'copy packages specified in a package.json file to the target registry',
-        options: [
-            options.directoryOption,
-            ...options.dependenciesOptions,
-            options.sourceRegistryOption,
-            options.targetRegistryOption,
-        ],
-        action: (uri, command) => commands.copyPackageJsonCommand(uri, command),
-    },
-    {
-        name: 'search <keyword>',
-        description: 'copy packages returned by an npm registry search to the target registry',
-        options: [
-            options.directoryOption,
-            ...options.dependenciesOptions,
-            options.sourceRegistryOption,
-            options.targetRegistryOption,
-        ],
-        action: (keyword, command) => commands.copySearchCommand(keyword, command),
-    },
-    {
-        name: 'all',
-        description: 'copy packages returned by the /-/all endpoint to the target registry',
-        options: [
-            options.directoryOption,
-            options.sourceRegistryOption,
-            options.targetRegistryOption,
-        ],
-        action: (command) => commands.copyAllCommand(command),
-    },
-]
+const nestedCommands = [
+    new NpmCopyPackageCommand(),
+    new NpmCopyPackageLockCommand(),
+    new NpmCopyPackageJsonCommand(),
+    new NpmCopySearchCommand(),
+    new NpmCopyAllCommand(),
+];
 
-initializeCommand('copy', commandsObject);
+const definitions = nestedCommands.map(c => c.definition);
+
+initializeCommand('copy', definitions);

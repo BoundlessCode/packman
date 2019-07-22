@@ -2,7 +2,7 @@
 
 const { initializeCommand } = require('../lib/core/initializer');
 
-const commandsObject = [
+const definitions = [
     {
         name: 'download',
         description: 'Download package tarballs',
@@ -20,4 +20,4 @@ const commandsObject = [
     },
 ];
 
-initializeCommand('npm', commandsObject);
+initializeCommand('npm', definitions);

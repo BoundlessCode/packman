@@ -1,19 +1,13 @@
 #!/usr/bin/env node
 
-const { initializeCommand, options } = require('../lib/core/initializer');
+const { initializeCommand } = require('../lib/core/initializer');
 
-const commands = require('../lib/nuget/download/commands');
+const NugetDownloadAllCommand = require('../lib/nuget/download/NugetDownloadAllCommand');
 
-const commandsObject = [
-    {
-        name: 'all',
-        description: 'download tarballs for all packages hosted by the registry',
-        options: [
-            options.registryOption,
-            options.directoryOption,
-        ],
-        action: (command) => commands.allCommand(command),
-    },
+const nestedCommands = [
+    new NugetDownloadAllCommand(),
 ];
 
-initializeCommand('download', commandsObject);
+const definitions = nestedCommands.map(c => c.definition);
+
+initializeCommand('download', definitions);

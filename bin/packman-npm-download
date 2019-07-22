@@ -1,68 +1,25 @@
 #!/usr/bin/env node
 
-const { initializeCommand, options } = require('../lib/core/initializer');
+const { initializeCommand } = require('../lib/core/initializer');
 
-const commands = require('../lib/npm/download/commands');
+const NpmDownloadPackageCommand = require('../lib/npm/download/NpmDownloadPackageCommand');
+const NpmDownloadPackageLockCommand = require('../lib/npm/download/NpmDownloadPackageLockCommand');
+const NpmDownloadPackageJsonCommand = require('../lib/npm/download/NpmDownloadPackageJsonCommand');
+const NpmDownloadSearchCommand = require('../lib/npm/download/NpmDownloadSearchCommand');
+const NpmDownloadAllCommand = require('../lib/npm/download/NpmDownloadAllCommand');
+const NpmDownloadGenerateCommand = require('../lib/npm/download/NpmDownloadGenerateCommand');
+const NpmDownloadFromGeneratedCommand = require('../lib/npm/download/NpmDownloadFromGeneratedCommand');
 
-const commandsObject = [
-    {
-        name: 'package <name> [version]',
-        description: 'download tarballs based on a package and a version',
-        options: [
-            ...options.commonPackageOptions,
-        ],
-        action: (name, version, command) => commands.packageCommand(name, version, command),
-    },
-    {
-        name: 'package-lock <uri>',
-        description: 'download tarballs based on a package-lock.json',
-        options: [
-            options.directoryOption,
-        ],
-        action: (uri, command) => commands.packageLockCommand(uri, command),
-    },
-    {
-        name: 'package-json <uri>',
-        description: 'download tarballs based on a package.json',
-        options: [
-            ...options.commonPackageOptions,
-        ],
-        action: (uri, command) => commands.packageJsonCommand(uri, command),
-    },
-    {
-        name: 'search <keyword>',
-        description: 'download tarballs based on a npm registry search results',
-        options: [
-            ...options.commonPackageOptions,
-        ],
-        action: (keyword, command) => commands.searchCommand(keyword, command),
-    },
-    {
-        name: 'all',
-        description: 'download tarballs for all packages hosted by the registry',
-        options: [
-            options.registryOption,
-            options.directoryOption,
-        ],
-        action: (command) => commands.allCommand(command),
-    },
-    {
-        name: 'generate <name> [version]',
-        description: 'generates the download links for a given package and version',
-        options: [
-            options.outputFile,
-            ...options.dependenciesOptions,
-        ],
-        action: (name, version, command) => commands.generateCommand(name, version, command),
-    },
-    {
-        name: 'from-generated <uri>',
-        description: 'download tarballs using a file created by the generate command',
-        options: [
-            options.directoryOption,
-        ],
-        action: (uri, command) => commands.fromGeneratedCommand(uri, command),
-    },
+const nestedCommands = [
+    new NpmDownloadPackageCommand(),
+    new NpmDownloadPackageLockCommand(),
+    new NpmDownloadPackageJsonCommand(),
+    new NpmDownloadSearchCommand(),
+    new NpmDownloadAllCommand(),
+    new NpmDownloadGenerateCommand(),
+    new NpmDownloadFromGeneratedCommand(),
 ];
 
-initializeCommand('download', commandsObject);
+const definitions = nestedCommands.map(c => c.definition);
+
+initializeCommand('download', definitions);
