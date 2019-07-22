@@ -166,6 +166,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "nexus --help",
+            "program": "${workspaceFolder}/bin/packman-nexus",
+            "args": [
+                "--help",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "nuget download --help",
             "program": "${workspaceFolder}/bin/packman-nuget",
             "args": [
@@ -182,6 +191,16 @@
                 "all",
                 "--directory",
                 "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "nuget download all --help",
+            "program": "${workspaceFolder}/bin/packman-nuget-download",
+            "args": [
+                "all",
+                "--help",
             ]
         },
     ]
