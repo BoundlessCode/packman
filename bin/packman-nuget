@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+const { initializeCommand } = require('../lib/core/initializer');
+
+const commandsObject = [
+    {
+        name: 'download',
+        description: 'Download packages',
+        alias: 'd',
+    },
+];
+
+initializeCommand('nuget', commandsObject);

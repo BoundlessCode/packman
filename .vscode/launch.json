@@ -154,5 +154,35 @@
                 "<node_internals>/**/*.js"
             ]
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "nuget --help",
+            "program": "${workspaceFolder}/bin/packman-nuget",
+            "args": [
+                "--help",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "nuget download --help",
+            "program": "${workspaceFolder}/bin/packman-nuget",
+            "args": [
+                "download",
+                "--help",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "nuget download all",
+            "program": "${workspaceFolder}/bin/packman-nuget-download",
+            "args": [
+                "all",
+                "--directory",
+                "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
+            ]
+        },
     ]
 }

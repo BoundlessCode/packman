@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const { initializeCommand, options } = require('../lib/core/initializer');
+
+const commands = require('../lib/nuget/download/commands');
+
+const commandsObject = [
+    {
+        name: 'all',
+        description: 'download tarballs for all packages hosted by the registry',
+        options: [
+            options.registryOption,
+            options.directoryOption,
+        ],
+        action: (command) => commands.allCommand(command),
+    },
+];
+
+initializeCommand('download', commandsObject);
