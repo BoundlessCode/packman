@@ -2,7 +2,7 @@
 
 const program = require('commander');
 
-const { initializeProgram } = require('../lib/core/initializer');
+const { initializeProgram } = require('../lib/core/commandInitializer');
 initializeProgram(program);
 
 program

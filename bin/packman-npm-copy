@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { initializeCommand } = require('../lib/core/initializer');
+const { initializeCommand } = require('../lib/core/commandInitializer');
 
 const NpmCopyPackageCommand = require('../lib/npm/copy/NpmCopyPackageCommand');
 const NpmCopyPackageLockCommand = require('../lib/npm/copy/NpmCopyPackageLockCommand');

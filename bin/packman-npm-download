@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { initializeCommand } = require('../lib/core/initializer');
+const { initializeCommand } = require('../lib/core/commandInitializer');
 
 const NpmDownloadPackageCommand = require('../lib/npm/download/NpmDownloadPackageCommand');
 const NpmDownloadPackageLockCommand = require('../lib/npm/download/NpmDownloadPackageLockCommand');
