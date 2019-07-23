@@ -196,6 +196,18 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "nuget download all --track",
+            "program": "${workspaceFolder}/bin/packman-nuget-download",
+            "args": [
+                "all",
+                "--directory",
+                "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
+                "--track",
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "nuget download all --help",
             "program": "${workspaceFolder}/bin/packman-nuget-download",
             "args": [
