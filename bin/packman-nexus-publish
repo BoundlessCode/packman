@@ -8,6 +8,4 @@ const nestedCommands = [
     new NexusPublishTarballsCommand(),
 ];
 
-const definitions = nestedCommands.map(c => c.definition);
-
-initializeCommand('publish', definitions);
+initializeCommand('publish', nestedCommands);

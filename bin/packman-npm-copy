@@ -16,6 +16,4 @@ const nestedCommands = [
     new NpmCopyAllCommand(),
 ];
 
-const definitions = nestedCommands.map(c => c.definition);
-
-initializeCommand('copy', definitions);
+initializeCommand('copy', nestedCommands);

@@ -20,6 +20,4 @@ const nestedCommands = [
     new NpmDownloadFromGeneratedCommand(),
 ];
 
-const definitions = nestedCommands.map(c => c.definition);
-
-initializeCommand('download', definitions);
+initializeCommand('download', nestedCommands);
