@@ -12,8 +12,8 @@
             "args": [
                 "package",
                 "node-tgz-downloader",
-                "--devDependencies"
-            ]
+                "--devDependencies",
+            ],
         },
         {
             "type": "node",
@@ -23,8 +23,8 @@
             "args": [
                 "search",
                 "tgz",
-                "--devDependencies"
-            ]
+                "--devDependencies",
+            ],
         },
         {
             "type": "node",
@@ -35,8 +35,8 @@
                 "package-lock",
                 "./package-lock.json",
                 "--directory",
-                "custom-tarballs"
-            ]
+                "custom-tarballs",
+            ],
         },
         {
             "type": "node",
@@ -45,8 +45,8 @@
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
                 "package-lock",
-                "https://raw.githubusercontent.com/BoundlessCode/packman/master/package-lock.json"
-            ]
+                "https://raw.githubusercontent.com/BoundlessCode/packman/master/package-lock.json",
+            ],
         },
         {
             "type": "node",
@@ -56,8 +56,8 @@
             "args": [
                 "package-json",
                 "./package.json",
-                "--devDependencies"
-            ]
+                "--devDependencies",
+            ],
         },
         {
             "type": "node",
@@ -67,8 +67,8 @@
             "args": [
                 "package-json",
                 "https://raw.githubusercontent.com/BoundlessCode/packman/master/package.json",
-                "--devDependencies"
-            ]
+                "--devDependencies",
+            ],
         },
         {
             "type": "node",
@@ -76,8 +76,8 @@
             "name": "npm download all",
             "program": "${workspaceFolder}/bin/packman-npm-download",
             "args": [
-                "all"
-            ]
+                "all",
+            ],
         },
         {
             "type": "node",
@@ -86,8 +86,8 @@
             "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine.js",
             "args": [
                 "test/**/*spec.js",
-                "--reporter=jasmine-console-reporter"
-            ]
+                "--reporter=jasmine-console-reporter",
+            ],
         },
         {
             "type": "node",
@@ -100,12 +100,12 @@
                 "--source",
                 "https://registry.npmjs.org/",
                 "--target",
-                "https://fake.registry/"
+                "https://fake.registry/",
             ],
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
-                "<node_internals>/**/*.js"
-            ]
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -120,8 +120,8 @@
             ],
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
-                "<node_internals>/**/*.js"
-            ]
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -136,8 +136,8 @@
             ],
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
-                "<node_internals>/**/*.js"
-            ]
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -151,8 +151,8 @@
             ],
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
-                "<node_internals>/**/*.js"
-            ]
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -161,7 +161,7 @@
             "program": "${workspaceFolder}/bin/packman-nuget",
             "args": [
                 "--help",
-            ]
+            ],
         },
         {
             "type": "node",
@@ -170,7 +170,7 @@
             "program": "${workspaceFolder}/bin/packman-nexus",
             "args": [
                 "--help",
-            ]
+            ],
         },
         {
             "type": "node",
@@ -180,7 +180,7 @@
             "args": [
                 "download",
                 "--help",
-            ]
+            ],
         },
         {
             "type": "node",
@@ -191,7 +191,7 @@
                 "all",
                 "--directory",
                 "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
-            ]
+            ],
         },
         {
             "type": "node",
@@ -203,7 +203,7 @@
                 "--directory",
                 "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
                 "--track",
-            ]
+            ],
         },
         {
             "type": "node",
@@ -213,7 +213,7 @@
             "args": [
                 "all",
                 "--help",
-            ]
+            ],
         },
     ]
 }
