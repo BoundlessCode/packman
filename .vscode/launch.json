@@ -15,6 +15,10 @@
                 "--devDependencies",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -27,6 +31,10 @@
                 "--devDependencies",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -40,6 +48,10 @@
                 "custom-tarballs",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -51,6 +63,10 @@
                 "https://raw.githubusercontent.com/BoundlessCode/packman/master/package-lock.json",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -63,6 +79,10 @@
                 "--devDependencies",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -75,6 +95,10 @@
                 "--devDependencies",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -85,6 +109,10 @@
                 "all",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -96,6 +124,10 @@
                 "--reporter=jasmine-console-reporter",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -175,6 +207,10 @@
                 "--help",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -185,6 +221,10 @@
                 "--help",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -196,6 +236,10 @@
                 "--help",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -208,6 +252,10 @@
                 "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -221,6 +269,10 @@
                 "--track",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
         {
             "type": "node",
@@ -232,6 +284,10 @@
                 "--help",
             ],
             "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
         },
     ]
 }
