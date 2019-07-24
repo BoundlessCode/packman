@@ -14,6 +14,7 @@
                 "node-tgz-downloader",
                 "--devDependencies",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -25,6 +26,7 @@
                 "tgz",
                 "--devDependencies",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -37,6 +39,7 @@
                 "--directory",
                 "custom-tarballs",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -47,6 +50,7 @@
                 "package-lock",
                 "https://raw.githubusercontent.com/BoundlessCode/packman/master/package-lock.json",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -58,6 +62,7 @@
                 "./package.json",
                 "--devDependencies",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -69,6 +74,7 @@
                 "https://raw.githubusercontent.com/BoundlessCode/packman/master/package.json",
                 "--devDependencies",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -78,6 +84,7 @@
             "args": [
                 "all",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -88,6 +95,7 @@
                 "test/**/*spec.js",
                 "--reporter=jasmine-console-reporter",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -102,6 +110,7 @@
                 "--target",
                 "https://fake.registry/",
             ],
+            "outputCapture": "std",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
@@ -118,6 +127,7 @@
                 "--source",
                 "https://registry.npmjs.org/",
             ],
+            "outputCapture": "std",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
@@ -134,6 +144,7 @@
                 "--source",
                 "https://registry.npmjs.org/",
             ],
+            "outputCapture": "std",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
@@ -149,6 +160,7 @@
                 "--source",
                 "http://localhost:4873/",
             ],
+            "outputCapture": "std",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
@@ -162,6 +174,7 @@
             "args": [
                 "--help",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -171,6 +184,7 @@
             "args": [
                 "--help",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -181,6 +195,7 @@
                 "download",
                 "--help",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -192,6 +207,7 @@
                 "--directory",
                 "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -204,6 +220,7 @@
                 "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
                 "--track",
             ],
+            "outputCapture": "std",
         },
         {
             "type": "node",
@@ -214,6 +231,7 @@
                 "all",
                 "--help",
             ],
+            "outputCapture": "std",
         },
     ]
 }
