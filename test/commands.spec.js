@@ -6,7 +6,7 @@ const path = require('path');
 
 const tarballsDirectory = './test-tarballs';
 
-require('../lib/core/logger').ignore = true;
+// require('../lib/core/logger').ignore = true;
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
 
