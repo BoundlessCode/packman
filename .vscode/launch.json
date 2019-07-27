@@ -117,6 +117,24 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "npm publish tarballs",
+            "program": "${workspaceFolder}/bin/packman-npm-publish",
+            "args": [
+                "tarballs",
+                "${workspaceFolder}/tarballs/ajv/ajv-6.10.2.tgz",
+                // "${workspaceFolder}//tarballs/ajv",
+                // "${workspaceFolder}//tarballs",
+                // "${workspaceFolder}/",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "jasmine Tests",
             "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine.js",
             "args": [
