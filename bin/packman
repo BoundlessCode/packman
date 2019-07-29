@@ -1,12 +1,62 @@
 #!/usr/bin/env node
 
-const program = require('commander');
+const { launchProgram, requireCommands } = require('../lib/core/commandInitializer');
 
-const { initializeProgram } = require('../lib/core/commandInitializer');
-initializeProgram(program);
+const definitions = [
+    {
+        name: 'npm',
+        description: 'Download package tarballs',
+        children: [
+            {
+                name: 'download',
+                description: 'Download package tarballs',
+                alias: 'd',
+                children: requireCommands('npm', 'download'),
+            },
+            {
+                name: 'publish',
+                description: 'Publish package tarballs',
+                alias: 'p',
+                children: requireCommands('npm', 'publish'),
+            },
+            {
+                name: 'copy',
+                description: 'Download packages from one registry and publish to another',
+                alias: 'c',
+                children: requireCommands('npm', 'copy'),
+            },
+        ],
+    },
+    {
+        name: 'nuget',
+        description: 'Manage nuget packages',
+        children: [
+            {
+                name: 'download',
+                description: 'Download packages',
+                alias: 'd',
+                children: requireCommands('nuget', 'download'),
+            },
+            {
+                name: 'publish',
+                description: 'Publish packages',
+                alias: 'p',
+                children: requireCommands('nuget', 'publish'),
+            },
+        ],
+    },
+    {
+        name: 'nexus',
+        description: 'Manage packages hosted on Nexus using the Nexus API',
+        children: [
+            {
+                name: 'publish',
+                description: 'Publish package tarballs',
+                alias: 'p',
+                children: requireCommands('nexus', 'publish'),
+            },
+        ],
+    },
+];
 
-program
-    .command('npm', 'Manage npm packages')
-    .command('nuget', 'Manage nuget packages')
-    .command('nexus', 'Manage packages hosted on Nexus using the Nexus API')
-    .parse(process.argv);
+launchProgram(definitions);
