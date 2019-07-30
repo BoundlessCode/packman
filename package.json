@@ -6,7 +6,7 @@
     "Noam Kfir <noam@boundlesscode.com>",
     "Meir017"
   ],
-  "version": "0.6.7",
+  "version": "0.6.8",
   "scripts": {
     "test": "jasmine test/**/*spec.js --reporter=jasmine-console-reporter"
   },
