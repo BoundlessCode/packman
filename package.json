@@ -32,7 +32,7 @@
     "pino-pretty": "^3.2.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "sade": "github:noamkfir/sade#feature/nested-subcommands",
+    "sade": "github:noamkfir/sade#feature/root-action",
     "semver": "^6.3.0",
     "tar": "^4.4.10"
   },

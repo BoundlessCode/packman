@@ -7,6 +7,21 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "packman (root)",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                // "help",
+                // "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "npm download package",
             "program": "${workspaceFolder}/bin/packman",
             "args": [
