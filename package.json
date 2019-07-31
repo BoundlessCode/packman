@@ -23,7 +23,7 @@
     "tarballs"
   ],
   "dependencies": {
-    "@boco/sade": "^1.6.2-boco.1",
+    "@boco/sade": "^1.6.2-boco-2",
     "colors": "^1.3.3",
     "dayjs": "^1.8.15",
     "glob": "^7.1.4",
