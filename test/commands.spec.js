@@ -12,9 +12,11 @@ const tarballsDirectory = './test-tarballs';
 const { logger } = require('../lib/core/logger');
 logger.level = 'silent';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
+const DEFAULT_TIMEOUT_INTERVAL = 15000;
 
 describe('the (package.json) command', function () {
+    this.timeout(DEFAULT_TIMEOUT_INTERVAL);
+
     afterEach(function () {
         cleanup(tarballsDirectory);
     });
@@ -90,6 +92,8 @@ describe('the (package.json) command', function () {
 });
 
 describe('the (package-lock.json) command', function () {
+    this.timeout(DEFAULT_TIMEOUT_INTERVAL);
+
     afterEach(function () {
         cleanup(tarballsDirectory);
     });
@@ -164,6 +168,8 @@ describe('the (package-lock.json) command', function () {
 });
 
 describe('the (package) command', function () {
+    this.timeout(DEFAULT_TIMEOUT_INTERVAL);
+
     afterEach(function () {
         cleanup(tarballsDirectory);
     });
