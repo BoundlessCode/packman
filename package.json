@@ -8,7 +8,7 @@
   ],
   "version": "0.7.0",
   "scripts": {
-    "test": "jasmine test/**/*spec.js --reporter=jasmine-console-reporter"
+    "test": "mocha './@(lib|test)/**/*.spec.js'",
   },
   "keywords": [
     "tgz",
@@ -50,12 +50,11 @@
     "url": "https://github.com/BoundlessCode/packman.git"
   },
   "devDependencies": {
-    "@types/jasmine": "^3.3.16",
     "@types/node": "^12.6.8",
     "@types/semver": "^6.0.1",
     "@types/tar": "^4.0.3",
-    "jasmine": "^3.4.0",
-    "jasmine-console-reporter": "^3.1.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
     "rimraf": "^2.6.3"
   }
 }

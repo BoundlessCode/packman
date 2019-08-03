@@ -1,33 +1,49 @@
-const commands = require('../lib/npm/download/commands');
-
+const { expect } = require('chai');
 const rimraf = require('rimraf');
 const fs = require('fs');
 const path = require('path');
 
+const NpmDownloadPackageJsonCommand = require('../lib/npm/download/NpmDownloadPackageJsonCommand');
+const NpmDownloadPackageLockCommand = require('../lib/npm/download/NpmDownloadPackageLockCommand');
+const NpmDownloadPackageCommand = require('../lib/npm/download/NpmDownloadPackageCommand');
+
 const tarballsDirectory = './test-tarballs';
 
+const { logger } = require('../lib/core/logger');
 // require('../lib/core/logger').ignore = true;
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
 
-describe('the (package.json) command', () => {    
-    afterEach(() => {
+describe('the (package.json) command', function () {
+    afterEach(function () {
         cleanup(tarballsDirectory);
     });
 
-    it('should work for a simple package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/simple/package.json'), {
-            directory: tarballsDirectory
-        });
-        expect(fs.existsSync(path.join(tarballsDirectory), 'express')).toBeTruthy();
-        expect(fs.existsSync(path.join(tarballsDirectory), 'express', 'express-4.16.4.tgz')).toBeTruthy();
+    it('should work for a simple package', async function () {
+        const command = new NpmDownloadPackageJsonCommand();
+        const options = {
+            uri: getFilePath('./test-data/simple/package.json'),
+            directory: tarballsDirectory,
+            logger,
+        };
+
+        await command.execute(options);
+
+        expectPathToExist(['express']);
+        expectPathToExist(['express', 'express-4.16.4.tgz']);
     });
 
-    it('should work for the current package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/current/package.json'), {
+    it('should work for the current package', async function () {
+        const command = new NpmDownloadPackageJsonCommand();
+        const options = {
+            uri: getFilePath('./test-data/current/package.json'),
             directory: tarballsDirectory,
-            devDependencies: true
-        });
+            devDependencies: true,
+            logger,
+        };
+
+        await command.execute(options);
+
         const paths = [
             ['colors'], ['colors', 'colors-1.3.0.tgz'],
             ['commander'], ['commander', 'commander-2.16.0.tgz'],
@@ -41,45 +57,67 @@ describe('the (package.json) command', () => {
             ['rimraf'], ['rimraf', 'rimraf-2.6.2.tgz']
         ];
         for (const directoryPath of paths) {
-            expect(fs.existsSync(path.join(tarballsDirectory), ...directoryPath)).toBeTruthy();
+            expectPathToExist(directoryPath);
         }
     });
 
-    xit('should work for a big (react-scripts) package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/big/react-scripts/package.json'), {
+    xit('should work for a big (react-scripts) package', async function () {
+        const command = new NpmDownloadPackageJsonCommand();
+        const options = {
+            uri: getFilePath('./test-data/big/react-scripts/package.json'),
             directory: tarballsDirectory,
             devDependencies: true,
-            peerDependencies: true
-        });
+            peerDependencies: true,
+            logger,
+        };
+
+        await command.execute(options);
     });
 
-    xit('should work for a big (angular-cli) package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/big/angular-cli/package.json'), {
+    xit('should work for a big (angular-cli) package', async function () {
+        const command = new NpmDownloadPackageJsonCommand();
+        const options = {
+            uri: getFilePath('./test-data/big/angular-cli/package.json'),
             directory: tarballsDirectory,
             devDependencies: true,
-            peerDependencies: true
-        });
+            peerDependencies: true,
+            logger,
+        };
+
+        await command.execute(options);
     });
 
 });
 
-describe('the (package-lock.json) command', () => {
-    afterEach(() => {
+describe('the (package-lock.json) command', function () {
+    afterEach(function () {
         cleanup(tarballsDirectory);
     });
 
-    it('should work for a simple package', async () => {
-        await commands.packageLockCommand(getFilePath('./test-data/simple/package-lock.json'), {
-            directory: tarballsDirectory
-        });
-        expect(fs.existsSync(path.join(tarballsDirectory), 'express')).toBeTruthy();
-        expect(fs.existsSync(path.join(tarballsDirectory), 'express', 'express-4.16.4.tgz')).toBeTruthy();
+    it('should work for a simple package', async function () {
+        const command = new NpmDownloadPackageLockCommand();
+        const options = {
+            uri: getFilePath('./test-data/simple/package-lock.json'),
+            directory: tarballsDirectory,
+            logger,
+        };
+
+        await command.execute(options);
+
+        expectPathToExist(['express']);;
+        expectPathToExist(['express', 'express-4.16.4.tgz']);
     });
 
-    it('should work for the current package', async () => {
-        await commands.packageLockCommand(getFilePath('./test-data/current/package-lock.json'), {
-            directory: tarballsDirectory
-        });
+    it('should work for the current package', async function () {
+        const command = new NpmDownloadPackageLockCommand();
+        const options = {
+            uri: getFilePath('./test-data/current/package-lock.json'),
+            directory: tarballsDirectory,
+            logger,
+        };
+
+        await command.execute(options);
+
         const paths = [
             ['colors'], ['colors', 'colors-1.3.0.tgz'],
             ['commander'], ['commander', 'commander-2.16.0.tgz'],
@@ -93,45 +131,68 @@ describe('the (package-lock.json) command', () => {
             ['rimraf'], ['rimraf', 'rimraf-2.6.2.tgz']
         ];
         for (const directoryPath of paths) {
-            expect(fs.existsSync(path.join(tarballsDirectory), ...directoryPath)).toBeTruthy();
+            expectPathToExist(directoryPath);
         }
     });
 
-    xit('should work for a big (react-scripts) package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/big/react-scripts/package.json'), {
+    xit('should work for a big (react-scripts) package', async function () {
+        const command = new NpmDownloadPackageLockCommand();
+        const options = {
+            uri: getFilePath('./test-data/big/react-scripts/package.json'),
             directory: tarballsDirectory,
             devDependencies: true,
-            peerDependencies: true
-        });
+            peerDependencies: true,
+            logger,
+        };
+
+        await command.execute(options);
     });
 
-    xit('should work for a big (angular-cli) package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/big/angular-cli/package.json'), {
+    xit('should work for a big (angular-cli) package', async function () {
+        const command = new NpmDownloadPackageLockCommand();
+        const options = {
+            uri: getFilePath('./test-data/big/angular-cli/package.json'),
             directory: tarballsDirectory,
             devDependencies: true,
-            peerDependencies: true
-        });
+            peerDependencies: true,
+            logger,
+        };
+
+        await command.execute(options);
     });
 
 });
 
-describe('the (package) command', () => {
-    afterEach(() => {
+describe('the (package) command', function () {
+    afterEach(function () {
         cleanup(tarballsDirectory);
     });
 
-    it('should work for a simple package', async () => {
-        await commands.packageCommand('express', '4.16.4', {
-            directory: tarballsDirectory
-        });
-        expect(fs.existsSync(path.join(tarballsDirectory), 'express')).toBeTruthy();
-        expect(fs.existsSync(path.join(tarballsDirectory), 'express', 'express-4.16.4.tgz')).toBeTruthy();
+    it('should work for a simple package', async function () {
+        const command = new NpmDownloadPackageCommand();
+        const options = {
+            name: 'express',
+            version: '4.16.4',
+            directory: tarballsDirectory,
+            logger,
+        };
+
+        await command.execute(options);
+
+        expectPathToExist(['express']);
+        expectPathToExist(['express', 'express-4.16.4.tgz']);
     });
 
-    it('should work for the current package', async () => {
-        await commands.packageCommand('node-tgz-downloader', undefined, {
-            directory: tarballsDirectory
-        });
+    it('should work for the current package', async function () {
+        const command = new NpmDownloadPackageCommand();
+        const options = {
+            name: 'node-tgz-downloader',
+            directory: tarballsDirectory,
+            logger,
+        };
+
+        await command.execute(options);
+
         const paths = [
             ['colors'],
             ['commander'],
@@ -145,27 +206,42 @@ describe('the (package) command', () => {
             ['rimraf'],
         ];
         for (const directoryPath of paths) {
-            expect(fs.existsSync(path.join(tarballsDirectory), ...directoryPath)).toBeTruthy();
+            expectPathToExist(directoryPath)
         }
     });
 
-    xit('should work for a big (react-scripts) package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/big/react-scripts/package.json'), {
+    xit('should work for a big (react-scripts) package', async function () {
+        const command = new NpmDownloadPackageCommand();
+        const options = {
+            name: 'react-scripts',
             directory: tarballsDirectory,
             devDependencies: true,
-            peerDependencies: true
-        });
+            peerDependencies: true,
+            logger,
+        };
+
+        await command.execute(options);
     });
 
-    xit('should work for a big (angular-cli) package', async () => {
-        await commands.packageJsonCommand(getFilePath('./test-data/big/angular-cli/package.json'), {
+    xit('should work for a big (angular-cli) package', async function () {
+        const command = new NpmDownloadPackageCommand();
+        const options = {
+            name: 'angular-cli',
             directory: tarballsDirectory,
             devDependencies: true,
-            peerDependencies: true
-        });
+            peerDependencies: true,
+            logger,
+        };
+
+        await command.execute(options);
     });
 
 });
+
+function expectPathToExist(directoryPath) {
+    const packagePath = path.join(tarballsDirectory, ...directoryPath);
+    expect(fs.existsSync(packagePath), `${packagePath} doesn't exist`).to.be.true;
+}
 
 function cleanup(directory) {
     try {
