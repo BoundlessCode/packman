@@ -47,7 +47,7 @@ describe('the (package.json) command', function () {
         const paths = [
             ['colors'], ['colors', 'colors-1.3.0.tgz'],
             ['commander'], ['commander', 'commander-2.16.0.tgz'],
-            ['mkdirp'], ['mkdirp', 'mkdirp-0.5.1-tgz'],
+            ['mkdirp'], ['mkdirp', 'mkdirp-0.5.1.tgz'],
             ['request'], ['request', 'request-2.87.0.tgz'],
             ['request-promise'], ['request-promise', 'request-promise-4.2.2.tgz'],
             ['semver'], ['semver', 'semver-5.5.0.tgz'],
@@ -121,7 +121,7 @@ describe('the (package-lock.json) command', function () {
         const paths = [
             ['colors'], ['colors', 'colors-1.3.0.tgz'],
             ['commander'], ['commander', 'commander-2.16.0.tgz'],
-            ['mkdirp'], ['mkdirp', 'mkdirp-0.5.1-tgz'],
+            ['mkdirp'], ['mkdirp', 'mkdirp-0.5.1.tgz'],
             ['request'], ['request', 'request-2.87.0.tgz'],
             ['request-promise'], ['request-promise', 'request-promise-4.2.2.tgz'],
             ['semver'], ['semver', 'semver-5.5.0.tgz'],
