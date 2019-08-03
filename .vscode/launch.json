@@ -146,6 +146,24 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "npm index all",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "npm",
+                "index",
+                "all",
+                "${workspaceFolder}/.index.packman",
+                "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "npm publish tarballs",
             "program": "${workspaceFolder}/bin/packman",
             "args": [

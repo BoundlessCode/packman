@@ -27,6 +27,12 @@ const definitions = [
                 alias: 'c',
                 children: requireCommands('npm', 'copy'),
             },
+            {
+                name: 'index',
+                description: 'Generate a packman index for a specified registry',
+                alias: 'i',
+                children: requireCommands('npm', 'index'),
+            },
         ],
     },
     {
