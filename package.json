@@ -34,7 +34,8 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "semver": "^6.3.0",
-    "tar": "^4.4.10"
+    "tar": "^4.4.10",
+    "validate-npm-package-name": "^3.0.0"
   },
   "bin": {
     "packman": "bin/packman"
