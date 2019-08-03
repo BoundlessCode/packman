@@ -48,8 +48,10 @@ typings/
 # Optional REPL history
 .node_repl_history
 
-# Output of 'npm pack'
+# Output of 'packman'
 *.tgz
+*.packman
+.packman-tracker.dat
 
 # Yarn Integrity file
 .yarn-integrity
