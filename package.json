@@ -9,6 +9,7 @@
   "version": "0.7.0",
   "scripts": {
     "test": "mocha './@(lib|test)/**/*.spec.js'",
+    "test:watch": "mocha './@(lib|test)/**/*.spec.js' --watch"
   },
   "keywords": [
     "tgz",
