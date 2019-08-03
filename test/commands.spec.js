@@ -10,7 +10,7 @@ const NpmDownloadPackageCommand = require('../lib/npm/download/NpmDownloadPackag
 const tarballsDirectory = './test-tarballs';
 
 const { logger } = require('../lib/core/logger');
-// require('../lib/core/logger').ignore = true;
+logger.level = 'silent';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
 
