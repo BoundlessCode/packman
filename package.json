@@ -6,7 +6,7 @@
     "Noam Kfir <noam@boundlesscode.com>",
     "Meir017"
   ],
-  "version": "0.9.2",
+  "version": "0.9.3",
   "scripts": {
     "test": "mocha './@(lib|test)/**/*.spec.js'",
     "test:watch": "mocha './@(lib|test)/**/*.spec.js' --watch"
