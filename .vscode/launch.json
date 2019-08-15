@@ -381,7 +381,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "nuget download all --track",
+            "name": "nuget download all --catalog",
             "program": "${workspaceFolder}/bin/packman",
             "args": [
                 "nuget",
@@ -389,7 +389,7 @@
                 "all",
                 "--directory",
                 "/Volumes/NomadicQuad/sharvit/packages/nuget-test",
-                "--track",
+                "--catalog",
             ],
             "outputCapture": "std",
             "skipFiles": [
