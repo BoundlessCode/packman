@@ -451,5 +451,23 @@
                 "<node_internals>/**/*.js",
             ],
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "bundle zip extract",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "bundle",
+                "zip",
+                "extract",
+                "lodash-bundle.zip",
+                "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+        },
     ]
 }
