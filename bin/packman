@@ -28,10 +28,10 @@ const definitions = [
                 children: requireCommands('npm', 'copy'),
             },
             {
-                name: 'index',
-                description: 'Generate a packman index for a specified registry',
+                name: 'catalog',
+                description: 'Generate a packman catalog for a specified registry',
                 alias: 'i',
-                children: requireCommands('npm', 'index'),
+                children: requireCommands('npm', 'catalog'),
             },
         ],
     },

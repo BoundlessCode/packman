@@ -146,13 +146,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "npm index all",
+            "name": "npm catalog all",
             "program": "${workspaceFolder}/bin/packman",
             "args": [
                 "npm",
-                "index",
+                "catalog",
                 "all",
-                "${workspaceFolder}/.index.packman",
+                "${workspaceFolder}/.catalog.packman",
                 "--verbose",
             ],
             "outputCapture": "std",
@@ -164,13 +164,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "npm download index",
+            "name": "npm download catalog",
             "program": "${workspaceFolder}/bin/packman",
             "args": [
                 "npm",
                 "download",
-                "index",
-                "${workspaceFolder}/.index.packman",
+                "catalog",
+                "${workspaceFolder}/.catalog.packman",
                 "--verbose",
             ],
             "outputCapture": "std",
