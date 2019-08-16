@@ -435,12 +435,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "bundle create directory",
+            "name": "bundle zip create",
             "program": "${workspaceFolder}/bin/packman",
             "args": [
                 "bundle",
+                "zip",
                 "create",
-                "directory",
                 "tarballs",
                 "bundle-001",
                 "--verbose",
