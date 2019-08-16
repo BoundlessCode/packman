@@ -432,5 +432,24 @@
                 "<node_internals>/**/*.js",
             ],
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "bundle create directory",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "bundle",
+                "create",
+                "directory",
+                "tarballs",
+                "bundle-001",
+                "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+        },
     ]
 }

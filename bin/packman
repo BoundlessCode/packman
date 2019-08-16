@@ -71,6 +71,18 @@ const definitions = [
             },
         ],
     },
+    {
+        name: 'bundle',
+        description: 'Generate and process packman bundles',
+        children: [
+            {
+                name: 'create',
+                description: 'Create a packman bundle',
+                alias: 'c',
+                children: requireCommands('bundle', 'create'),
+            },
+        ],
+    },
 ];
 
 launchProgram(definitions);
