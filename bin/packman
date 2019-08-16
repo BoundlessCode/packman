@@ -76,10 +76,10 @@ const definitions = [
         description: 'Generate and process packman bundles',
         children: [
             {
-                name: 'create',
-                description: 'Create a packman bundle',
-                alias: 'c',
-                children: requireCommands('bundle', 'create'),
+                name: 'zip',
+                description: 'Create and extract zip files',
+                alias: 'z',
+                children: requireCommands('bundle', 'zip'),
             },
         ],
     },
