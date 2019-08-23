@@ -39,25 +39,27 @@ function setLoggerVerbosity() {
 }
 
 function requireCommands(area, operation) {
-    logger.debug(area.blue, operation.cyan, 'requiring...'.gray);
+    logger.debug('requiring commands at'.gray, 'area:', (area || 'n/a').blue, 'operation:', (operation || 'n/a').blue);
 
-    const pattern = path.resolve(__dirname, '..', '..', 'src', '**', area, operation, '*Command.js');
-    logger.debug(area.blue, operation.cyan, 'glob:'.gray, pattern);
+    const pattern = path.resolve(area, operation, '*Command.js');
+
+    const section = area.blue + ' ' + operation.cyan + ':';
+    logger.debug(section, 'require glob:'.gray, pattern.cyan);
 
     const commandFiles = glob.sync(pattern);
-    logger.debug(area.blue, operation.cyan, 'globbed files:\n   '.gray, commandFiles.join('\n    '));
+    logger.debug(section, 'globbed files:\n   '.gray, commandFiles.join('\n    '));
 
     return commandFiles
         .map(file => {
             const resolvedPath = path.resolve(file) || 'failed to resolve ' + file;
             const imported = require(resolvedPath);
-            logger.debug(area.blue, operation.cyan, String(!!imported).gray, resolvedPath.green);
+            logger.debug(section, String(!!imported).gray, resolvedPath.green);
             return imported;
         })
         .map(Command => {
             const commandInfo = new Command();
             const { name = '<no name>' } = commandInfo.definition;
-            logger.debug(area.blue, operation.cyan, name.magenta);
+            logger.debug(section, name.magenta);
             return commandInfo;
         });
 }

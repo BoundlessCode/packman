@@ -1,88 +1,19 @@
 #!/usr/bin/env node
 
-const { launchProgram, requireCommands, setLoggerVerbosity } = require('../src/core/commandInitializer');
+const { launchProgram, setLoggerVerbosity } = require('../src/core/commandInitializer');
 
 setLoggerVerbosity();
 
+const npm = require('../src/providers/npm/npmDefinition');
+const nuget = require('../src/providers/nuget/nugetDefinition');
+const nexus = require('../src/providers/nexus/nexusDefinition');
+const bundle = require('../src/providers/bundle/bundleDefinition');
+
 const definitions = [
-    {
-        name: 'npm',
-        description: 'Download package tarballs',
-        children: [
-            {
-                name: 'download',
-                description: 'Download package tarballs',
-                alias: 'd',
-                children: requireCommands('npm', 'download'),
-            },
-            {
-                name: 'publish',
-                description: 'Publish package tarballs',
-                alias: 'p',
-                children: requireCommands('npm', 'publish'),
-            },
-            {
-                name: 'copy',
-                description: 'Download packages from one registry and publish to another',
-                alias: 'c',
-                children: requireCommands('npm', 'copy'),
-            },
-            {
-                name: 'catalog',
-                description: 'Generate a packman catalog for a specified registry',
-                alias: 'i',
-                children: requireCommands('npm', 'catalog'),
-            },
-        ],
-    },
-    {
-        name: 'nuget',
-        description: 'Manage nuget packages',
-        children: [
-            {
-                name: 'download',
-                description: 'Download packages',
-                alias: 'd',
-                children: requireCommands('nuget', 'download'),
-            },
-            {
-                name: 'publish',
-                description: 'Publish packages',
-                alias: 'p',
-                children: requireCommands('nuget', 'publish'),
-            },
-        ],
-    },
-    {
-        name: 'nexus',
-        description: 'Manage packages hosted on Nexus using the Nexus API',
-        children: [
-            {
-                name: 'catalog',
-                description: 'Catalog packages in any nexus repository',
-                alias: 'c',
-                children: requireCommands('nexus', 'catalog'),
-            },
-            {
-                name: 'publish',
-                description: 'Publish package tarballs',
-                alias: 'p',
-                children: requireCommands('nexus', 'publish'),
-            },
-        ],
-    },
-    {
-        name: 'bundle',
-        description: 'Generate and process packman bundles',
-        children: [
-            {
-                name: 'zip',
-                description: 'Create and extract zip files',
-                alias: 'z',
-                children: requireCommands('bundle', 'zip'),
-            },
-        ],
-    },
+    npm,
+    nuget,
+    nexus,
+    bundle,
 ];
 
 launchProgram(definitions);
