@@ -1,5 +1,5 @@
 class PackageProvider {
-    constructor({ defaultRegistry }) {
+    constructor({ defaultRegistry } = {}) {
         this.defaultRegistry = defaultRegistry;
         this.maxRetries = 5;
         this.requestTimeout = 30000;

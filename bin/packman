@@ -4,10 +4,15 @@ const { launchProgram, setLoggerVerbosity } = require('../src/core/commandInitia
 
 setLoggerVerbosity();
 
-const npm = require('../src/providers/npm/npmDefinition');
-const nuget = require('../src/providers/nuget/nugetDefinition');
-const nexus = require('../src/providers/nexus/nexusDefinition');
-const bundle = require('../src/providers/bundle/bundleDefinition');
+const NpmPackageProvider = require('../src/providers/npm/NpmPackageProvider');
+const NugetPackageProvider = require('../src/providers/nuget/NugetPackageProvider');
+const NexusPackageProvider = require('../src/providers/nexus/NexusPackageProvider');
+const BundlePackageProvider = require('../src/providers/bundle/BundlePackageProvider');
+
+const { definition: npm } = new NpmPackageProvider();
+const { definition: nuget } = new NugetPackageProvider();
+const { definition: nexus } = new NexusPackageProvider();
+const { definition: bundle } = new BundlePackageProvider();
 
 const definitions = [
     npm,
