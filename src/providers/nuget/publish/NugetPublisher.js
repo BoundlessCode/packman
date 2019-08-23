@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 
-const { execute, normalizeRootedDirectory } = require('../../core/shell');
-const Publisher = require('../../core/Publisher');
+const { execute, normalizeRootedDirectory } = require('../../../core/shell');
+const Publisher = require('../../../core/Publisher');
 const NugetPackageProvider = require('../NugetPackageProvider');
 
 const NUPKG_EXTENSION = 'nupkg';

@@ -1,11 +1,11 @@
 const path = require('path');
 const fs = require('fs');
 
-const Command = require('../../core/Command');
-const { registryOption, directoryOption, catalogOption } = require('../../core/commandOptions');
-const { retrieveFile } = require('../../core/uri-retriever');
-const downloadFileAsync = require('../../core/download-file');
-const Cataloger = require('../../core/Cataloger');
+const Command = require('../../../core/Command');
+const { registryOption, directoryOption, catalogOption } = require('../../../core/commandOptions');
+const { retrieveFile } = require('../../../core/uri-retriever');
+const downloadFileAsync = require('../../../core/download-file');
+const Cataloger = require('../../../core/Cataloger');
 const NugetPackageProvider = require('../NugetPackageProvider');
 
 class NugetDownloadAllCommand extends Command {

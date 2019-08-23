@@ -1,4 +1,4 @@
-const PackageProvider = require('../core/PackageProvider');
+const PackageProvider = require('../../core/PackageProvider');
 
 class NugetPackageProvider extends PackageProvider {
   constructor() {
