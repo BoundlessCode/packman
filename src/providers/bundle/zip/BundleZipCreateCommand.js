@@ -1,6 +1,6 @@
-const Command = require('../../core/Command');
-const { globalOptions } = require('../../core/commandOptions');
-const Bundler = require('../../core/Bundler');
+const Command = require('../../../core/Command');
+const { globalOptions } = require('../../../core/commandOptions');
+const Bundler = require('../../../core/Bundler');
 
 class BundleZipCreateCommand extends Command {
   get definition() {
