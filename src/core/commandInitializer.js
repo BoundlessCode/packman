@@ -41,7 +41,7 @@ function setLoggerVerbosity() {
 function requireCommands(area, operation) {
     logger.debug(area.blue, operation.cyan, 'requiring...'.gray);
 
-    const pattern = path.resolve(__dirname, '..', '..', 'lib', area, operation, '*Command.js');
+    const pattern = path.resolve(__dirname, '..', '..', 'src', area, operation, '*Command.js');
     logger.debug(area.blue, operation.cyan, 'glob:'.gray, pattern);
 
     const commandFiles = glob.sync(pattern);

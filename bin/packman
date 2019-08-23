@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { launchProgram, requireCommands, setLoggerVerbosity } = require('../lib/core/commandInitializer');
+const { launchProgram, requireCommands, setLoggerVerbosity } = require('../src/core/commandInitializer');
 
 setLoggerVerbosity();
 

@@ -5,7 +5,7 @@ const path = require('path');
 
 const tarballsDirectory = path.resolve(__dirname, 'test-tarballs');
 
-const { logger } = require('../lib/core/logger');
+const { logger } = require('../src/core/logger');
 logger.level = 'silent';
 
 const DEFAULT_TIMEOUT_INTERVAL = 15000;

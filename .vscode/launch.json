@@ -229,7 +229,7 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "'${workspaceFolder}/@(lib|test)/**/*.spec.js'",
+                "'${workspaceFolder}/@(src|test)/**/*.spec.js'",
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",

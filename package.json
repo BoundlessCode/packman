@@ -8,8 +8,8 @@
   ],
   "version": "0.10.1",
   "scripts": {
-    "test": "mocha './@(lib|test)/**/*.spec.js'",
-    "test:watch": "mocha './@(lib|test)/**/*.spec.js' --watch"
+    "test": "mocha './@(src|test)/**/*.spec.js'",
+    "test:watch": "mocha './@(src|test)/**/*.spec.js' --watch"
   },
   "keywords": [
     "tgz",
@@ -45,7 +45,7 @@
     "packman": "bin/packman"
   },
   "files": [
-    "lib",
+    "src",
     "bin"
   ],
   "license": "MIT",
