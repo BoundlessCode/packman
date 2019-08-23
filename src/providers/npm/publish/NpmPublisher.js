@@ -1,10 +1,10 @@
 const path = require('path');
 
-const { normalizeRootedDirectory } = require('../../core/shell');
+const { normalizeRootedDirectory } = require('../../../core/shell');
 const { getCurrentRegistry, getScopedPackageName } = require('../npm-utils');
 const { packageVersionExists, updateDistTagToLatest } = require('./npm-publish-utils');
-const { execute } = require('../../core/shell');
-const Publisher = require('../../core/Publisher');
+const { execute } = require('../../../core/shell');
+const Publisher = require('../../../core/Publisher');
 
 const TARBALL_EXTENSION = 'tgz';
 

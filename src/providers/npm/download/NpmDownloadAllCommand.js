@@ -1,6 +1,6 @@
-const Command = require('../../core/Command');
-const { globalOptions, registryOption, directoryOption, forceOption } = require('../../core/commandOptions');
-const { retrieveFile } = require('../../core/uri-retriever');
+const Command = require('../../../core/Command');
+const { globalOptions, registryOption, directoryOption, forceOption } = require('../../../core/commandOptions');
+const { retrieveFile } = require('../../../core/uri-retriever');
 const { getCurrentRegistry, getAllEndpointUrl } = require('../npm-utils');
 const crawler = require('../crawler');
 const downloader = require('./downloader');

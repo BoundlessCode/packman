@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const semver = require('semver');
 
-const { execute } = require('../../core/shell')
+const { execute } = require('../../../core/shell')
 const { getPackageUrl } = require('../npm-utils');
 
 async function packageVersionExists(packageInfo, { lenientSsl, logger }) {

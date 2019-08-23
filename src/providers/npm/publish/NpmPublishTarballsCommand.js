@@ -1,5 +1,5 @@
-const Command = require('../../core/Command');
-const { globalOptions, registryOption } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { globalOptions, registryOption } = require('../../../core/commandOptions');
 const NpmPublisher = require('./NpmPublisher');
 
 class NpmPublishTarballsCommand extends Command {

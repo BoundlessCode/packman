@@ -1,5 +1,5 @@
-const Command = require('../../core/Command');
-const { globalOptions, outputFileOption, dependenciesOptions } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { globalOptions, outputFileOption, dependenciesOptions } = require('../../../core/commandOptions');
 const crawler = require('../crawler');
 const generator = require('./generator');
 

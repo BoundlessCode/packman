@@ -1,6 +1,6 @@
-const Command = require('../../core/Command');
-const { globalOptions, directoryOption } = require('../../core/commandOptions');
-const { retrieveFile } = require('../../core/uri-retriever');
+const Command = require('../../../core/Command');
+const { globalOptions, directoryOption } = require('../../../core/commandOptions');
+const { retrieveFile } = require('../../../core/uri-retriever');
 const downloader = require('./downloader');
 
 class NpmDownloadPackageLockCommand extends Command {

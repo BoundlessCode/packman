@@ -1,6 +1,6 @@
-const Command = require('../../core/Command');
-const { globalOptions, commonPackageOptions, forceOption } = require('../../core/commandOptions');
-const { retrieveFile } = require('../../core/uri-retriever');
+const Command = require('../../../core/Command');
+const { globalOptions, commonPackageOptions, forceOption } = require('../../../core/commandOptions');
+const { retrieveFile } = require('../../../core/uri-retriever');
 const crawler = require('../crawler');
 const downloader = require('./downloader');
 

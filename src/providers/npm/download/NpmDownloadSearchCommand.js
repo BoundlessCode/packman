@@ -1,5 +1,5 @@
-const Command = require('../../core/Command');
-const { globalOptions, commonPackageOptions, forceOption } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { globalOptions, commonPackageOptions, forceOption } = require('../../../core/commandOptions');
 const { generatePackageJson } = require('./npm-search');
 const crawler = require('../crawler');
 const downloader = require('./downloader');

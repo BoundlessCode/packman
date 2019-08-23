@@ -1,17 +1,17 @@
 const dayjs = require('dayjs');
 
-const Command = require('../../core/Command');
-const { directoryOption, sourceRegistryOption, targetRegistryOption, dependenciesOptions } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { directoryOption, sourceRegistryOption, targetRegistryOption, dependenciesOptions } = require('../../../core/commandOptions');
 const { getCurrentRegistry } = require('../npm-utils');
-const NpmDownloadSearchCommand = require('../download/NpmDownloadSearchCommand');
+const NpmDownloadPackageJsonCommand = require('../download/NpmDownloadPackageJsonCommand');
 const NpmPublishTarballsCommand = require('../publish/NpmPublishTarballsCommand');
 
-class NpmCopySearchCommand extends Command {
+class NpmCopyPackageJsonCommand extends Command {
   get definition() {
     return {
-      name: 'search',
-      flags: '<keyword>',
-      description: 'copy packages returned by an npm registry search to the target registry',
+      name: 'package-json',
+      flag: '<uri>',
+      description: 'copy packages specified in a package.json file to the target registry',
       options: [
         directoryOption,
         ...dependenciesOptions,
@@ -22,9 +22,9 @@ class NpmCopySearchCommand extends Command {
   }
 
   async execute(options = {}) {
-    const { keyword, logger } = options;
+    const { uri, logger } = options;
     logger.info('copying packages');
-    logger.info('keyword', keyword);
+    logger.info('uri', uri);
     logger.info('directory', options.direcory);
     logger.info('source', options.source);
     logger.info('target', options.target);
@@ -37,8 +37,8 @@ class NpmCopySearchCommand extends Command {
     const directory = options.directory || `copy-${dayjs().format('YYYYMMDD-HHmmss')}`;
     logger.info(`using the directory ${directory}`);
     const { devDependencies, peerDependencies } = options;
-    const downloadCommand = new NpmDownloadSearchCommand();
-    const downloads = await downloadCommand.execute({ keyword, directory, registry: source, devDependencies, peerDependencies, logger });
+    const downloadCommand = new NpmDownloadPackageJsonCommand();
+    const downloads = await downloadCommand.execute({ uri, directory, registry: source, devDependencies, peerDependencies, logger });
     logger.info('downloads', downloads);
     logger.info('finished downloading');
     const target = options.target || await getCurrentRegistry({ logger });
@@ -49,4 +49,4 @@ class NpmCopySearchCommand extends Command {
   }
 }
 
-module.exports = NpmCopySearchCommand;
+module.exports = NpmCopyPackageJsonCommand;

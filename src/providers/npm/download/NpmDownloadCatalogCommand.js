@@ -1,6 +1,6 @@
-const Command = require('../../core/Command');
-const { globalOptions, registryOption, directoryOption, forceOption } = require('../../core/commandOptions');
-const Cataloger = require('../../core/Cataloger');
+const Command = require('../../../core/Command');
+const { globalOptions, registryOption, directoryOption, forceOption } = require('../../../core/commandOptions');
+const Cataloger = require('../../../core/Cataloger');
 const { getCurrentRegistry, getPackageUrl } = require('../npm-utils');
 const downloader = require('./downloader');
 

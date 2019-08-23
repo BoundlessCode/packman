@@ -1,8 +1,8 @@
-const Command = require('../../core/Command');
-const { globalOptions, commonPackageOptions, registryOption, forceOption } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { globalOptions, commonPackageOptions, registryOption, forceOption } = require('../../../core/commandOptions');
 const crawler = require('../crawler');
 const downloader = require('./downloader');
-const BundleZipCreateCommand = require('../../bundle/zip/BundleZipCreateCommand');
+const BundleZipCreateCommand = require('../../../bundle/zip/BundleZipCreateCommand');
 
 class NpmDownloadPackageCommand extends Command {
   get definition() {

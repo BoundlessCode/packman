@@ -5,11 +5,11 @@ const fs = require('fs');
 const tar = require('tar');
 const semver = require('semver');
 
-const { retrieveFile } = require('../../core/uri-retriever');
+const { retrieveFile } = require('../../../core/uri-retriever');
 
 require('colors');
 
-const downloadFileAsync = require('../../core/download-file');
+const downloadFileAsync = require('../../../core/download-file');
 
 function downloadFromPackageLock(packageLock, directory, options) {
   const tarballs = [];

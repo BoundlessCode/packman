@@ -1,5 +1,5 @@
-const Command = require('../../core/Command');
-const { globalOptions, directoryOption, forceOption } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { globalOptions, directoryOption, forceOption } = require('../../../core/commandOptions');
 const downloader = require('./downloader');
 const generator = require('./generator');
 

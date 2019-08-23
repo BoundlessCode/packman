@@ -1,6 +1,6 @@
 const endOfLine = require('os').EOL;
 const fs = require('fs');
-const { retrieveFile } = require('../../core/uri-retriever');
+const { retrieveFile } = require('../../../core/uri-retriever');
 
 /**
  * @param { string[] } tarballs 

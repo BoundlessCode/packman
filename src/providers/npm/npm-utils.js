@@ -1,7 +1,7 @@
 const { URL } = require('url');
 var validate = require('validate-npm-package-name');
 
-const { execute } = require('../core/shell');
+const { execute } = require('../../core/shell');
 
 async function getCurrentRegistry({ logger }) {
     return await execute('npm get registry', { logger });
