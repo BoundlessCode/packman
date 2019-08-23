@@ -1,24 +1,9 @@
 #!/usr/bin/env node
 
-const { launchProgram, setLoggerVerbosity } = require('../src/core/commandInitializer');
+const { launchProgram, loadPackageProviderDefinitions, setLoggerVerbosity } = require('../src/core/commandInitializer');
 
 setLoggerVerbosity();
 
-const NpmPackageProvider = require('../src/providers/npm/NpmPackageProvider');
-const NugetPackageProvider = require('../src/providers/nuget/NugetPackageProvider');
-const NexusPackageProvider = require('../src/providers/nexus/NexusPackageProvider');
-const BundlePackageProvider = require('../src/providers/bundle/BundlePackageProvider');
-
-const { definition: npm } = new NpmPackageProvider();
-const { definition: nuget } = new NugetPackageProvider();
-const { definition: nexus } = new NexusPackageProvider();
-const { definition: bundle } = new BundlePackageProvider();
-
-const definitions = [
-    npm,
-    nuget,
-    nexus,
-    bundle,
-];
+const definitions = loadPackageProviderDefinitions();
 
 launchProgram(definitions);

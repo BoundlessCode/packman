@@ -38,24 +38,44 @@ function setLoggerVerbosity() {
     }
 }
 
+function requireFiles(pattern, section) {
+    logger.debug(section, 'require glob:'.gray, pattern.cyan);
+
+    const files = glob.sync(pattern);
+    logger.debug(section, 'globbed files:\n   '.gray, files.join('\n    '));
+
+    const imported = files
+        .map(file => {
+            const resolvedPath = path.resolve(file) || 'failed to resolve ' + file;
+            const imported = require(resolvedPath);
+            logger.debug(section, String(!!imported).gray, resolvedPath.green);
+            return imported;
+        });
+    return imported;
+}
+
+function loadPackageProviderDefinitions() {
+    logger.debug('loading package providers'.gray);
+
+    const pattern = path.resolve(__dirname, '..', 'providers', '*', '*PackageProvider.js');
+
+    const section = 'load package providers:';
+
+    return requireFiles(pattern, section)
+        .map(PackageProvider => {
+            const provider = new PackageProvider();
+            return provider.definition;
+        });
+}
+
 function requireCommands(area, operation) {
     logger.debug('requiring commands at'.gray, 'area:', (area || 'n/a').blue, 'operation:', (operation || 'n/a').blue);
 
     const pattern = path.resolve(area, operation, '*Command.js');
 
     const section = area.blue + ' ' + operation.cyan + ':';
-    logger.debug(section, 'require glob:'.gray, pattern.cyan);
 
-    const commandFiles = glob.sync(pattern);
-    logger.debug(section, 'globbed files:\n   '.gray, commandFiles.join('\n    '));
-
-    return commandFiles
-        .map(file => {
-            const resolvedPath = path.resolve(file) || 'failed to resolve ' + file;
-            const imported = require(resolvedPath);
-            logger.debug(section, String(!!imported).gray, resolvedPath.green);
-            return imported;
-        })
+    return requireFiles(pattern, section)
         .map(Command => {
             const commandInfo = new Command();
             const { name = '<no name>' } = commandInfo.definition;
@@ -213,6 +233,7 @@ function extractArguments(treeCommand, args, fullName) {
 
 module.exports = {
     launchProgram,
+    loadPackageProviderDefinitions,
     requireCommands,
     setLoggerVerbosity,
 };
