@@ -1,5 +1,5 @@
-const Command = require('../../core/Command');
-const { globalOptions, directoryOption } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { globalOptions, directoryOption } = require('../../../core/commandOptions');
 const { fetchNexusCatalog } = require('../nexus-utils');
 
 class NexusCatalogSearchCommand extends Command {

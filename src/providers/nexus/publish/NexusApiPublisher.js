@@ -2,8 +2,8 @@ const request = require('request-promise');
 const { URL } = require('url');
 const { createReadStream } = require('fs');
 
-const Publisher = require('../../core/Publisher');
-const { getBasicAuthHeader } = require('../../core/auth');
+const Publisher = require('../../../core/Publisher');
+const { getBasicAuthHeader } = require('../../../core/auth');
 
 class NexusApiPublisher extends Publisher {
   constructor(options) {

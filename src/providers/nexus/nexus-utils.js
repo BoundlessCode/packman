@@ -1,7 +1,7 @@
 const { URL } = require('url');
 
-const { retrieveFile } = require('../core/uri-retriever');
-const Cataloger = require('../core/Cataloger');
+const { retrieveFile } = require('../../core/uri-retriever');
+const Cataloger = require('../../core/Cataloger');
 
 async function fetchNexusCatalog ({ repository, logger, endpoint }) {
   const cataloger = new Cataloger({ logger, logActionsAsInfo: true });

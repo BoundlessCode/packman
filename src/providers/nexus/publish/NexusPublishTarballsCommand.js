@@ -1,5 +1,5 @@
-const Command = require('../../core/Command');
-const { globalOptions, registryOption } = require('../../core/commandOptions');
+const Command = require('../../../core/Command');
+const { globalOptions, registryOption } = require('../../../core/commandOptions');
 const NexusApiPublisher = require('./NexusApiPublisher');
 
 class NexusPublishTarballsCommand extends Command {
