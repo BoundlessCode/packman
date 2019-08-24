@@ -4,7 +4,7 @@ const {
     cleanup,
     tarballsDirectory,
     logger,
-} = require('../../../test/test-utils');
+} = require('../../../../test/test-utils');
 
 const NpmDownloadPackageCommand = require('./NpmDownloadPackageCommand');
 
@@ -30,11 +30,13 @@ describe('the (package) command', function () {
         expectPathToExist(['express', 'express-4.16.4.tgz']);
     });
 
-    it('should work for the current package', async function () {
+    it('should work for package with varied dependencies and devDependencies', async function () {
         const command = new NpmDownloadPackageCommand();
         const options = {
-            name: 'node-tgz-downloader',
+            name: '@boco/packman',
+            version: '0.10.0',
             directory: tarballsDirectory,
+            devDependencies: true,
             logger,
         };
 
@@ -42,14 +44,15 @@ describe('the (package) command', function () {
 
         const paths = [
             ['colors'],
-            ['commander'],
+            ['@boco', 'sade'],
+            ['@hapi', 'bourne'],
             ['mkdirp'],
             ['request'],
             ['request-promise'],
             ['semver'],
             ['tar'],
-            ['@types', 'jasmine'],
-            ['jasmine'],
+            ['@types', 'node'],
+            ['mocha'],
             ['rimraf'],
         ];
         for (const directoryPath of paths) {

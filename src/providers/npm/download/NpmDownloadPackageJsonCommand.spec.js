@@ -5,7 +5,7 @@ const {
     tarballsDirectory,
     getFilePath,
     logger,
-} = require('../../../test/test-utils');
+} = require('../../../../test/test-utils');
 
 const NpmDownloadPackageJsonCommand = require('./NpmDownloadPackageJsonCommand');
 
