@@ -61,3 +61,7 @@ typings/
 
 # temp files
 temp/
+
+# build output
+lib/
+tsconfig.tsbuildinfo

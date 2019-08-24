@@ -8,8 +8,14 @@
   ],
   "version": "0.10.1",
   "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --exec node bin/packman",
+    "create": "npm run build && npm run test",
+    "build": "tsc -p .",
+    "clean": "rimraf lib",
     "test": "mocha './@(src|test)/**/*.spec.js'",
-    "test:watch": "mocha './@(src|test)/**/*.spec.js' --watch"
+    "test:watch": "npm run test -- --watch",
+    "refresh": "npm run clean && rimraf ./node_modules ./package-lock.json && npm install",
+    "prepublish": "npm run clean && npm run test && npm run build"
   },
   "keywords": [
     "tgz",
@@ -59,6 +65,9 @@
     "@types/tar": "^4.0.3",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "rimraf": "^2.6.3"
+    "nodemon": "^1.19.1",
+    "rimraf": "^2.7.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
   }
 }
