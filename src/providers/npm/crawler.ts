@@ -122,6 +122,7 @@ type SearchResults = {
 
 type GetDependenciesFromSearchResultsOptions = LoggerOptions & {
   registry: string
+  filters?: [(currentPackage: string) => boolean]
 }
 
 type DependenciesObject = {
@@ -129,8 +130,20 @@ type DependenciesObject = {
 }
 
 export async function getDependenciesFromSearchResults(searchResults: SearchResults, options: GetDependenciesFromSearchResultsOptions): Promise<Set<string>> {
+  const {
+    registry,
+    logger,
+    filters = [],
+  } = options;
+
+  const allFilters = [
+    (currentPackage: any) => currentPackage instanceof Object,
+    ...filters,
+  ];
+  const compositeFilter = currentPackage => allFilters.every(filter => filter(currentPackage));
+
   const packages = Object.values(searchResults)
-    .filter((current: any) => current instanceof Object);
+    .filter((currentPackage: any) => compositeFilter(currentPackage));
 
   const dependenciesObject = packages.reduce<DependenciesObject>((memo: DependenciesObject, current: NamedObject) => {
     const version = _getMaxSatisfyingVersion(current);
@@ -138,7 +151,7 @@ export async function getDependenciesFromSearchResults(searchResults: SearchResu
     return memo;
   }, {});
 
-  await _getDependenciesFrom(dependenciesObject, '', options.registry, options.logger);
+  await _getDependenciesFrom(dependenciesObject, '', registry, logger);
 
   return tarballs;
 }

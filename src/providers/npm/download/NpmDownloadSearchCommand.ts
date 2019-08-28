@@ -3,6 +3,7 @@ import { globalOptions, commonPackageOptions, forceOption, registryOption } from
 import { generatePackageJson } from './npm-search';
 import { getPackageJsonDependencies } from '../crawler';
 import { downloadFromIterable } from './downloader';
+import NpmDownloadAllCommand from './NpmDownloadAllCommand';
 
 export type NpmDownloadSearchCommandOptions = CommandExecuteOptions & {
   registry: string
@@ -30,17 +31,46 @@ export default class NpmDownloadSearchCommand implements Command {
 
   async execute(options: NpmDownloadSearchCommandOptions) {
     const { keyword, force = false, registry, logger } = options;
-    const packageJson = await generatePackageJson({
-      keyword,
-      registry,
-    });
-    const tarballsSet = await getPackageJsonDependencies({
-      packageJson,
-      devDependencies: options.devDependencies,
-      peerDependencies: options.peerDependencies,
-      registry,
-      logger,
-    });
-    return downloadFromIterable(tarballsSet, options.directory, { force, logger });
+
+    try {
+      const packageJson = await generatePackageJson({
+        keyword,
+        registry,
+        logger,
+      });
+      const tarballsSet = await getPackageJsonDependencies({
+        packageJson,
+        devDependencies: options.devDependencies,
+        peerDependencies: options.peerDependencies,
+        registry,
+        logger,
+      });
+      return downloadFromIterable(tarballsSet, options.directory, { force, logger });
+    }
+    catch (error) {
+      if (error.statusCode === 404) {
+        logger.info('fast search not available, trying alternate method');
+
+        const downloadAllCommand = new NpmDownloadAllCommand();
+        const result = await downloadAllCommand.execute({
+          ...options,
+          filters: [
+            currentPackage => {
+              const values = [
+                'name' in currentPackage ? currentPackage.name : '',
+                'description' in currentPackage ? currentPackage.description : '',
+                'keywords' in currentPackage ? currentPackage.keywords.join(' ') : '',
+              ];
+              return values.join(' ').indexOf(keyword) > -1;
+            },
+          ],
+        });
+        return result;
+      }
+      else {
+        logger.error(error);
+        throw error;
+      }
+    }
   }
 }

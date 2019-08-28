@@ -11,6 +11,7 @@ export type NpmDownloadAllCommandOptions = CommandExecuteOptions & {
   registry: string
   directory: string
   force?: boolean
+  filters?: [(currentPackage: any) => boolean]
 }
 
 export default class NpmDownloadAllCommand implements Command {
@@ -28,11 +29,11 @@ export default class NpmDownloadAllCommand implements Command {
   }
 
   async execute(options: NpmDownloadAllCommandOptions) {
-    const { force = false, logger } = options;
+    const { force = false, filters, logger } = options;
     const registry = options.registry || await getCurrentRegistry({ logger });
     const url = getAllEndpointUrl(registry, { logger });
     const searchResults = await retrieveFile(url, { json: true, logger });
-    const packages = await getDependenciesFromSearchResults(searchResults, { ...options, registry, logger });
+    const packages = await getDependenciesFromSearchResults(searchResults, { ...options, registry, filters, logger });
     return downloadFromIterable(packages, options.directory, { force, logger });
   }
 }
