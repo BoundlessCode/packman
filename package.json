@@ -11,6 +11,7 @@
     "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/cli",
     "create": "npm run build && npm run test",
     "build": "tsc -p .",
+    "build:watch": "watch 'npm run build' .",
     "clean": "rimraf lib tsconfig.tsbuildinfo",
     "pretest": "npm run build",
     "test": "mocha",
@@ -73,9 +74,9 @@
     "@types/tar": "^4.0.3",
     "chai": "^4.2.0",
     "mocha": "^6.2.0",
-    "nodemon": "^1.19.1",
     "rimraf": "^2.7.1",
     "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "watch": "^1.0.2"
   }
 }
