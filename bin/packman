@@ -1,9 +1,3 @@
 #!/usr/bin/env node
 
-const { launchProgram, loadPackageProviderDefinitions, setLoggerVerbosity } = require('../src/core/commandInitializer');
-
-setLoggerVerbosity();
-
-const definitions = loadPackageProviderDefinitions();
-
-launchProgram(definitions);
+require('../lib/cli');

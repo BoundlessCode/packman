@@ -8,14 +8,15 @@
   ],
   "version": "0.10.1",
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --exec node bin/packman",
+    "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/cli",
     "create": "npm run build && npm run test",
     "build": "tsc -p .",
     "clean": "rimraf lib",
-    "test": "mocha './@(src|test)/**/*.spec.js'",
+    "pretest": "npm run build",
+    "test": "mocha",
     "test:watch": "npm run test -- --watch",
     "refresh": "npm run clean && rimraf ./node_modules ./package-lock.json && npm install",
-    "prepublish": "npm run clean && npm run test && npm run build"
+    "prepublishOnly": "npm run clean && npm run test && npm run build"
   },
   "keywords": [
     "tgz",
@@ -60,7 +61,12 @@
     "url": "https://github.com/BoundlessCode/packman.git"
   },
   "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/mkdirp": "^0.5.2",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^12.6.8",
+    "@types/pino": "^5.8.9",
+    "@types/request-promise": "^4.1.44",
     "@types/semver": "^6.0.1",
     "@types/tar": "^4.0.3",
     "chai": "^4.2.0",

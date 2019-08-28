@@ -11,13 +11,19 @@
             "program": "${workspaceFolder}/bin/packman",
             "args": [
                 // "help",
-                // "--verbose",
+                "--verbose",
             ],
             "outputCapture": "std",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -29,13 +35,20 @@
                 "download",
                 "package",
                 "lodash",
-                "--devDependencies",
+                // "--devDependencies",
+                "--verbose",
             ],
             "outputCapture": "std",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -57,6 +70,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -75,6 +94,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -94,6 +119,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -111,6 +142,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -129,6 +166,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -147,6 +190,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -163,6 +212,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -181,6 +236,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -199,6 +260,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -219,6 +286,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -238,6 +311,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -257,6 +336,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -278,6 +363,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -297,6 +388,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -316,6 +413,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -334,6 +437,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -349,6 +458,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -364,6 +479,57 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "nexus --help",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "nexus",
+                "--help",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "nexus catalog search",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "nexus",
+                "catalog",
+                "search",
+                "http://nexus-host/repository/repo-name",
+                "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -380,6 +546,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -398,6 +570,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -417,6 +595,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -434,6 +618,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -452,6 +642,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -463,14 +659,20 @@
                 "zip",
                 "create",
                 "tarballs",
-                "bundle-001",
-                "--verbose",
+                // "bundle-001",
+                // "--verbose",
             ],
             "outputCapture": "std",
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
         {
             "type": "node",
@@ -489,6 +691,12 @@
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js",
             ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
         },
     ]
 }
