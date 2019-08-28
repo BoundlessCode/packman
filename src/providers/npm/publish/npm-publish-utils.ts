@@ -11,6 +11,7 @@ type PackageVersionExistsOptions = LoggerOptions & {
 }
 
 export async function packageVersionExists(packageInfo: PackageInfo, { lenientSsl, logger }: PackageVersionExistsOptions) {
+    const { packageName, packageVersion = '' } = packageInfo;
     const uri = getPackageUrl(packageInfo);
     try {
         logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
@@ -19,12 +20,15 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
             json: true,
             rejectUnauthorized: !lenientSsl, // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
         });
-        const { packageVersion } = packageInfo;
         return packageVersion && (response.version === packageVersion || !!response.versions[packageVersion]);
     }
     catch (error) {
+        if(error.statusCode && error.statusCode === 404) {
+            logger.debug(`the package ${packageName.cyan}@${(packageVersion || '').cyan} could not be found at ${uri}`.yellow);
+            return false;
+        }
         logger.debug('package version exists error', { packageInfo, uri, error });
-        return false;
+        throw error;
     }
 }
 
