@@ -10,7 +10,7 @@
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/cli",
     "create": "npm run build && npm run test",
-    "build": "tsc -p .",
+    "build": "tsc",
     "clean": "rimraf lib",
     "pretest": "npm run build",
     "test": "mocha",
