@@ -52,8 +52,10 @@
     "packman": "bin/packman"
   },
   "files": [
-    "src",
-    "bin"
+    "lib",
+    "bin",
+    "!lib/**/*.spec.js",
+    "!lib/**/*.map"
   ],
   "license": "MIT",
   "repository": {
