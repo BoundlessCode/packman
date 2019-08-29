@@ -9,8 +9,14 @@ export const directoryOption = {
     description: 'the local directory in which to store the downloaded packages',
 };
 
-export const devDependenciesOption = '--devDependencies';
-export const peerDependenciesOption = '--peerDependencies';
+export const devDependenciesOption = {
+    flags: '--devDependencies',
+    description: 'download devDependencies, default value: false'
+};
+export const peerDependenciesOption = {
+    flags: '--peerDependencies',
+    description: 'download peerDependencies, default value: false'
+};
 export const registryOption = '--registry [registry]';
 export const sourceRegistryOption = {
     flags: '-s, --source <sourceRegistry>',
