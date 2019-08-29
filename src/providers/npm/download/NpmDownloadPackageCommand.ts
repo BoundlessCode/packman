@@ -33,6 +33,7 @@ export default class NpmDownloadPackageCommand implements Command {
     const {
       name,
       version,
+      dependencies,
       devDependencies,
       peerDependencies,
       registry,
@@ -45,6 +46,7 @@ export default class NpmDownloadPackageCommand implements Command {
     const tarballsSet = await getDependencies({
       name,
       version,
+      dependencies,
       devDependencies,
       peerDependencies,
       registry,

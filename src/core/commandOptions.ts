@@ -9,6 +9,10 @@ export const directoryOption = {
     description: 'the local directory in which to store the downloaded packages',
 };
 
+export const dependenciesOption = {
+    flags: '--dependencies',
+    description: 'download dependencies, default value: true'
+};
 export const devDependenciesOption = {
     flags: '--devDependencies',
     description: 'download devDependencies, default value: false'
@@ -33,6 +37,7 @@ export const lenientSslOption = '--lenient-ssl';
 export const verboseOption = '-v, --verbose';
 
 export const dependenciesOptions = [
+    dependenciesOption,
     devDependenciesOption,
     peerDependenciesOption,
 ] as CommandOption[];

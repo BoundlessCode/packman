@@ -16,6 +16,7 @@ const packagesCache = new Map();
 const tarballs = new Set<string>();
 
 export type DependenciesOptions = {
+  dependencies?: boolean
   devDependencies?: boolean
   peerDependencies?: boolean
 }
@@ -59,9 +60,11 @@ export async function getPackageJsonDependencies(options: PackageJsonDependencie
 }
 
 async function getSelectedDependencies(options: DependenciesOptions, packageJson: any, registry: string | undefined, logger) {
-  const { devDependencies, peerDependencies } = determineDependencies(options);
+  const { dependencies, devDependencies, peerDependencies } = determineDependencies(options);
 
-  await _getDependenciesFrom(packageJson.dependencies, 'dependency '.magenta, registry, logger);
+  if (dependencies) {
+    await _getDependenciesFrom(packageJson.dependencies, 'dependency '.magenta, registry, logger);
+  }
 
   if (devDependencies) {
     await _getDependenciesFrom(packageJson.devDependencies, 'devDependency '.magenta, registry, logger);
@@ -74,10 +77,11 @@ async function getSelectedDependencies(options: DependenciesOptions, packageJson
 
 function determineDependencies(options: DependenciesOptions): DependenciesOptions {
   const {
+    dependencies = true,
     devDependencies = false,
     peerDependencies = false,
   } = options;
-  return { devDependencies, peerDependencies };
+  return { dependencies, devDependencies, peerDependencies };
 }
 
 type RetrievePackageVersionOptions = LoggerOptions & {

@@ -30,6 +30,7 @@ export default class NpmDownloadPackageJsonCommand implements Command {
       uri,
       force = false,
       logger,
+      dependencies,
       devDependencies,
       peerDependencies,
       registry,
@@ -38,6 +39,7 @@ export default class NpmDownloadPackageJsonCommand implements Command {
     const packageJson = await retrieveFile(uri, { logger });
     const tarballsSet = await getPackageJsonDependencies({
       packageJson,
+      dependencies,
       devDependencies,
       peerDependencies,
       registry,

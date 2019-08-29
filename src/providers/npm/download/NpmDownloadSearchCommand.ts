@@ -32,6 +32,7 @@ export default class NpmDownloadSearchCommand implements Command {
       keyword,
       force = false,
       registry,
+      dependencies,
       devDependencies,
       peerDependencies,
       directory,
@@ -46,6 +47,7 @@ export default class NpmDownloadSearchCommand implements Command {
       });
       const tarballsSet = await getPackageJsonDependencies({
         packageJson,
+        dependencies,
         devDependencies,
         peerDependencies,
         registry,
