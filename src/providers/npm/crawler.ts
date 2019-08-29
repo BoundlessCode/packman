@@ -37,7 +37,9 @@ export async function getDependencies(options: GetDependenciesOptions): Promise<
     return new Set();
   }
 
-  if (tarballs.has(packageJson.dist.tarball)) return tarballs;
+  if (tarballs.has(packageJson.dist.tarball)) {
+    return tarballs;
+  }
 
   tarballs.add(packageJson.dist.tarball);
 
