@@ -1,16 +1,14 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, commonPackageOptions, forceOption, registryOption } from '../../../core/commandOptions';
 import { generatePackageJson } from './npm-search';
-import { getPackageJsonDependencies } from '../crawler';
+import { getPackageJsonDependencies, DependenciesOptions } from '../crawler';
 import { downloadFromIterable } from './downloader';
 import NpmDownloadAllCommand from './NpmDownloadAllCommand';
 
-export type NpmDownloadSearchCommandOptions = CommandExecuteOptions & {
+export type NpmDownloadSearchCommandOptions = CommandExecuteOptions & DependenciesOptions & {
   registry: string
   directory: string
   keyword: string
-  devDependencies: boolean
-  peerDependencies: boolean
   force?: boolean
 }
 

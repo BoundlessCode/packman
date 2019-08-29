@@ -15,60 +15,69 @@ let registryHits = 1;
 const packagesCache = new Map();
 const tarballs = new Set<string>();
 
-type DependenciesOptions = LoggerOptions & {
-  name: string
-  version?: string
-  outputPrefix?: string
-  registry?: string
+export type DependenciesOptions = {
   devDependencies?: boolean
   peerDependencies?: boolean
 }
 
-export async function getDependencies(options: DependenciesOptions): Promise<Set<string>> {
+type GetDependenciesOptions = LoggerOptions & DependenciesOptions & {
+  name: string
+  version?: string
+  outputPrefix?: string
+  registry?: string
+}
+
+export async function getDependencies(options: GetDependenciesOptions): Promise<Set<string>> {
   const { registry, logger } = options;
+
   const packageJson = await _retrievePackageVersion(options);
   if (!packageJson) {
     logger.error('ERROR'.red, 'failed to retrieve version of package', options.name, options.version, 'from registry', options.registry || '<current>');
     return new Set();
   }
+
   if (tarballs.has(packageJson.dist.tarball)) return tarballs;
 
   tarballs.add(packageJson.dist.tarball);
 
-  await _getDependenciesFrom(packageJson.dependencies, 'dependency '.magenta, registry, logger);
-
-  if (options.devDependencies) {
-    await _getDependenciesFrom(packageJson.devDependencies, 'devDependency '.magenta, registry, logger);
-  }
-
-  if (options.peerDependencies) {
-    await _getDependenciesFrom(packageJson.peerDependencies, 'peerDependency '.magenta, registry, logger);
-  }
+  await getSelectedDependencies(options, packageJson, registry, logger);
 
   return tarballs;
 }
 
-type PackageJsonDependenciesOptions = LoggerOptions & {
+type PackageJsonDependenciesOptions = LoggerOptions & DependenciesOptions & {
   packageJson?: any
-  devDependencies?: boolean
-  peerDependencies?: boolean
   registry?: string
 }
 
 export async function getPackageJsonDependencies(options: PackageJsonDependenciesOptions) {
   const { packageJson, registry, logger } = options;
 
+  await getSelectedDependencies(options, packageJson, registry, logger);
+
+  return tarballs;
+}
+
+async function getSelectedDependencies(options: DependenciesOptions, packageJson: any, registry: string | undefined, logger) {
+  const { devDependencies, peerDependencies } = determineDependencies(options);
+
   await _getDependenciesFrom(packageJson.dependencies, 'dependency '.magenta, registry, logger);
 
-  if (options.devDependencies) {
+  if (devDependencies) {
     await _getDependenciesFrom(packageJson.devDependencies, 'devDependency '.magenta, registry, logger);
   }
 
-  if (options.peerDependencies) {
+  if (peerDependencies) {
     await _getDependenciesFrom(packageJson.peerDependencies, 'peerDependency '.magenta, registry, logger);
   }
+}
 
-  return tarballs;
+function determineDependencies(options: DependenciesOptions): DependenciesOptions {
+  const {
+    devDependencies = false,
+    peerDependencies = false,
+  } = options;
+  return { devDependencies, peerDependencies };
 }
 
 type RetrievePackageVersionOptions = LoggerOptions & {

@@ -1,13 +1,11 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, outputFileOption, dependenciesOptions } from '../../../core/commandOptions';
-import { getDependencies } from '../crawler';
+import { getDependencies, DependenciesOptions } from '../crawler';
 import { saveToFile } from './generator';
 
-export type NpmDownloadGenerateCommandOptions = CommandExecuteOptions & {
+export type NpmDownloadGenerateCommandOptions = CommandExecuteOptions & DependenciesOptions & {
   name: string
   version: string
-  devDependencies: boolean
-  peerDependencies: boolean
   outputFile: string
 }
 
