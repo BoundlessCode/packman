@@ -28,15 +28,23 @@ export default class NpmDownloadPackageJsonCommand implements Command {
   }
 
   async execute(options: NpmDownloadPackageJsonCommandOptions) {
-    const { uri, force = false, logger } = options;
+    const {
+      uri,
+      force = false,
+      logger,
+      devDependencies,
+      peerDependencies,
+      registry,
+      directory,
+    } = options;
     const packageJson = await retrieveFile(uri, { logger });
     const tarballsSet = await getPackageJsonDependencies({
       packageJson,
-      devDependencies: options.devDependencies,
-      peerDependencies: options.peerDependencies,
-      registry: options.registry,
+      devDependencies,
+      peerDependencies,
+      registry,
       logger,
     });
-    return downloadFromIterable(tarballsSet, options.directory, { force, logger });
+    return downloadFromIterable(tarballsSet, directory, { force, logger });
   }
 }

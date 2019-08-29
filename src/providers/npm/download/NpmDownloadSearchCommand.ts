@@ -30,7 +30,15 @@ export default class NpmDownloadSearchCommand implements Command {
   }
 
   async execute(options: NpmDownloadSearchCommandOptions) {
-    const { keyword, force = false, registry, logger } = options;
+    const {
+      keyword,
+      force = false,
+      registry,
+      devDependencies,
+      peerDependencies,
+      directory,
+      logger,
+    } = options;
 
     try {
       const packageJson = await generatePackageJson({
@@ -40,12 +48,12 @@ export default class NpmDownloadSearchCommand implements Command {
       });
       const tarballsSet = await getPackageJsonDependencies({
         packageJson,
-        devDependencies: options.devDependencies,
-        peerDependencies: options.peerDependencies,
+        devDependencies,
+        peerDependencies,
         registry,
         logger,
       });
-      return downloadFromIterable(tarballsSet, options.directory, { force, logger });
+      return downloadFromIterable(tarballsSet, directory, { force, logger });
     }
     catch (error) {
       if (error.statusCode === 404) {
