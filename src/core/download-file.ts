@@ -20,7 +20,7 @@ type DownloadFileResult = {
   duration: number
 }
 
-export default function downloadFileAsync(file: string, options: DownloadFileOptions): Promise<DownloadFileResult> {
+export default async function downloadFileAsync(file: string, options: DownloadFileOptions): Promise<DownloadFileResult> {
   const { directory, force, logger } = options;
   const uri = file.split('/');
   options.filename = options.filename || uri[uri.length - 1];
@@ -35,7 +35,7 @@ export default function downloadFileAsync(file: string, options: DownloadFileOpt
     }
     else {
       logger.info('skipping download'.yellow, path);
-      return Promise.resolve({ path, duration: 0 });
+      return { path, duration: 0 };
     }
   }
 
@@ -49,7 +49,7 @@ export default function downloadFileAsync(file: string, options: DownloadFileOpt
     req = http;
   }
   const start = Date.now();
-  return new Promise((resolve, reject) => {
+  return await new Promise(async (resolve, reject) => {
     let fileClose: any;
     let responseEnd: any;
     const promises = [
@@ -76,7 +76,7 @@ export default function downloadFileAsync(file: string, options: DownloadFileOpt
       reject(`Timed out after ${options.timeout}ms`);
     });
     request.on('error', (error: Error) => reject(error));
-    Promise.all(promises).then(() => {
+    await Promise.all(promises).then(() => {
       const duration = Date.now() - start;
       resolve({ path, duration });
     });
