@@ -1,5 +1,6 @@
-import request from 'request-promise';
-import { Headers } from 'request';
+import axios, { AxiosRequestConfig } from 'axios';
+import http from 'http';
+import https from 'https';
 import { URL } from 'url';
 import fs from 'fs';
 import { isAbsolute, join } from 'path';
@@ -8,6 +9,10 @@ import { getBasicAuthHeader } from './auth';
 import { LoggerOptions } from './logger';
 
 export type URI = string | URL;
+
+interface Headers {
+  [key: string]: any;
+}
 
 export type FetchOptions = LoggerOptions & {
   method?: 'GET' | 'POST'
@@ -40,25 +45,37 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
     return content as TResponse;
   }
 
-  const requestOptions = {
+  const resolveWithFullResponse = options.responseMode === 'full-response';
+  const responseType = json ? 'json' : 'text';
+
+  const requestOptions: AxiosRequestConfig = {
+    url: uri,
     method,
-    uri,
-    qs,
+    params: qs,
     headers: await getHeaders(options),
-    formData: options.formData,
-    resolveWithFullResponse: options.responseMode === 'full-response',
-    json,
-    rejectUnauthorized: options.rejectUnauthorized, // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
+    data: options.formData,
+    responseType,
     timeout,
   };
 
+  const { rejectUnauthorized } = options; // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
+  const agentOptions: any = { rejectUnauthorized };
+  const config =
+    rejectUnauthorized === undefined
+      ? undefined
+      : {
+        httpAgent: new http.Agent(agentOptions),
+        httpsAgent: new https.Agent(agentOptions),
+      };
+  const instance = axios.create(config);
+
   const summary = `${method} ${uri}${qs || ''}${json ? ' [json]' : ''}${timeout ? ' timeout: ' + timeout : ''}`.yellow;
-  
+
   try {
     logger.debug('fetching:'.yellow, summary, options);
-    const response = await request(requestOptions);
+    const response = await instance.request<TResponse>(requestOptions);
     logger.debug('fetched:'.green, summary);
-    return response as TResponse;
+    return (resolveWithFullResponse ? response : response.data) as TResponse;
   } catch (error) {
     logger.error('failed to fetch:'.red, summary, error);
     throw error;
