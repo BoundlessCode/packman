@@ -69,7 +69,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
       };
   const instance = axios.create(config);
 
-  const summary = `${method} ${uri}${qs || ''}${json ? ' [json]' : ''}${timeout ? ' timeout: ' + timeout : ''}`.yellow;
+  const summary = `${method} ${uri}${qs || ''} [type:${responseType}] [timeout:${timeout}]`.yellow;
 
   try {
     logger.debug('fetching:'.yellow, summary, options);
