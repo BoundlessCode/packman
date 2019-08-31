@@ -15,7 +15,12 @@ export type DownloadFileOptions = LoggerOptions & {
   force?: boolean
 }
 
-export default function downloadFileAsync(file: string, options: DownloadFileOptions): Promise<{ path: string, duration: number }> {
+type DownloadFileResult = {
+  path: string
+  duration: number
+}
+
+export default function downloadFileAsync(file: string, options: DownloadFileOptions): Promise<DownloadFileResult> {
   const { directory, force, logger } = options;
   const uri = file.split('/');
   options.filename = options.filename || uri[uri.length - 1];
