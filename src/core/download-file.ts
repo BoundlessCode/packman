@@ -1,12 +1,14 @@
 import fs from 'fs';
 import url from 'url';
-import http from 'http';
-import https from 'https';
 import mkdirp from 'mkdirp';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { promisify } from 'util';
 
 import { LoggerOptions } from './logger';
+import { fetch, FetchPipedResponse } from './fetcher';
+
+const mkdirpAsync = promisify(mkdirp);
 
 export type DownloadFileOptions = LoggerOptions & {
   filename?: string
@@ -39,15 +41,10 @@ export default async function downloadFileAsync(file: string, options: DownloadF
     }
   }
 
-  let req;
   if (url.parse(file).protocol === null) {
     file = `http://${file}`;
-    req = http;
-  } else if (url.parse(file).protocol === 'https:') {
-    req = https;
-  } else {
-    req = http;
   }
+
   const start = Date.now();
   return await new Promise(async (resolve, reject) => {
     let fileClose: any;
@@ -56,26 +53,35 @@ export default async function downloadFileAsync(file: string, options: DownloadF
       new Promise(x => fileClose = x),
       new Promise(x => responseEnd = x),
     ];
-    const request = req.get(file, (response) => {
-      if (response.statusCode === 200) {
-        mkdirp(directory, (error: Error) => {
-          if (error) {
-            reject(error.message);
-          }
-          const file = fs.createWriteStream(path);
-          response.pipe(file);
-          file.on('close', fileClose);
-        });
-      } else {
-        reject(response.statusCode);
+
+    try {
+      const response = await fetch<FetchPipedResponse>({
+        uri: file,
+        timeout: options.timeout,
+        responseMode: 'full-response',
+        responseType: 'stream',
+        logger,
+      });
+
+      if (!existsSync(directory)) {
+        await mkdirpAsync(directory);
       }
-      response.on('end', responseEnd);
-    });
-    request.setTimeout(options.timeout, () => {
-      request.abort();
-      reject(`Timed out after ${options.timeout}ms`);
-    });
-    request.on('error', (error: Error) => reject(error));
+
+      const writer = fs.createWriteStream(path);
+      writer.on('finish', fileClose);
+      writer.on('error', reject);
+
+      // reader is Stream, but ts is not recognizing them as compliant types
+      const reader: any = response.data;
+      reader.on('end', responseEnd);
+      reader.on('error', reject);
+
+      reader.pipe(writer);
+    }
+    catch (error) {
+      reject(error);
+    }
+
     await Promise.all(promises).then(() => {
       const duration = Date.now() - start;
       resolve({ path, duration });

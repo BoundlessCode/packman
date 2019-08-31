@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import http from 'http';
 import https from 'https';
 import { URL } from 'url';
-import { existsSync, readFileSync } from 'fs';
+import { WriteStream, existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 
 import { getBasicAuthHeader } from './auth';
@@ -20,11 +20,22 @@ export type FetchOptions = LoggerOptions & {
   qs?: any
   formData?: { [key: string]: any };
   contentType?: string
-  responseType?: 'json' | 'text'
+  responseType?: 'json' | 'text' | 'stream'
   useBasicAuthHeader?: boolean
   rejectUnauthorized?: boolean
   timeout?: number
   responseMode?: 'body' | 'full-response'
+}
+
+export type FetchResponse = {
+  statusCode: number
+  data: {}
+}
+
+export type FetchPipedResponse = FetchResponse & {
+  data: {
+    pipe: (stream: WriteStream) => void
+  }
 }
 
 let activeRequests = 0;
