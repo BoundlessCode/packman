@@ -32,7 +32,7 @@ export async function generatePackageJson(options: GeneratePackageJsonOptions) {
 
   const response = await fetch<PackageJsonResponse>({
     uri,
-    json: true,
+    responseType: 'json',
     logger,
   });
 

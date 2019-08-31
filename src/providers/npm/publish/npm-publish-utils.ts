@@ -25,7 +25,7 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
         logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
         const response = await fetch<PackageResponse>({
             uri,
-            json: true,
+            responseType: 'json',
             rejectUnauthorized: !lenientSsl,
             logger,
         });
@@ -46,7 +46,7 @@ export async function updateDistTagToLatest(registry: string, packageName: strin
     try {
         const packageDetails = await fetch<PackageResponse>({
             uri: getPackageUrl({ registry, packageName }),
-            json: true,
+            responseType: 'json',
             logger,
         });
         const latest = semver.maxSatisfying(Object.keys(packageDetails.versions), '*');

@@ -20,7 +20,7 @@ export type FetchOptions = LoggerOptions & {
   qs?: any
   formData?: { [key: string]: any };
   contentType?: string
-  json?: boolean
+  responseType?: 'json' | 'text'
   useBasicAuthHeader?: boolean
   rejectUnauthorized?: boolean
   timeout?: number
@@ -32,12 +32,13 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
     method = 'GET',
     qs,
     timeout,
+    responseType = 'json',
     logger,
   } = options;
 
   const uri = normalizeUrl(options.uri);
 
-  const json = options.json || uri.endsWith('json');
+  const json = responseType === 'json' || uri.endsWith('json');
 
   if (fs.existsSync(uri)) {
     logger.debug('fetching local file'.yellow, uri.yellow);
@@ -46,7 +47,6 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
   }
 
   const resolveWithFullResponse = options.responseMode === 'full-response';
-  const responseType = json ? 'json' : 'text';
 
   const requestOptions: AxiosRequestConfig = {
     url: uri,

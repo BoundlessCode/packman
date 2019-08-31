@@ -32,7 +32,7 @@ export default class NpmDownloadAllCommand implements Command {
     const { force = false, filters, logger } = options;
     const registry = options.registry || await getCurrentRegistry({ logger });
     const uri = getAllEndpointUrl(registry, { logger });
-    const searchResults = await fetch<SearchResults>({ uri, json: true, logger });
+    const searchResults = await fetch<SearchResults>({ uri, responseType: 'json', logger });
     const packages = await getDependenciesFromSearchResults(searchResults, { ...options, registry, filters, logger });
     return downloadFromIterable(packages, options.directory, { force, logger });
   }

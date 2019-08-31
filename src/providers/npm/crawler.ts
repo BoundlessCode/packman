@@ -194,7 +194,7 @@ async function _retryGetRequest(uri: string, count: number, logger: Logger): Pro
   try {
     const response = await fetch<any>({
       uri,
-      json: true,
+      responseType: 'json',
       timeout: requestTimeout,
       logger,
     });
