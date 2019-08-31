@@ -72,7 +72,7 @@ export type RetrieveFileOptions = LoggerOptions & {
   json?: boolean
 }
 
-export async function retrieveFile(uri: URI, { json = false, logger }: RetrieveFileOptions) {
+export async function fetchFile(uri: URI, { json = false, logger }: RetrieveFileOptions) {
   const url = normalizeUrl(uri);
   logger.debug('retrieving file', url.yellow)
   if (fs.existsSync(url)) {

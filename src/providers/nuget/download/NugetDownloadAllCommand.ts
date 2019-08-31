@@ -4,7 +4,7 @@ import { URL } from 'url';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/fetcher';
+import { fetchFile } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';
@@ -40,7 +40,7 @@ export default class NugetDownloadAllCommand implements Command {
     }
 
     const uri = new URL('v3/index.json', registry);
-    const searchResults = await retrieveFile(uri, { json: true, logger });
+    const searchResults = await fetchFile(uri, { json: true, logger });
     logger.info('nuget index version', searchResults ? searchResults.version : 'missing');
     const nugetClientVersion = "4.4.0";
     const catalogVersion = 'Catalog/3.0.0';
@@ -59,11 +59,11 @@ export default class NugetDownloadAllCommand implements Command {
     const type = types[0];
     const serviceEntry = index[type];
     const serviceEntryUri = serviceEntry.Uri;
-    const pages = await retrieveFile(serviceEntryUri, { json: true, logger });
+    const pages = await fetchFile(serviceEntryUri, { json: true, logger });
     logger.info('pages:', pages && pages.count);
     for (const page of pages.items) {
       const pageUrl = page['@id'];
-      const pageResults = await retrieveFile(pageUrl, { json: true, logger });
+      const pageResults = await fetchFile(pageUrl, { json: true, logger });
       logger.info('page:', pageUrl, pageResults && pageResults.items && pageResults.items.length);
       pageResults.items.forEach(async (item: any) => {
         const itemUrl = item['@id'];

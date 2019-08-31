@@ -6,7 +6,7 @@ import tar from 'tar';
 import semver from 'semver';
 
 import { LoggerOptions, Logger } from '../../../core/logger';
-import { retrieveFile } from '../../../core/fetcher';
+import { fetchFile } from '../../../core/fetcher';
 import downloadFileAsync, { DownloadFileOptions } from '../../../core/download-file';
 
 type TarballInfo = {
@@ -89,7 +89,7 @@ export async function getTarballUrl(tarballUrl: string, directory: string, logge
   const packagePath = pathParts.join('/');
   const packageUrl = new URL(packagePath, url.origin);
   logger.debug('fetching package manifest from', packageUrl.href.yellow, 'for version', packageVersion);
-  const packageManifest = await retrieveFile(packageUrl, { json: true, logger });
+  const packageManifest = await fetchFile(packageUrl, { json: true, logger });
 
   if (!packageManifest) {
     logger.info(`Could not retrieve package manifest from '${tarballUrl}'`.yellow);

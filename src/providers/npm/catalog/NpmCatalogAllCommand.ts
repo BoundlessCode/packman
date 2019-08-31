@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/fetcher';
+import { fetchFile } from '../../../core/fetcher';
 import Cataloger from '../../../core/Cataloger';
 import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
 import { CommandExecuteOptions } from '../../../core/Command';
@@ -27,7 +27,7 @@ export default class NpmCatalogAllCommand implements Command {
     const { catalogFile, logger } = options;
     const registry = options.registry || await getCurrentRegistry({ logger });
     const url = getAllEndpointUrl(registry, { logger });
-    const searchResults = await retrieveFile(url, { json: true, logger });
+    const searchResults = await fetchFile(url, { json: true, logger });
 
     const cataloger = new Cataloger({ catalogFile, logger });
     await cataloger.initialize();
@@ -41,7 +41,7 @@ export default class NpmCatalogAllCommand implements Command {
       }
 
       const packageUrl = getPackageUrl({ packageName, registry });
-      const packageInfo = await retrieveFile(packageUrl, { json: true, logger });
+      const packageInfo = await fetchFile(packageUrl, { json: true, logger });
 
       for (const packageVersion of Object.keys(packageInfo.versions)) {
         logger.debug(`indexing package version ${packageName} ${packageVersion}`);

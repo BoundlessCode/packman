@@ -1,6 +1,6 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, directoryOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/fetcher';
+import { fetchFile } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
 
 export type NpmDownloadPackageLockCommandOptions = CommandExecuteOptions & {
@@ -24,7 +24,7 @@ export default class NpmDownloadPackageLockCommand implements Command {
 
   async execute(options: NpmDownloadPackageLockCommandOptions) {
     const { uri, directory, force = false, logger } = options;
-    const packageLock = await retrieveFile(uri, { logger });
+    const packageLock = await fetchFile(uri, { logger });
     return downloadFromPackageLock(packageLock, directory, { force, logger });
   }
 }
