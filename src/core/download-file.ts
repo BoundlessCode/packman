@@ -3,6 +3,7 @@ import url from 'url';
 import http from 'http';
 import https from 'https';
 import mkdirp from 'mkdirp';
+import { existsSync } from 'fs';
 import { join } from 'path';
 
 import { LoggerOptions } from './logger';
@@ -22,7 +23,7 @@ export default function downloadFileAsync(file: string, options: DownloadFileOpt
 
   const path = join(directory, options.filename);
 
-  if (fs.existsSync(path)) {
+  if (existsSync(path)) {
     if (force) {
       logger.info('[force] deleting pre-existing file'.yellow, path);
       fs.unlinkSync(path);
