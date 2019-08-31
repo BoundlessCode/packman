@@ -22,9 +22,9 @@ type DownloadFileResult = {
   duration: number
 }
 
-export default async function downloadFileAsync(file: string, options: DownloadFileOptions): Promise<DownloadFileResult> {
+export default async function downloadFileAsync(fileUri: string, options: DownloadFileOptions): Promise<DownloadFileResult> {
   const { directory, force, logger } = options;
-  const uri = file.split('/');
+  const uri = fileUri.split('/');
   options.filename = options.filename || uri[uri.length - 1];
   options.timeout = options.timeout || 20000;
 
@@ -41,8 +41,8 @@ export default async function downloadFileAsync(file: string, options: DownloadF
     }
   }
 
-  if (url.parse(file).protocol === null) {
-    file = `http://${file}`;
+  if (url.parse(fileUri).protocol === null) {
+    fileUri = `http://${fileUri}`;
   }
 
   const start = Date.now();
@@ -56,7 +56,7 @@ export default async function downloadFileAsync(file: string, options: DownloadF
 
     try {
       const response = await fetch<FetchPipedResponse>({
-        uri: file,
+        uri: fileUri,
         timeout: options.timeout,
         responseMode: 'full-response',
         responseType: 'stream',
