@@ -11,7 +11,7 @@ export type URI = string | URL;
 
 export type FetchOptions = LoggerOptions & {
   method?: 'GET' | 'POST'
-  url: URI
+  uri: URI
   qs?: any
   formData?: { [key: string]: any };
   contentType?: string
@@ -25,7 +25,7 @@ export type FetchOptions = LoggerOptions & {
 export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse> {
   const {
     method = 'GET',
-    url,
+    uri,
     qs,
     json,
     timeout,
@@ -34,7 +34,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
 
   const requestOptions = {
     method,
-    url,
+    uri,
     qs,
     headers: await getHeaders(options),
     formData: options.formData,
@@ -44,7 +44,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
     timeout,
   };
 
-  const summary = `${method} ${url}${qs || ''}${json ? ' [json]' : ''}${timeout ? ' timeout: ' + timeout : ''}`.yellow;
+  const summary = `${method} ${uri}${qs || ''}${json ? ' [json]' : ''}${timeout ? ' timeout: ' + timeout : ''}`.yellow;
   logger.debug('fetching:'.yellow, summary, options);
 
   const response = await request(requestOptions);
@@ -81,7 +81,7 @@ export async function fetchFile({ uri, json = false, logger }: RetrieveFileOptio
   }
   try {
     return await fetch({
-      url,
+      uri: url,
       json: json || url.endsWith('json'),
       logger,
     });

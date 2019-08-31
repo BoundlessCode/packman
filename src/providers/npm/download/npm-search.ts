@@ -27,11 +27,11 @@ type PackageJsonResponse = {
 export async function generatePackageJson(options: GeneratePackageJsonOptions) {
   const provider = new NpmPackageProvider();
   const { keyword, registry = provider.defaultRegistry, logger } = options;
-  const url = `${registry}/-/v1/search?text=keywords:${keyword}&size=1000`;
-  logger.info('searching', url.blue);
+  const uri = `${registry}/-/v1/search?text=keywords:${keyword}&size=1000`;
+  logger.info('searching', uri.blue);
 
   const response = await fetch<PackageJsonResponse>({
-    url,
+    uri,
     json: true,
     logger,
   });

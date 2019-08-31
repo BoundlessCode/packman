@@ -28,7 +28,7 @@ export default class NexusApiPublisher extends Publisher<NexusApiPublisherOption
     const uploadComponentUrl = new URL('/service/rest/beta/components', origin);
 
     const response = await fetch<PublishResponse>({
-      url: uploadComponentUrl,
+      uri: uploadComponentUrl,
       qs: { repository: 'npm' },
       method: 'POST',
       useBasicAuthHeader: true,

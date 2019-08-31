@@ -190,23 +190,23 @@ function _getMaxSatisfyingVersion(allPackageVersionsDetails: any, version?: stri
   return semver.maxSatisfying(versions, version);
 }
 
-async function _retryGetRequest(url: string, count: number, logger: Logger): Promise<any> {
+async function _retryGetRequest(uri: string, count: number, logger: Logger): Promise<any> {
   try {
     const response = await fetch<any>({
-      url,
+      uri,
       json: true,
       timeout: requestTimeout,
       logger,
     });
     if (count < maxRetries) {
-      logger.info(`download success:`.green, url, count);
+      logger.info(`download success:`.green, uri, count);
     }
     return response;
   } catch (error) {
     const message = (error.cause && error.cause.code) || error.message;
-    logger.error(`download failure: ${message}`.red, url, count);
+    logger.error(`download failure: ${message}`.red, uri, count);
     if (count > 0) {
-      return _retryGetRequest(url, count - 1, logger);
+      return _retryGetRequest(uri, count - 1, logger);
     }
     if (error.response && error.response.statusCode === 404) {
       return null;
