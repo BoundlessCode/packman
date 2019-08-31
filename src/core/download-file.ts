@@ -15,12 +15,12 @@ export type DownloadFileOptions = LoggerOptions & {
 }
 
 export default function downloadFileAsync(file: string, options: DownloadFileOptions): Promise<{ path: string, duration: number }> {
-  const { force, logger } = options;
+  const { directory, force, logger } = options;
   const uri = file.split('/');
   options.filename = options.filename || uri[uri.length - 1];
   options.timeout = options.timeout || 20000;
 
-  const path = join(options.directory, options.filename);
+  const path = join(directory, options.filename);
 
   if (fs.existsSync(path)) {
     if (force) {
@@ -52,7 +52,7 @@ export default function downloadFileAsync(file: string, options: DownloadFileOpt
     ];
     const request = req.get(file, (response) => {
       if (response.statusCode === 200) {
-        mkdirp(options.directory, (error: Error) => {
+        mkdirp(directory, (error: Error) => {
           if (error) {
             reject(error.message);
           }
