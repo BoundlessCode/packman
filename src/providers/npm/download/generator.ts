@@ -2,7 +2,7 @@ import { EOL as endOfLine } from 'os';
 import fs from 'fs';
 
 import { LoggerOptions } from '../../../core/logger';
-import { fetchFile } from '../../../core/fetcher';
+import { fetch } from '../../../core/fetcher';
 
 export function saveToFile(tarballs: string[], outputFile: string) {
     fs.writeFileSync(outputFile, tarballs.join(endOfLine));
@@ -12,6 +12,6 @@ type ReadFromFileOptions = LoggerOptions & {
 }
 
 export async function readFromFile(uri: string, { logger }: ReadFromFileOptions): Promise<string[]> {
-    const text = await fetchFile({ uri, logger });
+    const text = await fetch<any>({ uri, logger });
     return text.toString().split(endOfLine);
 }

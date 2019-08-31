@@ -2,9 +2,9 @@ import { CommandExecuteOptions } from '../../../core/Command';
 
 import Command from '../../../core/Command';
 import { globalOptions, registryOption, directoryOption, forceOption } from '../../../core/commandOptions';
-import { fetchFile } from '../../../core/fetcher';
+import { fetch } from '../../../core/fetcher';
 import { getCurrentRegistry, getAllEndpointUrl } from '../npm-utils';
-import { getDependenciesFromSearchResults } from '../crawler';
+import { getDependenciesFromSearchResults, SearchResults } from '../crawler';
 import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadAllCommandOptions = CommandExecuteOptions & {
@@ -31,8 +31,8 @@ export default class NpmDownloadAllCommand implements Command {
   async execute(options: NpmDownloadAllCommandOptions) {
     const { force = false, filters, logger } = options;
     const registry = options.registry || await getCurrentRegistry({ logger });
-    const url = getAllEndpointUrl(registry, { logger });
-    const searchResults = await fetchFile({ uri: url, json: true, logger });
+    const uri = getAllEndpointUrl(registry, { logger });
+    const searchResults = await fetch<SearchResults>({ uri, json: true, logger });
     const packages = await getDependenciesFromSearchResults(searchResults, { ...options, registry, filters, logger });
     return downloadFromIterable(packages, options.directory, { force, logger });
   }

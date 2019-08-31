@@ -6,8 +6,9 @@ import tar from 'tar';
 import semver from 'semver';
 
 import { LoggerOptions, Logger } from '../../../core/logger';
-import { fetchFile } from '../../../core/fetcher';
+import { fetch } from '../../../core/fetcher';
 import downloadFileAsync, { DownloadFileOptions } from '../../../core/download-file';
+import NpmPackageManifest from '../NpmPackageManifest';
 
 type TarballInfo = {
   url: string
@@ -89,24 +90,31 @@ export async function getTarballUrl(tarballUrl: string, directory: string, logge
   const packagePath = pathParts.join('/');
   const packageUrl = new URL(packagePath, url.origin);
   logger.debug('fetching package manifest from', packageUrl.href.yellow, 'for version', packageVersion);
-  const packageManifest = await fetchFile({ uri: packageUrl, json: true, logger });
+  const packageManifest = await fetch<NpmPackageManifest>({ uri: packageUrl, json: true, logger });
 
   if (!packageManifest) {
     logger.info(`Could not retrieve package manifest from '${tarballUrl}'`.yellow);
     return;
   }
 
-  const versionManifest = packageManifest.versions[packageVersion];
-  logger.debug('version manifest', { packageUrl, packageVersion, versionManifest });
+  const { versions } = packageManifest;
 
-  if (!versionManifest) {
-    logger.info(`The package '${packageManifest.name}' doesn't seem to have the requested version '${packageVersion}`.yellow);
-    return;
+  if (versions) {
+    const versionManifest = versions[packageVersion];
+    logger.debug('version manifest', { packageUrl, packageVersion, versionManifest });
+
+    if (!versionManifest) {
+      logger.info(`The package '${packageManifest.name}' doesn't seem to have the requested version '${packageVersion}`.yellow);
+      return;
+    }
+
+    const { dist } = versionManifest;
+    logger.debug('dist and tarball properties', dist, dist ? dist.tarball : '<dist is undefined>');
+    return dist.tarball;
   }
-
-  const { dist } = versionManifest;
-  logger.debug('dist and tarball properties', dist, dist ? dist.tarball : '<dist is undefined>');
-  return dist.tarball;
+  else {
+    logger.debug('package manifest has no versions');
+  }
 }
 
 async function _downloadFileWithRetry(url: string, position: string, count: number, options: DownloadFileOptions) {

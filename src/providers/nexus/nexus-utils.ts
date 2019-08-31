@@ -1,7 +1,7 @@
 import { URL } from 'url';
 
 import { LoggerOptions } from '../../core/logger';
-import { fetchFile } from '../../core/fetcher';
+import { fetch } from '../../core/fetcher';
 import Cataloger from '../../core/Cataloger';
 
 export type FetchNexusCatalogOptions = LoggerOptions & {
@@ -30,7 +30,7 @@ export async function fetchNexusCatalog ({ repository, logger, endpoint }: Fetch
     page++;
     logger.info(`Downloading page ${page} from ${componentsUrl}`);
 
-    const { items, continuationToken } = await fetchFile({ uri: componentsUrl, json: true, logger });
+    const { items, continuationToken } = await fetch({ uri: componentsUrl, json: true, logger });
     logger.debug('items in page', items.length);
 
     for (const { group, name, version } of items) {

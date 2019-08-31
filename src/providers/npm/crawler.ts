@@ -131,7 +131,7 @@ type PackageObject = NamedObject & {
   registry: string
 }
 
-type SearchResults = {
+export type SearchResults = {
   [name: string]: PackageObject
 }
 

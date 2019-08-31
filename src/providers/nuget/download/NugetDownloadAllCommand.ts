@@ -4,7 +4,7 @@ import { URL } from 'url';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
-import { fetchFile } from '../../../core/fetcher';
+import { fetch } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';
@@ -13,6 +13,29 @@ export type NugetDownloadAllCommandOptions = CommandExecuteOptions & {
   registry: string
   directory: string
   catalogFile: string
+}
+
+type NugetIndexSearchResults = {
+  version: string
+}
+
+type NugetServiceEntryResults = {
+  count: number
+  items: NugetPageInfo[]
+}
+
+type NugetPageInfo = {
+  '@id': string
+}
+
+type NugetPageResults = {
+  items: NugetItem[]
+}
+
+type NugetItem = {
+  '@id': string
+  'nuget:id': string
+  'nuget:version': string
 }
 
 export default class NugetDownloadAllCommand implements Command {
@@ -40,7 +63,7 @@ export default class NugetDownloadAllCommand implements Command {
     }
 
     const uri = new URL('v3/index.json', registry);
-    const searchResults = await fetchFile({ uri, json: true, logger });
+    const searchResults = await fetch<NugetIndexSearchResults>({ uri, json: true, logger });
     logger.info('nuget index version', searchResults ? searchResults.version : 'missing');
     const nugetClientVersion = "4.4.0";
     const catalogVersion = 'Catalog/3.0.0';
@@ -59,13 +82,13 @@ export default class NugetDownloadAllCommand implements Command {
     const type = types[0];
     const serviceEntry = index[type];
     const serviceEntryUri = serviceEntry.Uri;
-    const pages = await fetchFile({ uri: serviceEntryUri, json: true, logger });
+    const pages = await fetch<NugetServiceEntryResults>({ uri: serviceEntryUri, json: true, logger });
     logger.info('pages:', pages && pages.count);
     for (const page of pages.items) {
       const pageUrl = page['@id'];
-      const pageResults = await fetchFile({ uri: pageUrl, json: true, logger });
+      const pageResults = await fetch<NugetPageResults>({ uri: pageUrl, json: true, logger });
       logger.info('page:', pageUrl, pageResults && pageResults.items && pageResults.items.length);
-      pageResults.items.forEach(async (item: any) => {
+      pageResults.items.forEach(async (item) => {
         const itemUrl = item['@id'];
         const entryId = item['nuget:id'];
         const entryVersion = item['nuget:version'];

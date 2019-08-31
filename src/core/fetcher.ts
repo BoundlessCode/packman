@@ -25,12 +25,20 @@ export type FetchOptions = LoggerOptions & {
 export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse> {
   const {
     method = 'GET',
-    uri,
     qs,
-    json,
     timeout,
     logger,
   } = options;
+
+  const uri = normalizeUrl(options.uri);
+
+  const json = options.json || uri.endsWith('json');
+
+  if (fs.existsSync(uri)) {
+    logger.debug('fetching local file'.yellow, uri.yellow);
+    const content = json ? require(uri) : fs.readFileSync(uri).toString();
+    return content as TResponse;
+  }
 
   const requestOptions = {
     method,
@@ -45,13 +53,16 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
   };
 
   const summary = `${method} ${uri}${qs || ''}${json ? ' [json]' : ''}${timeout ? ' timeout: ' + timeout : ''}`.yellow;
-  logger.debug('fetching:'.yellow, summary, options);
-
-  const response = await request(requestOptions);
-
-  logger.debug('fetched:'.yellow, summary);
-
-  return response as TResponse;
+  
+  try {
+    logger.debug('fetching:'.yellow, summary, options);
+    const response = await request(requestOptions);
+    logger.debug('fetched:'.green, summary);
+    return response as TResponse;
+  } catch (error) {
+    logger.error('failed to fetch:'.red, summary, error);
+    throw error;
+  }
 }
 
 async function getHeaders(options: FetchOptions): Promise<Headers> {
@@ -71,23 +82,6 @@ async function getHeaders(options: FetchOptions): Promise<Headers> {
 export type RetrieveFileOptions = LoggerOptions & {
   uri: URI
   json?: boolean
-}
-
-export async function fetchFile({ uri, json = false, logger }: RetrieveFileOptions) {
-  const url = normalizeUrl(uri);
-  logger.debug('fetching file', url.yellow)
-  if (fs.existsSync(url)) {
-    return url.endsWith('json') ? require(url) : fs.readFileSync(url).toString();
-  }
-  try {
-    return await fetch({
-      uri: url,
-      json: json || url.endsWith('json'),
-      logger,
-    });
-  } catch (error) {
-    logger.error(`failed to download the file from ${url}`);
-  }
 }
 
 function normalizeUrl(uri: URI): string {
