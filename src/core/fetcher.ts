@@ -69,12 +69,13 @@ async function getHeaders(options: FetchOptions): Promise<Headers> {
 }
 
 export type RetrieveFileOptions = LoggerOptions & {
+  uri: URI
   json?: boolean
 }
 
-export async function fetchFile(uri: URI, { json = false, logger }: RetrieveFileOptions) {
+export async function fetchFile({ uri, json = false, logger }: RetrieveFileOptions) {
   const url = normalizeUrl(uri);
-  logger.debug('retrieving file', url.yellow)
+  logger.debug('fetching file', url.yellow)
   if (fs.existsSync(url)) {
     return url.endsWith('json') ? require(url) : fs.readFileSync(url).toString();
   }

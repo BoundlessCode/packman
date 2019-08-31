@@ -12,6 +12,6 @@ type ReadFromFileOptions = LoggerOptions & {
 }
 
 export async function readFromFile(uri: string, { logger }: ReadFromFileOptions): Promise<string[]> {
-    const text = await fetchFile(uri, { logger });
+    const text = await fetchFile({ uri, logger });
     return text.toString().split(endOfLine);
 }

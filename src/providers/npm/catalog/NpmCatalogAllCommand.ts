@@ -27,7 +27,7 @@ export default class NpmCatalogAllCommand implements Command {
     const { catalogFile, logger } = options;
     const registry = options.registry || await getCurrentRegistry({ logger });
     const url = getAllEndpointUrl(registry, { logger });
-    const searchResults = await fetchFile(url, { json: true, logger });
+    const searchResults = await fetchFile({ uri: url, json: true, logger });
 
     const cataloger = new Cataloger({ catalogFile, logger });
     await cataloger.initialize();
@@ -41,7 +41,7 @@ export default class NpmCatalogAllCommand implements Command {
       }
 
       const packageUrl = getPackageUrl({ packageName, registry });
-      const packageInfo = await fetchFile(packageUrl, { json: true, logger });
+      const packageInfo = await fetchFile({ uri: packageUrl, json: true, logger });
 
       for (const packageVersion of Object.keys(packageInfo.versions)) {
         logger.debug(`indexing package version ${packageName} ${packageVersion}`);

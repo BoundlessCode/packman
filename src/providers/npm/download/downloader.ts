@@ -89,7 +89,7 @@ export async function getTarballUrl(tarballUrl: string, directory: string, logge
   const packagePath = pathParts.join('/');
   const packageUrl = new URL(packagePath, url.origin);
   logger.debug('fetching package manifest from', packageUrl.href.yellow, 'for version', packageVersion);
-  const packageManifest = await fetchFile(packageUrl, { json: true, logger });
+  const packageManifest = await fetchFile({ uri: packageUrl, json: true, logger });
 
   if (!packageManifest) {
     logger.info(`Could not retrieve package manifest from '${tarballUrl}'`.yellow);

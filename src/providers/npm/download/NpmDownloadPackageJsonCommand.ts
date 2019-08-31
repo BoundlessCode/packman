@@ -36,7 +36,7 @@ export default class NpmDownloadPackageJsonCommand implements Command {
       registry,
       directory,
     } = options;
-    const packageJson = await fetchFile(uri, { logger });
+    const packageJson = await fetchFile({ uri, logger });
     const tarballsSet = await getPackageJsonDependencies({
       packageJson,
       dependencies,
