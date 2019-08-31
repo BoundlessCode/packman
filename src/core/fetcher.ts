@@ -38,13 +38,15 @@ export type FetchPipedResponse = FetchResponse & {
   }
 }
 
+export const DEFAULT_TIMEOUT = 30000;
+
 let activeRequests = 0;
 
 export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse> {
   const {
     method = 'GET',
     qs,
-    timeout,
+    timeout = DEFAULT_TIMEOUT,
     responseType = 'json',
     logger,
   } = options;

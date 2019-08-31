@@ -26,7 +26,6 @@ export default async function downloadFileAsync(fileUri: string, options: Downlo
   const { directory, force, logger } = options;
   const uri = fileUri.split('/');
   options.filename = options.filename || uri[uri.length - 1];
-  options.timeout = options.timeout || 20000;
 
   const path = join(directory, options.filename);
 
