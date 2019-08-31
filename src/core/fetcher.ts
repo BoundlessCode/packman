@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import http from 'http';
 import https from 'https';
 import { URL } from 'url';
-import fs from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 
 import { getBasicAuthHeader } from './auth';
@@ -40,9 +40,9 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
 
   const json = responseType === 'json' || uri.endsWith('json');
 
-  if (fs.existsSync(uri)) {
+  if (existsSync(uri)) {
     logger.debug('fetching local file'.yellow, uri.yellow);
-    const content = json ? require(uri) : fs.readFileSync(uri).toString();
+    const content = json ? require(uri) : readFileSync(uri).toString();
     return content as TResponse;
   }
 
