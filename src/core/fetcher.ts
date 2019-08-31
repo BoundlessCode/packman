@@ -27,6 +27,8 @@ export type FetchOptions = LoggerOptions & {
   responseMode?: 'body' | 'full-response'
 }
 
+let activeRequests = 0;
+
 export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse> {
   const {
     method = 'GET',
@@ -72,12 +74,15 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<TResponse
   const summary = `${method} ${uri}${qs || ''} [type:${responseType}] [timeout:${timeout}]`.yellow;
 
   try {
-    logger.debug('fetching:'.yellow, summary, options);
+    activeRequests++;
+    logger.debug(`fetching [${activeRequests}]:`.yellow, summary, options);
     const response = await instance.request<TResponse>(requestOptions);
-    logger.debug('fetched:'.green, summary);
+    activeRequests--;
+    logger.debug(`fetched [${activeRequests}]:`.green, summary);
     return (resolveWithFullResponse ? response : response.data) as TResponse;
   } catch (error) {
-    logger.error('failed to fetch:'.red, summary, error);
+    activeRequests--;
+    logger.error(`failed to fetch [${activeRequests}]:`.red, summary, error);
     throw error;
   }
 }
