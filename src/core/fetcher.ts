@@ -27,12 +27,12 @@ export type FetchOptions = LoggerOptions & {
   responseMode?: 'body' | 'full-response'
 }
 
-export type FetchResponse = {
+export type BasicResponse = {
   statusCode: number
   data: {}
 }
 
-export type FetchPipedResponse = FetchResponse & {
+export type PipedResponse = BasicResponse & {
   data: {
     pipe: (stream: WriteStream) => void
   }

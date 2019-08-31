@@ -6,7 +6,7 @@ import { join } from 'path';
 import { promisify } from 'util';
 
 import { LoggerOptions } from './logger';
-import { fetch, FetchPipedResponse } from './fetcher';
+import { fetch, PipedResponse } from './fetcher';
 
 const mkdirpAsync = promisify(mkdirp);
 
@@ -54,7 +54,7 @@ export default async function downloadFileAsync(fileUri: string, options: Downlo
     ];
 
     try {
-      const response = await fetch<FetchPipedResponse>({
+      const response = await fetch<PipedResponse>({
         uri: fileUri,
         timeout: options.timeout,
         responseMode: 'full-response',
