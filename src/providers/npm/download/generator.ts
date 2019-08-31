@@ -2,7 +2,7 @@ import { EOL as endOfLine } from 'os';
 import fs from 'fs';
 
 import { LoggerOptions } from '../../../core/logger';
-import { retrieveFile } from '../../../core/uri-retriever';
+import { retrieveFile } from '../../../core/fetcher';
 
 export function saveToFile(tarballs: string[], outputFile: string) {
     fs.writeFileSync(outputFile, tarballs.join(endOfLine));

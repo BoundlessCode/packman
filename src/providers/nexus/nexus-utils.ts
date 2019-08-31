@@ -1,7 +1,7 @@
 import { URL } from 'url';
 
 import { LoggerOptions } from '../../core/logger';
-import { retrieveFile } from '../../core/uri-retriever';
+import { retrieveFile } from '../../core/fetcher';
 import Cataloger from '../../core/Cataloger';
 
 export type FetchNexusCatalogOptions = LoggerOptions & {

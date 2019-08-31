@@ -2,7 +2,7 @@ import { CommandExecuteOptions } from '../../../core/Command';
 
 import Command from '../../../core/Command';
 import { globalOptions, registryOption, directoryOption, forceOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/uri-retriever';
+import { retrieveFile } from '../../../core/fetcher';
 import { getCurrentRegistry, getAllEndpointUrl } from '../npm-utils';
 import { getDependenciesFromSearchResults } from '../crawler';
 import { downloadFromIterable } from './downloader';

@@ -1,6 +1,6 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, directoryOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/uri-retriever';
+import { retrieveFile } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
 
 export type NpmDownloadPackageLockCommandOptions = CommandExecuteOptions & {

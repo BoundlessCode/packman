@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/uri-retriever';
+import { retrieveFile } from '../../../core/fetcher';
 import Cataloger from '../../../core/Cataloger';
 import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
 import { CommandExecuteOptions } from '../../../core/Command';

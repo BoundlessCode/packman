@@ -4,7 +4,7 @@ import { URL } from 'url';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/uri-retriever';
+import { retrieveFile } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';

@@ -6,7 +6,7 @@ import tar from 'tar';
 import semver from 'semver';
 
 import { LoggerOptions, Logger } from '../../../core/logger';
-import { retrieveFile } from '../../../core/uri-retriever';
+import { retrieveFile } from '../../../core/fetcher';
 import downloadFileAsync, { DownloadFileOptions } from '../../../core/download-file';
 
 type TarballInfo = {
