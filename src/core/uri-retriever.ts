@@ -1,9 +1,9 @@
 import fs from 'fs';
 import { isAbsolute, join } from 'path';
 import { URL } from 'url';
-import request from 'request-promise';
 
 import { LoggerOptions } from '../core/logger';
+import { fetch } from '../core/fetcher';
 
 export type URI = string | URL;
 
@@ -18,14 +18,18 @@ export async function retrieveFile(uri: URI, { json = false, logger }: RetrieveF
     return url.endsWith('json') ? require(url) : fs.readFileSync(url).toString();
   }
   try {
-    return await request({ url, json: json || url.endsWith('json') });
+    return await fetch({
+      url,
+      json: json || url.endsWith('json'),
+      logger,
+    });
   } catch (error) {
     logger.error(`failed to download the file from ${url}`);
   }
 }
 
-function normalizeUrl(uri: URI) {
-  let url;
+function normalizeUrl(uri: URI): string {
+  let url: string;
   if (uri instanceof URL) {
     url = uri.href;
   }

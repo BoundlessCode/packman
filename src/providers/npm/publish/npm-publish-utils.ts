@@ -1,8 +1,8 @@
-import request from'request-promise';
-import semver from'semver';
+import semver from 'semver';
 
-import { Logger, LoggerOptions } from'../../../core/logger';
-import { execute } from'../../../core/shell';
+import { Logger, LoggerOptions } from '../../../core/logger';
+import { execute } from '../../../core/shell';
+import { fetch } from '../../../core/fetcher';
 import { getPackageUrl } from '../npm-utils';
 import PackageInfo from '../../../core/PackageInfo';
 
@@ -10,24 +10,33 @@ type PackageVersionExistsOptions = LoggerOptions & {
     lenientSsl: boolean
 }
 
+type PackageResponse = {
+    version: string
+    versions: string[]
+    'dist-tags': {
+        latest: string
+    }
+}
+
 export async function packageVersionExists(packageInfo: PackageInfo, { lenientSsl, logger }: PackageVersionExistsOptions) {
     const { packageName, packageVersion = '' } = packageInfo;
-    const uri = getPackageUrl(packageInfo);
+    const url = getPackageUrl(packageInfo);
     try {
-        logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
-        const response = await request({
-            uri,
+        logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${url}`);
+        const response = await fetch<PackageResponse>({
+            url,
             json: true,
-            rejectUnauthorized: !lenientSsl, // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
+            rejectUnauthorized: !lenientSsl,
+            logger,
         });
         return packageVersion && (response.version === packageVersion || !!response.versions[packageVersion]);
     }
     catch (error) {
-        if(error.statusCode && error.statusCode === 404) {
-            logger.debug(`the package ${packageName.cyan}@${(packageVersion || '').cyan} could not be found at ${uri}`.yellow);
+        if (error.statusCode && error.statusCode === 404) {
+            logger.debug(`the package ${packageName.cyan}@${(packageVersion || '').cyan} could not be found at ${url}`.yellow);
             return false;
         }
-        logger.debug('package version exists error', { packageInfo, uri, error });
+        logger.debug('package version exists error', { packageInfo, uri: url, error });
         throw error;
     }
 }
@@ -35,7 +44,11 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
 export async function updateDistTagToLatest(registry: string, packageName: string, logger: Logger) {
     const childLogger = logger.child({ area: 'update dist-tag' });
     try {
-        const packageDetails = await request({ uri: getPackageUrl({ registry, packageName }), json: true });
+        const packageDetails = await fetch<PackageResponse>({
+            url: getPackageUrl({ registry, packageName }),
+            json: true,
+            logger,
+        });
         const latest = semver.maxSatisfying(Object.keys(packageDetails.versions), '*');
         const prettyName = packageName.replace('%2F', '/');
         if (latest && latest !== packageDetails['dist-tags'].latest) {
