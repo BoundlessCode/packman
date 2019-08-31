@@ -105,7 +105,7 @@ async function _retrievePackageVersion(options: RetrievePackageVersionOptions) {
     return allPackageVersionsDetails.versions[maxSatisfyingVersion];
   }
 
-  logger.info('registry'.green, registryHits, `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`);
+  logger.info('registry'.blue, registryHits, `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`);
   registryHits++;
   const allPackageVersionsDetails = await _retryGetRequest(uri, maxRetries, logger);
   if (allPackageVersionsDetails) {
