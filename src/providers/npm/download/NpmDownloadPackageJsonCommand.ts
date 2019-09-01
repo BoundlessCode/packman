@@ -1,8 +1,9 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, commonPackageOptions, forceOption } from '../../../core/commandOptions';
-import { retrieveFile } from '../../../core/uri-retriever';
+import { fetch } from '../../../core/fetcher';
 import { getPackageJsonDependencies, DependenciesOptions } from '../crawler';
 import { downloadFromIterable } from './downloader';
+import NpmPackageManifest from '../NpmPackageManifest';
 
 export type NpmDownloadPackageJsonCommandOptions = CommandExecuteOptions & DependenciesOptions & {
   registry?: string
@@ -36,7 +37,7 @@ export default class NpmDownloadPackageJsonCommand implements Command {
       registry,
       directory,
     } = options;
-    const packageJson = await retrieveFile(uri, { logger });
+    const { body: packageJson } = await fetch<NpmPackageManifest>({ uri, logger });
     const tarballsSet = await getPackageJsonDependencies({
       packageJson,
       dependencies,

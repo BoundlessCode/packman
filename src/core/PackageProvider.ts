@@ -1,3 +1,4 @@
+import { DEFAULT_TIMEOUT } from '../core/fetcher';
 import { CommandDefinition, HasCommandDefinition } from './Command';
 
 export type PackageProviderOptions = {
@@ -7,7 +8,7 @@ export type PackageProviderOptions = {
 export default abstract class PackageProvider implements HasCommandDefinition {
     defaultRegistry?: string;
     maxRetries: number = 5;
-    requestTimeout: number = 30000;
+    requestTimeout: number = DEFAULT_TIMEOUT;
     
     constructor({ defaultRegistry }: PackageProviderOptions = {}) {
         this.defaultRegistry = defaultRegistry;

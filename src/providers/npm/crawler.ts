@@ -1,9 +1,9 @@
-import request from 'request-promise';
 import semver from 'semver';
 import util from 'util';
 import { URL } from 'url';
 
 import { Logger, LoggerOptions } from '../../core/logger';
+import { fetch } from '../../core/fetcher';
 import NpmPackageProvider from './NpmPackageProvider';
 
 const provider = new NpmPackageProvider();
@@ -105,7 +105,7 @@ async function _retrievePackageVersion(options: RetrievePackageVersionOptions) {
     return allPackageVersionsDetails.versions[maxSatisfyingVersion];
   }
 
-  logger.info('registry'.green, registryHits, `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`);
+  logger.info('registry'.blue, registryHits, `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`);
   registryHits++;
   const allPackageVersionsDetails = await _retryGetRequest(uri, maxRetries, logger);
   if (allPackageVersionsDetails) {
@@ -131,7 +131,7 @@ type PackageObject = NamedObject & {
   registry: string
 }
 
-type SearchResults = {
+export type SearchResults = {
   [name: string]: PackageObject
 }
 
@@ -192,11 +192,16 @@ function _getMaxSatisfyingVersion(allPackageVersionsDetails: any, version?: stri
 
 async function _retryGetRequest(uri: string, count: number, logger: Logger): Promise<any> {
   try {
-    const response = await request({ uri, json: true, timeout: requestTimeout });
+    const { body } = await fetch<any>({
+      uri,
+      responseType: 'json',
+      timeout: requestTimeout,
+      logger,
+    });
     if (count < maxRetries) {
       logger.info(`download success:`.green, uri, count);
     }
-    return response;
+    return body;
   } catch (error) {
     const message = (error.cause && error.cause.code) || error.message;
     logger.error(`download failure: ${message}`.red, uri, count);

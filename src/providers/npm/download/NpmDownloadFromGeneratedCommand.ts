@@ -1,7 +1,8 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
+import { fetch } from '../../../core/fetcher';
 import { downloadFromIterable } from './downloader';
-import { readFromFile } from './generator';
+import { endOfLine } from './generator';
 
 export type NpmDownloadFromGeneratedCommandOptions = CommandExecuteOptions & {
   directory: string
@@ -25,7 +26,8 @@ export default class NpmDownloadFromGeneratedCommand implements Command {
 
   async execute(options: NpmDownloadFromGeneratedCommandOptions) {
     const { uri, force, directory, logger } = options;
-    const tarball = await readFromFile(uri, { logger });
+    const { body: text } = await fetch<string>({ uri, logger });
+    const tarball = text.toString().split(endOfLine);
     return downloadFromIterable(tarball, directory, { force, logger });
   }
 }
