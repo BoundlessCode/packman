@@ -71,7 +71,7 @@ export default async function downloadFileAsync(fileUri: string, options: Downlo
       writer.on('error', reject);
 
       // reader is Stream, but ts is not recognizing them as compliant types
-      const reader: any = response.data;
+      const reader: any = response.body.data;
       reader.on('end', responseEnd);
       reader.on('error', reject);
 

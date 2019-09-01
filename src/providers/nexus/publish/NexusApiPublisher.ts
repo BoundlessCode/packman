@@ -27,7 +27,7 @@ export default class NexusApiPublisher extends Publisher<NexusApiPublisherOption
     const { origin } = new URL(registry);
     const uploadComponentUrl = new URL('/service/rest/beta/components', origin);
 
-    const response = await fetch<PublishResponse>({
+    const { body: { statusCode } } = await fetch<PublishResponse>({
       uri: uploadComponentUrl,
       qs: { repository: 'npm' },
       method: 'POST',
@@ -40,7 +40,7 @@ export default class NexusApiPublisher extends Publisher<NexusApiPublisherOption
       logger,
     });
 
-    logger.info(`[publish] [${catalog}] [${'uploaded'.green}] ${packagesPath}`, response.statusCode);
+    logger.info(`[publish] [${catalog}] [${'uploaded'.green}] ${packagesPath}`, statusCode);
   }
 
   getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions) {

@@ -192,7 +192,7 @@ function _getMaxSatisfyingVersion(allPackageVersionsDetails: any, version?: stri
 
 async function _retryGetRequest(uri: string, count: number, logger: Logger): Promise<any> {
   try {
-    const response = await fetch<any>({
+    const { body } = await fetch<any>({
       uri,
       responseType: 'json',
       timeout: requestTimeout,
@@ -201,7 +201,7 @@ async function _retryGetRequest(uri: string, count: number, logger: Logger): Pro
     if (count < maxRetries) {
       logger.info(`download success:`.green, uri, count);
     }
-    return response;
+    return body;
   } catch (error) {
     const message = (error.cause && error.cause.code) || error.message;
     logger.error(`download failure: ${message}`.red, uri, count);

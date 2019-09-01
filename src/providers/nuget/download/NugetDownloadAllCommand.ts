@@ -63,7 +63,7 @@ export default class NugetDownloadAllCommand implements Command {
     }
 
     const uri = new URL('v3/index.json', registry);
-    const searchResults = await fetch<NugetIndexSearchResults>({ uri, responseType: 'json', logger });
+    const { body: searchResults } = await fetch<NugetIndexSearchResults>({ uri, responseType: 'json', logger });
     logger.info('nuget index version', searchResults ? searchResults.version : 'missing');
     const nugetClientVersion = "4.4.0";
     const catalogVersion = 'Catalog/3.0.0';
@@ -82,11 +82,11 @@ export default class NugetDownloadAllCommand implements Command {
     const type = types[0];
     const serviceEntry = index[type];
     const serviceEntryUri = serviceEntry.Uri;
-    const pages = await fetch<NugetServiceEntryResults>({ uri: serviceEntryUri, responseType: 'json', logger });
+    const { body: pages } = await fetch<NugetServiceEntryResults>({ uri: serviceEntryUri, responseType: 'json', logger });
     logger.info('pages:', pages && pages.count);
     for (const page of pages.items) {
       const pageUrl = page['@id'];
-      const pageResults = await fetch<NugetPageResults>({ uri: pageUrl, responseType: 'json', logger });
+      const { body: pageResults } = await fetch<NugetPageResults>({ uri: pageUrl, responseType: 'json', logger });
       logger.info('page:', pageUrl, pageResults && pageResults.items && pageResults.items.length);
       pageResults.items.forEach(async (item) => {
         const itemUrl = item['@id'];

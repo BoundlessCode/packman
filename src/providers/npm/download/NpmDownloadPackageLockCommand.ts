@@ -25,7 +25,7 @@ export default class NpmDownloadPackageLockCommand implements Command {
 
   async execute(options: NpmDownloadPackageLockCommandOptions) {
     const { uri, directory, force = false, logger } = options;
-    const packageLock = await fetch<NpmPackageManifest>({ uri, logger });
+    const { body: packageLock } = await fetch<NpmPackageManifest>({ uri, logger });
     return downloadFromPackageLock(packageLock, directory, { force, logger });
   }
 }

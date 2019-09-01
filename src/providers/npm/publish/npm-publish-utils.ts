@@ -23,13 +23,13 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
     const uri = getPackageUrl(packageInfo);
     try {
         logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
-        const response = await fetch<PackageResponse>({
+        const { body: { version, versions } } = await fetch<PackageResponse>({
             uri,
             responseType: 'json',
             rejectUnauthorized: !lenientSsl,
             logger,
         });
-        return packageVersion && (response.version === packageVersion || !!response.versions[packageVersion]);
+        return packageVersion && (version === packageVersion || !!versions[packageVersion]);
     }
     catch (error) {
         if (error.statusCode && error.statusCode === 404) {
@@ -44,7 +44,7 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
 export async function updateDistTagToLatest(registry: string, packageName: string, logger: Logger) {
     const childLogger = logger.child({ area: 'update dist-tag' });
     try {
-        const packageDetails = await fetch<PackageResponse>({
+        const { body: packageDetails } = await fetch<PackageResponse>({
             uri: getPackageUrl({ registry, packageName }),
             responseType: 'json',
             logger,

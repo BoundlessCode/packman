@@ -26,7 +26,7 @@ export default class NpmDownloadFromGeneratedCommand implements Command {
 
   async execute(options: NpmDownloadFromGeneratedCommandOptions) {
     const { uri, force, directory, logger } = options;
-    const text = await fetch<string>({ uri, logger });
+    const { body: text } = await fetch<string>({ uri, logger });
     const tarball = text.toString().split(endOfLine);
     return downloadFromIterable(tarball, directory, { force, logger });
   }
