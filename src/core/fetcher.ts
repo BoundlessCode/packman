@@ -32,7 +32,7 @@ export type BasicResponse = {
   data: {}
 }
 
-export type PipedResponse = BasicResponse & {
+export type StreamResponse = BasicResponse & {
   data: {
     pipe: (stream: WriteStream) => void
   }
