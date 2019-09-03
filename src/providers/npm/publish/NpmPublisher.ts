@@ -47,6 +47,10 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
 
       const packageName = directoryParts.pop();
 
+      if(!packageName) {
+        throw new Error(`could not extract package name from directoryPath ${directoryPath}`);
+      }
+
       const potentialScope = directoryParts.pop() || '';
       const packageScope = potentialScope.startsWith('@') ? potentialScope : undefined;
 
