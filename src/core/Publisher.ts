@@ -46,7 +46,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions> {
 
   abstract async publishPackage(packageInfo: PackageInfo, options: TOptions);
 
-  printErrors(error: (string | Error)[] | Error  = []) {
+  printErrors(error: (string | Error)[] | Error = []) {
     const { logger } = this.options;
     const errors =
       error instanceof Array
