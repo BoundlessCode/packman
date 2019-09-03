@@ -20,15 +20,7 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
     super(options);
   }
 
-  async publish() {
-    const options = {
-      ...this.options,
-      ...await this.initialize(this.options),
-    };
-    await this.collectAndPublishPackages(options);
-  }
-
-  async initialize(options: NpmPublisherOptions) {
+  async initializeOptions(options: NpmPublisherOptions) {
     const { logger, packagesPath } = options;
 
     const rootPath = normalizeRootedDirectory(packagesPath, { logger });

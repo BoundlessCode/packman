@@ -15,35 +15,13 @@ export type NugetPublisherOptions = PublisherOptions & {
 }
 
 export default class NugetPublisher extends Publisher<NugetPublisherOptions, NugetPackageInfo> {
-  private provider: NugetPackageProvider;
+  private provider: NugetPackageProvider = new NugetPackageProvider();
 
   constructor(options: NugetPublisherOptions) {
     super(options);
-    this.provider = new NugetPackageProvider();
   }
 
-  async publish() {
-    const options = {
-      ...this.options,
-      ...await this.initialize(this.options),
-    };
-
-    const { registry, packagesPath } = options;
-
-    const isGlob = glob.hasMagic(packagesPath);
-    if (isGlob) {
-      await this.executePublishCommand({ filePath: packagesPath, registry });
-    }
-    else if (fs.lstatSync(packagesPath).isDirectory()) {
-      const filePath = `${packagesPath}${path.sep}**${path.sep}*.${NUPKG_EXTENSION}`;
-      await this.executePublishCommand({ filePath, registry });
-    }
-    else {
-      await this.collectAndPublishPackages(options);
-    }
-  }
-
-  async initialize(options: NugetPublisherOptions) {
+  async initializeOptions(options: NugetPublisherOptions) {
     const { logger, packagesPath, registry } = options;
 
     const rootPath = normalizeRootedDirectory(packagesPath, { logger });
@@ -54,10 +32,25 @@ export default class NugetPublisher extends Publisher<NugetPublisherOptions, Nug
     });
     logger.info(`registry: ${providerRegistry.green}`);
 
+    let filePath: string | undefined;
+    if (glob.hasMagic(packagesPath)) {
+      filePath = packagesPath;
+    }
+    else if (fs.lstatSync(packagesPath).isDirectory()) {
+      filePath = `${packagesPath}${path.sep}**${path.sep}*.${NUPKG_EXTENSION}`;
+    }
+
+    const alternatePublish =
+      filePath
+        ? this.executePublishCommand
+        : undefined;
+
     return {
       rootPath,
       registry: providerRegistry,
       extension: `.${NUPKG_EXTENSION}`,
+      alternatePublish,
+      filePath,
     }
   }
 

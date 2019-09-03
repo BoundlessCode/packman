@@ -23,7 +23,6 @@ export default class NexusPublishTarballsCommand implements Command {
   }
 
   async execute(options: NexusPublishTarballsCommandOptions) {
-    // const { packagesPath, registry, distTag } = options;
     const publisher = new NexusPublisher(options);
     publisher.publish();
   }

@@ -23,15 +23,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     super(options);
   }
 
-  async publish() {
-    const options = {
-      ...this.options,
-      ...await this.initialize(this.options),
-    };
-    await this.collectAndPublishPackages(options);
-  }
-
-  async initialize(options: ArtifactoryPublisherOptions) {
+  async initializeOptions(options: ArtifactoryPublisherOptions): Promise<any> {
     const { logger, server, repo, packageType, packagesPath } = options;
 
     const rootPath = normalizeRootedDirectory(packagesPath, { logger });

@@ -4,6 +4,7 @@ import Counter from './counter';
 import PackageInfo from './PackageInfo';
 
 export type PublisherOptions = LoggerOptions & {
+  alternatePublish?: (options: any) => Promise<any>
 }
 
 export type GetPackageFileInfoOptions = {
@@ -15,6 +16,22 @@ export type GetPackageFileInfoOptions = {
 export default abstract class Publisher<TOptions extends PublisherOptions, TPackageInfo extends PackageInfo> {
   constructor(protected options: TOptions) {
   }
+
+  async publish() {
+    const options: TOptions = {
+      ...this.options,
+      ...await this.initializeOptions(this.options),
+    };
+
+    if(options.alternatePublish) {
+      await options.alternatePublish(options);
+    }
+    else {
+      await this.collectAndPublishPackages(options);
+    }
+  }
+
+  async abstract initializeOptions(options: TOptions): Promise<any>;
 
   async collectAndPublishPackages(options) {
     const errors: string[] = [];

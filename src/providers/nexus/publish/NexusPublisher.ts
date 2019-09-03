@@ -8,9 +8,7 @@ import NexusPackageInfo from '../NexusPackageInfo';
 type NexusPublisherOptions = PublisherOptions & {
   registry: string
   packagesPath: string
-  // packagePath: string
-  catalog?: string
-  distTag: boolean
+  uploadComponentUrl?: URL
 }
 
 type PublishResponse = {
@@ -22,10 +20,32 @@ export default class NexusPublisher extends Publisher<NexusPublisherOptions, Nex
     super(options);
   }
 
-  async publish() {
-    const { registry, packagesPath, catalog, logger } = this.options;
-    const { origin } = new URL(registry);
+  async initializeOptions(options: NexusPublisherOptions) {
+    const { origin } = new URL(options.registry);
     const uploadComponentUrl = new URL('/service/rest/beta/components', origin);
+
+    return {
+      uploadComponentUrl,
+    };
+  }
+
+  getPackageFileInfo(options: GetPackageFileInfoOptions): NexusPackageInfo | undefined {
+    return;
+  }
+
+  async publishPackage(packageInfo: NexusPackageInfo, options: NexusPublisherOptions) {
+    const { uploadComponentUrl, logger } = options;
+    const { packagesPath } = packageInfo;
+
+    if(!packagesPath) {
+      logger.info(`missing packagesPath, cannot publish`);
+      return;
+    }
+
+    if(!uploadComponentUrl) {
+      logger.info(`missing uploadComponentUrl, cannot publish`);
+      return;
+    }
 
     const { body: { statusCode } } = await fetch<PublishResponse>({
       uri: uploadComponentUrl,
@@ -40,13 +60,6 @@ export default class NexusPublisher extends Publisher<NexusPublisherOptions, Nex
       logger,
     });
 
-    logger.info(`[publish] [${catalog}] [${'uploaded'.green}] ${packagesPath}`, statusCode);
-  }
-
-  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions): NexusPackageInfo | undefined {
-    return;
-  }
-
-  async publishPackage(packageInfo: NexusPackageInfo, options: NexusPublisherOptions) {
+    logger.info(`[publish] [${'uploaded'.green}] ${packagesPath}`, statusCode);
   }
 }
