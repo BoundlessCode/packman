@@ -28,12 +28,6 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
     await this.collectAndPublishPackages(options);
   }
 
-  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
-    const targetRegistry = registry || this.options.registry;
-    const { logger } = this.options;
-    await execute(`npm publish ${filePath} --quiet --registry ${targetRegistry}`, { stdio: [0, 1, 2], logger });
-  }
-
   async initialize(options: NpmPublisherOptions) {
     const { logger, packagesPath } = options;
 
@@ -102,5 +96,11 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
       await updateDistTagToLatest(packageRegistry as string, packageName, logger);
       logger.info(infoMessageFormat, 'updated dist-tag'.green);
     }
+  }
+
+  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
+    const targetRegistry = registry || this.options.registry;
+    const { logger } = this.options;
+    await execute(`npm publish ${filePath} --quiet --registry ${targetRegistry}`, { stdio: [0, 1, 2], logger });
   }
 }

@@ -31,34 +31,6 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     await this.collectAndPublishPackages(options);
   }
 
-  async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
-    const { filePath, architecture } = packageInfo;
-    const { api, logger } = options;
-    
-    if(!filePath) {
-      throw new Error(`filePath is missing, cannot publish package`);
-    }
-
-    if(!architecture) {
-      throw new Error(`architecture is missing, cannot publish package`);
-    }
-
-    // const registry = packageInfo.registry || options.registry;
-    // logger.info(`registry: ${registry.green}`);
-
-    const publishUrl = new URL(architecture, api);
-    // logger.info(`publishing... ${publishUrl.href} ${filePath}`);
-    await fetch({
-      method: 'PUT',
-      uri: publishUrl,
-      formData: {
-        file: createReadStream(filePath),
-      },
-      contentType: 'multipart/form-data',
-      logger,
-    });
-  }
-
   async initialize(options: ArtifactoryPublisherOptions) {
     const { logger, server, repo, packageType, packagesPath } = options;
 
@@ -113,5 +85,33 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     logger.info(debugMessageFormat, 'publishing'.cyan);
     await this.executePublishCommand(packageInfo, options);
     logger.info(infoMessageFormat, 'published'.green);
+  }
+
+  async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
+    const { filePath, architecture } = packageInfo;
+    const { api, logger } = options;
+    
+    if(!filePath) {
+      throw new Error(`filePath is missing, cannot publish package`);
+    }
+
+    if(!architecture) {
+      throw new Error(`architecture is missing, cannot publish package`);
+    }
+
+    // const registry = packageInfo.registry || options.registry;
+    // logger.info(`registry: ${registry.green}`);
+
+    const publishUrl = new URL(architecture, api);
+    // logger.info(`publishing... ${publishUrl.href} ${filePath}`);
+    await fetch({
+      method: 'PUT',
+      uri: publishUrl,
+      formData: {
+        file: createReadStream(filePath),
+      },
+      contentType: 'multipart/form-data',
+      logger,
+    });
   }
 }
