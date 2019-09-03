@@ -8,7 +8,7 @@ export default class NpmPackageProvider extends PackageProvider {
   get definition() {
     return {
       name: 'npm',
-      description: 'Download package tarballs',
+      description: 'Manage npm packages',
       children: [
         {
           name: 'download',
