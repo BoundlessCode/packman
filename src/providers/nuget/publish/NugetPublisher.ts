@@ -83,7 +83,6 @@ export default class NugetPublisher extends Publisher<NugetPublisherOptions, Nug
 
   async publishPackage(packageInfo: NugetPackageInfo, options: NugetPublisherOptions) {
     const { index, directoryPath, packageName, packageVersion } = packageInfo;
-    const { options } = this;
     const { logger } = options;
 
     const baseMessageFormat = `publish [${index}] [%s]`;
