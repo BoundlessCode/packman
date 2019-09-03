@@ -44,7 +44,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
 
   abstract getPackageFileInfo(options: GetPackageFileInfoOptions): TPackageInfo | undefined;
 
-  abstract async publishPackage(packageInfo: PackageInfo, options: TOptions);
+  abstract async publishPackage(packageInfo: TPackageInfo, options: TOptions);
 
   printErrors(error: (string | Error)[] | Error = []) {
     const { logger } = this.options;
