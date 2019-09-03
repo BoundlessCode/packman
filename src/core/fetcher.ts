@@ -15,7 +15,7 @@ interface Headers {
 }
 
 export type FetchOptions = LoggerOptions & {
-  method?: 'GET' | 'POST'
+  method?: 'GET' | 'POST' | 'PUT'
   uri: URI
   qs?: any
   formData?: { [key: string]: any };
