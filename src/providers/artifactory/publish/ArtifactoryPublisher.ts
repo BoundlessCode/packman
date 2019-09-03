@@ -1,10 +1,10 @@
 import path from 'path';
 import { createReadStream } from 'fs';
+import { URL } from 'url';
 
 import { fetch } from '../../../core/fetcher';
 import { normalizeRootedDirectory } from '../../../core/shell';
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
-import { URL } from 'url';
 import ArtifactoryPackageInfo from '../ArtifactoryPackageInfo';
 
 const PACKAGE_EXTENSION = 'tar.bz2';

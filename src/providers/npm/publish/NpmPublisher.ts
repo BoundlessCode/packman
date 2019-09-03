@@ -1,10 +1,10 @@
 import path from 'path';
 
 import { execute, normalizeRootedDirectory } from '../../../core/shell';
+import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
 import { getCurrentRegistry, getScopedPackageName } from '../npm-utils';
 import NpmPackageInfo from '../NpmPackageInfo';
 import { packageVersionExists, updateDistTagToLatest } from './npm-publish-utils';
-import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
 
 const TARBALL_EXTENSION = 'tgz';
 

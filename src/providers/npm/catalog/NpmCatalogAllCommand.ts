@@ -2,8 +2,8 @@ import Command from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import Cataloger from '../../../core/Cataloger';
-import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
 import { CommandExecuteOptions } from '../../../core/Command';
+import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
 import NpmPackageManifest from '../NpmPackageManifest';
 
 export type NpmCatalogAllCommandOptions = CommandExecuteOptions & {
