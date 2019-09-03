@@ -43,7 +43,7 @@ export default class NugetPublisher extends Publisher<NugetPublisherOptions, Nug
     }
   }
 
-  async initialize(options) {
+  async initialize(options: NugetPublisherOptions) {
     const { logger, packagesPath, registry } = options;
 
     const rootPath = normalizeRootedDirectory(packagesPath, { logger });

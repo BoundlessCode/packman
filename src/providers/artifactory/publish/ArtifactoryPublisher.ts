@@ -59,7 +59,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     });
   }
 
-  async initialize(options) {
+  async initialize(options: ArtifactoryPublisherOptions) {
     const { logger, server, repo, packageType, packagesPath } = options;
 
     const rootPath = normalizeRootedDirectory(packagesPath, { logger });

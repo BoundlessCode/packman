@@ -34,7 +34,7 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
     await execute(`npm publish ${filePath} --quiet --registry ${targetRegistry}`, { stdio: [0, 1, 2], logger });
   }
 
-  async initialize(options) {
+  async initialize(options: NpmPublisherOptions) {
     const { logger, packagesPath } = options;
 
     const rootPath = normalizeRootedDirectory(packagesPath, { logger });
