@@ -4,7 +4,6 @@ import { fetch } from '../../../core/fetcher';
 import Cataloger from '../../../core/Cataloger';
 import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
 import { CommandExecuteOptions } from '../../../core/Command';
-import PackageInfo from '../../../core/PackageInfo';
 import NpmPackageManifest from '../NpmPackageManifest';
 
 export type NpmCatalogAllCommandOptions = CommandExecuteOptions & {

@@ -3,9 +3,9 @@ import { createReadStream } from 'fs';
 
 import { fetch } from '../../../core/fetcher';
 import { normalizeRootedDirectory } from '../../../core/shell';
-import PackageInfo from '../../../core/PackageInfo';
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
 import { URL } from 'url';
+import ArtifactoryPackageInfo from '../ArtifactoryPackageInfo';
 
 const PACKAGE_EXTENSION = 'tar.bz2';
 
@@ -18,7 +18,7 @@ type ArtifactoryPublisherOptions = PublisherOptions & {
   api?: string
 }
 
-export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisherOptions> {
+export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisherOptions, ArtifactoryPackageInfo> {
   constructor(options: ArtifactoryPublisherOptions) {
     super(options);
   }
@@ -31,7 +31,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     await this.collectAndPublishPackages(options);
   }
 
-  async executePublishCommand(packageInfo: PackageInfo, options: ArtifactoryPublisherOptions) {
+  async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, architecture } = packageInfo;
     const { api, logger } = options;
     
@@ -75,7 +75,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     };
   }
 
-  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions) {
+  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions): ArtifactoryPackageInfo | undefined {
     const fileInfo = path.parse(filePath);
     const { base: fileName, dir: directoryPath } = fileInfo;
 
@@ -97,7 +97,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     }
   }
 
-  async publishPackage(packageInfo: PackageInfo, options: ArtifactoryPublisherOptions) {
+  async publishPackage(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { index, directoryPath, packageName, architecture } = packageInfo;
     const { logger } = options;
 

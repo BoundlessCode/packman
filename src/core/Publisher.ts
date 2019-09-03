@@ -12,7 +12,7 @@ export type GetPackageFileInfoOptions = {
   counter: Counter
 }
 
-export default abstract class Publisher<TOptions extends PublisherOptions> {
+export default abstract class Publisher<TOptions extends PublisherOptions, TPackageInfo extends PackageInfo> {
   constructor(protected options: TOptions) {
   }
 

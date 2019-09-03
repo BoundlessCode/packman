@@ -3,7 +3,7 @@ import { createReadStream } from 'fs';
 
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
 import { fetch } from '../../../core/fetcher';
-import PackageInfo from '../../../core/PackageInfo';
+import NexusApiPackageInfo from '../NexusApiPackageInfo';
 
 type NexusApiPublisherOptions = PublisherOptions & {
   registry: string
@@ -17,7 +17,7 @@ type PublishResponse = {
   statusCode: number
 }
 
-export default class NexusApiPublisher extends Publisher<NexusApiPublisherOptions> {
+export default class NexusApiPublisher extends Publisher<NexusApiPublisherOptions, NexusApiPackageInfo> {
   constructor(options: NexusApiPublisherOptions) {
     super(options);
   }
@@ -43,9 +43,10 @@ export default class NexusApiPublisher extends Publisher<NexusApiPublisherOption
     logger.info(`[publish] [${catalog}] [${'uploaded'.green}] ${packagesPath}`, statusCode);
   }
 
-  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions) {
+  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions): NexusApiPackageInfo | undefined {
+    return;
   }
 
-  async publishPackage(packageInfo: PackageInfo, options: NexusApiPublisherOptions) {
+  async publishPackage(packageInfo: NexusApiPackageInfo, options: NexusApiPublisherOptions) {
   }
 }

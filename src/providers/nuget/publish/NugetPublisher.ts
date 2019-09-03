@@ -5,7 +5,7 @@ import glob from 'glob';
 import { execute, normalizeRootedDirectory } from '../../../core/shell';
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
 import NugetPackageProvider from '../NugetPackageProvider';
-import PackageInfo from '../../../core/PackageInfo';
+import NugetPackageInfo from '../NugetPackageInfo';
 
 const NUPKG_EXTENSION = 'nupkg';
 
@@ -14,7 +14,7 @@ export type NugetPublisherOptions = PublisherOptions & {
   packagesPath: string
 }
 
-export default class NugetPublisher extends Publisher<NugetPublisherOptions> {
+export default class NugetPublisher extends Publisher<NugetPublisherOptions, NugetPackageInfo> {
   private provider: NugetPackageProvider;
 
   constructor(options: NugetPublisherOptions) {
@@ -61,7 +61,7 @@ export default class NugetPublisher extends Publisher<NugetPublisherOptions> {
     }
   }
 
-  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions) {
+  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions): NugetPackageInfo | undefined {
     const fileName = path.basename(filePath, extension);
     const pattern = /\.([^\.]+\.[^\.]+\.[^\.]+)\.nupkg/;
     const matches = fileName.match(pattern);
@@ -81,7 +81,7 @@ export default class NugetPublisher extends Publisher<NugetPublisherOptions> {
     }
   }
 
-  async publishPackage(packageInfo: PackageInfo) {
+  async publishPackage(packageInfo: NugetPackageInfo, options: NugetPublisherOptions) {
     const { index, directoryPath, packageName, packageVersion } = packageInfo;
     const { options } = this;
     const { logger } = options;

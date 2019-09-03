@@ -2,7 +2,7 @@ import path from 'path';
 
 import { execute, normalizeRootedDirectory } from '../../../core/shell';
 import { getCurrentRegistry, getScopedPackageName } from '../npm-utils';
-import PackageInfo from '../../../core/PackageInfo';
+import NpmPackageInfo from '../NpmPackageInfo';
 import { packageVersionExists, updateDistTagToLatest } from './npm-publish-utils';
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
 
@@ -15,7 +15,7 @@ type NpmPublisherOptions = PublisherOptions & {
   lenientSsl: boolean
 }
 
-export default class NpmPublisher extends Publisher<NpmPublisherOptions> {
+export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPackageInfo> {
   constructor(options: NpmPublisherOptions) {
     super(options);
   }
@@ -50,7 +50,7 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions> {
     };
   }
 
-  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions) {
+  getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions): NpmPackageInfo | undefined {
     const fileInfo = path.parse(filePath);
 
     if (fileInfo.ext === extension) {
@@ -78,7 +78,7 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions> {
     }
   }
 
-  async publishPackage(packageInfo: PackageInfo, options: NpmPublisherOptions) {
+  async publishPackage(packageInfo: NpmPackageInfo, options: NpmPublisherOptions) {
     const { registry: packageRegistry, index, directoryPath, packageName, packageVersion } = packageInfo;
     const { lenientSsl, distTag, registry, logger } = options;
 
