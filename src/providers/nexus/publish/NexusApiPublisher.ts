@@ -46,6 +46,6 @@ export default class NexusApiPublisher extends Publisher<NexusApiPublisherOption
   getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions) {
   }
 
-  async publishPackage(packageInfo: PackageInfo) {
+  async publishPackage(packageInfo: PackageInfo, options: NexusApiPublisherOptions) {
   }
 }

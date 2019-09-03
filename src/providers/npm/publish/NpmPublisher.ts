@@ -78,9 +78,9 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions> {
     }
   }
 
-  async publishPackage(packageInfo: PackageInfo) {
+  async publishPackage(packageInfo: PackageInfo, options: NpmPublisherOptions) {
     const { registry: packageRegistry, index, directoryPath, packageName, packageVersion } = packageInfo;
-    const { lenientSsl, distTag, registry, logger } = this.options;
+    const { lenientSsl, distTag, registry, logger } = options;
 
     const scopedPackageName = getScopedPackageName(packageInfo);
     const baseMessageFormat = `publish [${index}] [%s]`;

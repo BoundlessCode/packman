@@ -25,7 +25,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions> {
       getPackageFileInfo: this.getPackageFileInfo,
     })) {
       try {
-        await this.publishPackage({ ...packageInfo, ...options });
+        await this.publishPackage(packageInfo, options);
       }
       catch (error) {
         const message: string = error && error.message ? error.message : error;
@@ -42,7 +42,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions> {
 
   abstract getPackageFileInfo(options: GetPackageFileInfoOptions);
 
-  abstract async publishPackage(packageInfo: PackageInfo);
+  abstract async publishPackage(packageInfo: PackageInfo, options: TOptions);
 
   printErrors(error: (string | Error)[] | Error  = []) {
     const { logger } = this.options;
