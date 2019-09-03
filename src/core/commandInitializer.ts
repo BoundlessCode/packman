@@ -49,12 +49,6 @@ export async function launchProgram(definitions: CommandDefinition[]) {
     program.parse(process.argv);
 }
 
-export function setLoggerVerbosity() {
-    if (process.argv.indexOf('--verbose') > -1) {
-        logger.level = 'debug';
-    }
-}
-
 async function bulkImportInstances(pattern: string, section: string): Promise<HasCommandDefinition[]> {
     logger.debug(section, 'require glob:'.gray, pattern.cyan);
 

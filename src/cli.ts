@@ -1,7 +1,7 @@
 import 'colors';
 
-import { logger } from './core/logger';
-import { launchProgram, loadPackageProviderDefinitions, setLoggerVerbosity } from './core/commandInitializer';
+import { logger, setLoggerVerbosity } from './core/logger';
+import { launchProgram, loadPackageProviderDefinitions } from './core/commandInitializer';
 
 setLoggerVerbosity();
 

@@ -30,3 +30,9 @@ export type LoggerOptions = {
 }
 
 logger.debug(`logger initialized, level: ${logger.level}`);
+
+export function setLoggerVerbosity() {
+  if (process.argv.indexOf('--verbose') > -1) {
+      logger.level = 'debug';
+  }
+}
