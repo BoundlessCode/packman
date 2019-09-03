@@ -20,10 +20,12 @@ export default abstract class Publisher<TOptions extends PublisherOptions> {
     const errors: string[] = [];
     const { logger } = options;
 
-    for (const packageInfo of await collectPackagesByPath({
+    const packageInfos = collectPackagesByPath({
       ...options,
       getPackageFileInfo: this.getPackageFileInfo,
-    })) {
+    });
+
+    for (const packageInfo of packageInfos) {
       try {
         await this.publishPackage(packageInfo, options);
       }
