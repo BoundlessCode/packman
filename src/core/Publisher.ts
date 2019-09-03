@@ -1,5 +1,5 @@
 import { LoggerOptions } from './logger';
-import { collectPackagesByPath } from './collector';
+import { collectFilePaths, CollectFileOptions } from './collector';
 import Counter from './counter';
 import PackageInfo from './PackageInfo';
 
@@ -20,10 +20,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
     const errors: string[] = [];
     const { logger } = options;
 
-    const packageInfos = collectPackagesByPath({
-      ...options,
-      getPackageFileInfo: this.getPackageFileInfo,
-    });
+    const packageInfos: Iterable<TPackageInfo> = this.collectPackagesByPath(options);
 
     for (const packageInfo of packageInfos) {
       try {
@@ -39,6 +36,23 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
     if (errors.length > 0) {
       this.printErrors(errors);
       process.exit(1);
+    }
+  }
+
+  * collectPackagesByPath(options: CollectFileOptions): Iterable<TPackageInfo> {
+    const { rootPath, logger, extension } = options;
+
+    const counter = new Counter();
+
+    const filePaths = collectFilePaths({ rootPath, logger, extension });
+
+    for (const filePath of filePaths) {
+      logger.debug('collecting', filePath);
+
+      const packageFileInfo = this.getPackageFileInfo({ ...options, filePath, counter });
+      if (packageFileInfo) {
+        yield packageFileInfo;
+      }
     }
   }
 
