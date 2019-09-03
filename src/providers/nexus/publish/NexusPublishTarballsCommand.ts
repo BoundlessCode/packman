@@ -1,7 +1,7 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
 import { LoggerOptions } from '../../../core/logger';
-import NexusApiPublisher from './NexusApiPublisher';
+import NexusPublisher from './NexusPublisher';
 
 export type NexusPublishTarballsCommandOptions = CommandExecuteOptions & LoggerOptions & {
   packagesPath: string
@@ -24,7 +24,7 @@ export default class NexusPublishTarballsCommand implements Command {
 
   async execute(options: NexusPublishTarballsCommandOptions) {
     // const { packagesPath, registry, distTag } = options;
-    const publisher = new NexusApiPublisher(options);
+    const publisher = new NexusPublisher(options);
     publisher.publish();
   }
 }
