@@ -1,4 +1,4 @@
-import path from 'path';
+import { resolve } from 'path';
 import glob from 'glob';
 import sade from '@boco/sade';
 import camelcase from 'camelcase';
@@ -72,7 +72,7 @@ async function bulkImportInstances(pattern: string, section: string): Promise<Ha
 }
 
 async function singleImport(file: string, section: string): Promise<any> {
-    const resolvedPath = path.resolve(file) || 'failed to resolve ' + file;
+    const resolvedPath = resolve(file) || 'failed to resolve ' + file;
     const imported = await import(resolvedPath);
     logger.debug(section, String(!!imported.default).gray, resolvedPath.green);
     return imported.default;
@@ -81,7 +81,7 @@ async function singleImport(file: string, section: string): Promise<any> {
 export async function loadPackageProviderDefinitions(): Promise<CommandDefinition[]> {
     logger.debug('loading package providers'.gray);
 
-    const pattern = path.resolve(__dirname, '..', 'providers', '*', '*PackageProvider.js');
+    const pattern = resolve(__dirname, '..', 'providers', '*', '*PackageProvider.js');
     const section = 'load package providers:';
 
     const instances = await bulkImportInstances(pattern, section);
@@ -92,7 +92,7 @@ export async function loadPackageProviderDefinitions(): Promise<CommandDefinitio
 async function loadCommands(area: string, operation: string): Promise<{ command: Command, definition: CommandDefinition }[]> {
     logger.debug('requiring commands at'.gray, 'area:', (area || 'n/a').blue, 'operation:', (operation || 'n/a').blue);
 
-    const pattern = path.resolve(area, operation, '*Command.js');
+    const pattern = resolve(area, operation, '*Command.js');
     const section = area.blue + ' ' + operation.cyan + ':';
 
     const instances = await bulkImportInstances(pattern, section);
