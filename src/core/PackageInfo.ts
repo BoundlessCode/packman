@@ -6,5 +6,4 @@ export default interface PackageInfo {
     index?: number;
     directoryPath?: string;
     filePath?: string;
-    architecture?: string;
 }
