@@ -698,5 +698,32 @@
             "protocol": "inspector",
             "sourceMaps": true,
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "artifactory publish packages",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "artifactory",
+                "publish",
+                "packages",
+                "/Volumes/NomadicQuad/sharvit/packages/conda/mro-archive/",
+                "https://artifactory-host/artifactory/",
+                "repo-name",
+                "conda",
+                "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
+        },
     ]
 }
