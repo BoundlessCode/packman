@@ -1,8 +1,8 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
 import NugetPublisher from './NugetPublisher';
 
-export type NugetPublishNupkgsCommandOptions = CommandExecuteOptions & {
+export type NugetPublishNupkgsCommandOptions = GlobalOptions & {
   registry: string
   packagesPath: string
 }

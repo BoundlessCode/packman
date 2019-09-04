@@ -1,4 +1,4 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions } from '../../../core/commandOptions';
 import Cataloger, { EntryInfo } from '../../../core/catalog/Cataloger';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
@@ -7,7 +7,7 @@ import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadCatalogCommandOptions =
   NpmDownloadOptions
-  & CommandExecuteOptions
+  & GlobalOptions
   & {
     catalogFile: string
   };

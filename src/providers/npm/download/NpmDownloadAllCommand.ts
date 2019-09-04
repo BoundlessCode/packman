@@ -1,4 +1,4 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
@@ -8,7 +8,7 @@ import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadAllCommandOptions =
   NpmDownloadOptions
-  & CommandExecuteOptions
+  & GlobalOptions
   & {
     filters?: [(currentPackage: any) => boolean]
   }

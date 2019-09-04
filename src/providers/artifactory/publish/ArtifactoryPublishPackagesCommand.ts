@@ -1,8 +1,8 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions } from '../../../core/commandOptions';
 import ArtifactoryPublisher from './ArtifactoryPublisher';
 
-export type ArtifactoryPublishPackagesCommandOptions = CommandExecuteOptions & {
+export type ArtifactoryPublishPackagesCommandOptions = GlobalOptions & {
   packagesPath: string
   server: string
   repo: string

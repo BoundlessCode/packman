@@ -1,4 +1,4 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions } from '../../../core/commandOptions';
 import BundleZipCreateCommand from '../../bundle/zip/BundleZipCreateCommand';
 import { NpmDownloadOptions, npmDownloadOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
@@ -7,7 +7,7 @@ import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadPackageCommandOptions =
   NpmDownloadOptions
-  & CommandExecuteOptions
+  & GlobalOptions
   & DependenciesOptions
   & {
     name: string

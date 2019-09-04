@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
+import { globalOptions } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageCommand from '../download/NpmDownloadPackageCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
@@ -8,7 +9,7 @@ import { NpmCopyOptions, npmCopyOptions } from '../npm-options';
 
 export type NpmCopyPackageCommandOptions =
   NpmCopyOptions
-  & CommandExecuteOptions
+  & GlobalOptions
   & {
     name: string
     version: string
@@ -22,6 +23,7 @@ export default class NpmCopyPackageCommand implements Command {
       description: 'copy packages from one registry to another',
       options: [
         ...npmCopyOptions,
+        ...globalOptions,
       ],
     };
   }

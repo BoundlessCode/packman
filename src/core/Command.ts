@@ -18,7 +18,7 @@ export type CommandOption = string | {
   description?: string
 }
 
-export type CommandExecuteOptions = LoggerOptions & {
+export type GlobalOptions = LoggerOptions & {
   [name: string]: any
 }
 
@@ -27,5 +27,5 @@ export interface HasCommandDefinition {
 }
 
 export default interface Command extends HasCommandDefinition {
-  execute(options: CommandExecuteOptions): Promise<any>;
+  execute(options: GlobalOptions): Promise<any>;
 }

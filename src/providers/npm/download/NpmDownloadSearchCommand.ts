@@ -1,4 +1,4 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions } from '../../../core/commandOptions';
 import { NpmDownloadOptions, npmDownloadOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { getPackageJsonDependencies } from '../crawler';
@@ -8,7 +8,7 @@ import NpmDownloadAllCommand from './NpmDownloadAllCommand';
 
 export type NpmDownloadSearchCommandOptions =
   NpmDownloadOptions
-  & CommandExecuteOptions
+  & GlobalOptions
   & DependenciesOptions
   & {
     keyword: string

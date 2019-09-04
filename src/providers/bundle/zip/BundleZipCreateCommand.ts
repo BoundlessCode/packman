@@ -1,8 +1,8 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions } from '../../../core/commandOptions';
 import Bundler from '../../../core/Bundler';
 
-export type BundleZipCreateCommandOptions = CommandExecuteOptions & {
+export type BundleZipCreateCommandOptions = GlobalOptions & {
   // repository: string
   directory?: string
   bundleName?: boolean | string

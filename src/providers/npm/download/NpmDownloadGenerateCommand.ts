@@ -1,4 +1,4 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions, outputFileOption, registryOption } from '../../../core/commandOptions';
 import { getDependencies } from '../crawler';
 import { NpmRegistryOption, DependenciesOptions, dependenciesOptions } from '../npm-options';
@@ -6,7 +6,7 @@ import { saveToFile } from './generator';
 
 export type NpmDownloadGenerateCommandOptions =
   NpmRegistryOption
-  & CommandExecuteOptions
+  & GlobalOptions
   & DependenciesOptions
   & {
     name: string

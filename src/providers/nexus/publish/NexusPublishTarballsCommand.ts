@@ -1,9 +1,9 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
 import { LoggerOptions } from '../../../core/logger';
 import NexusPublisher from './NexusPublisher';
 
-export type NexusPublishTarballsCommandOptions = CommandExecuteOptions & LoggerOptions & {
+export type NexusPublishTarballsCommandOptions = GlobalOptions & LoggerOptions & {
   packagesPath: string
   registry: string
   distTag: boolean

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
+import { globalOptions } from '../../../core/commandOptions';
 import { NpmCopyOptions, npmCopyOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageJsonCommand from '../download/NpmDownloadPackageJsonCommand';
@@ -9,7 +10,7 @@ import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
 export type NpmCopyPackageJsonCommandOptions =
   NpmCopyOptions
   & DependenciesOptions
-  & CommandExecuteOptions
+  & GlobalOptions
   & {
     uri: string
   }
@@ -23,6 +24,7 @@ export default class NpmCopyPackageJsonCommand implements Command {
       options: [
         ...npmCopyOptions,
         ...dependenciesOptions,
+        ...globalOptions,
       ],
     };
   }

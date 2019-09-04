@@ -1,4 +1,4 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
@@ -8,7 +8,7 @@ import { NpmDirectoryOption, NpmForceOption } from '../npm-options';
 export type NpmDownloadPackageLockCommandOptions =
   NpmDirectoryOption
   & NpmForceOption
-  & CommandExecuteOptions
+  & GlobalOptions
   & {
     uri: string
   }

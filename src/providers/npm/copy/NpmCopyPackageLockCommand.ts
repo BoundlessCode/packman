@@ -1,9 +1,7 @@
-import { CommandExecuteOptions } from '../../../core/Command';
-
 import dayjs from 'dayjs';
 
-import Command from '../../../core/Command';
-import { directoryOption } from '../../../core/commandOptions';
+import Command, { GlobalOptions } from '../../../core/Command';
+import { globalOptions, directoryOption } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageLockCommand from '../download/NpmDownloadPackageLockCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
@@ -12,7 +10,7 @@ import { NpmDirectoryOption, NpmTargetRegistryOption, targetRegistryOption } fro
 export type NpmCopyPackageLockCommandOptions =
   NpmDirectoryOption
   & NpmTargetRegistryOption
-  & CommandExecuteOptions
+  & GlobalOptions
   & {
     uri: string
     force?: boolean
@@ -27,6 +25,7 @@ export default class NpmCopyPackageLockCommand implements Command {
       options: [
         directoryOption,
         targetRegistryOption,
+        ...globalOptions,
       ],
     };
   }

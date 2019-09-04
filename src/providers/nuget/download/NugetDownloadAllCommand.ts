@@ -2,14 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import { URL } from 'url';
 
-import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
+import Command, { GlobalOptions } from '../../../core/Command';
+import { globalOptions, registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/catalog/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';
 
-export type NugetDownloadAllCommandOptions = CommandExecuteOptions & {
+export type NugetDownloadAllCommandOptions = GlobalOptions & {
   registry: string
   directory: string
   catalogFile: string
@@ -47,6 +47,7 @@ export default class NugetDownloadAllCommand implements Command {
         registryOption,
         directoryOption,
         catalogOption,
+        ...globalOptions,
       ],
     };
   }

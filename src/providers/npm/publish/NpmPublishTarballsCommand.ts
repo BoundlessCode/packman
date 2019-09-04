@@ -1,11 +1,11 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
 import NpmPublisher from './NpmPublisher';
 import { NpmRegistryOption } from '../npm-options';
 
 export type NpmPublishTarballsCommandOptions =
   NpmRegistryOption
-  & CommandExecuteOptions
+  & GlobalOptions
   & {
     packagesPath: string
     distTag: boolean

@@ -1,8 +1,8 @@
-import Command, { CommandExecuteOptions } from '../../../core/Command';
+import Command, { GlobalOptions } from '../../../core/Command';
 import { globalOptions, directoryOption } from '../../../core/commandOptions';
 import { fetchNexusCatalog } from '../nexus-utils';
 
-export type NexusCatalogSearchCommandOptions = CommandExecuteOptions & {
+export type NexusCatalogSearchCommandOptions = GlobalOptions & {
   repository: string
 }
 
