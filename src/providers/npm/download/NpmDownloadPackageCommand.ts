@@ -1,17 +1,21 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, commonPackageOptions, registryOption, forceOption } from '../../../core/commandOptions';
+import { globalOptions, commonPackageOptions, forceOption } from '../../../core/commandOptions';
+import BundleZipCreateCommand from '../../bundle/zip/BundleZipCreateCommand';
+import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
 import { getDependencies, DependenciesOptions } from '../crawler';
 import { downloadFromIterable } from './downloader';
-import BundleZipCreateCommand from '../../bundle/zip/BundleZipCreateCommand';
 
-export type NpmDownloadPackageCommandOptions = CommandExecuteOptions & DependenciesOptions & {
-  name: string
-  version?: string
-  registry?: string
-  directory: string
-  force?: boolean
-  bundleName?: string
-}
+export type NpmDownloadPackageCommandOptions =
+  NpmDownloadCommandOptions
+  & CommandExecuteOptions
+  & DependenciesOptions
+  & {
+    name: string
+    version?: string
+    directory: string
+    force?: boolean
+    bundleName?: string
+  }
 
 export default class NpmDownloadPackageCommand implements Command {
   get definition() {
@@ -20,7 +24,7 @@ export default class NpmDownloadPackageCommand implements Command {
       flags: '<name> [version]',
       description: 'download tarballs based on a package and a version',
       options: [
-        registryOption,
+        ...npmDownloadOptions,
         '--bundle [bundleName]',
         forceOption,
         ...commonPackageOptions,
@@ -30,34 +34,12 @@ export default class NpmDownloadPackageCommand implements Command {
   }
 
   async execute(options: NpmDownloadPackageCommandOptions): Promise<any> {
-    const {
-      name,
-      version,
-      dependencies,
-      devDependencies,
-      peerDependencies,
-      registry,
-      directory,
-      force = false,
-      bundleName,
-      logger,
-    } = options;
+    const tarballsSet = await getDependencies(options);
+    const result = await downloadFromIterable(tarballsSet, options.directory, options);
 
-    const tarballsSet = await getDependencies({
-      name,
-      version,
-      dependencies,
-      devDependencies,
-      peerDependencies,
-      registry,
-      logger,
-    });
-
-    const result = await downloadFromIterable(tarballsSet, directory, { force, logger });
-
-    if(bundleName) {
+    if (options.bundleName) {
       const bundleCommand = new BundleZipCreateCommand();
-      await bundleCommand.execute({ directory, bundleName, logger })
+      await bundleCommand.execute(options)
     }
     return result;
   }

@@ -4,11 +4,13 @@ import { fetch } from '../../../core/fetcher';
 import { downloadFromIterable } from './downloader';
 import { endOfLine } from './generator';
 
-export type NpmDownloadFromGeneratedCommandOptions = CommandExecuteOptions & {
-  directory: string
-  uri: string
-  force: boolean
-}
+export type NpmDownloadFromGeneratedCommandOptions =
+  CommandExecuteOptions
+  & {
+    directory: string
+    uri: string
+    force: boolean
+  }
 
 export default class NpmDownloadFromGeneratedCommand implements Command {
   get definition() {
@@ -25,9 +27,8 @@ export default class NpmDownloadFromGeneratedCommand implements Command {
   }
 
   async execute(options: NpmDownloadFromGeneratedCommandOptions) {
-    const { uri, force, directory, logger } = options;
-    const { body: text } = await fetch<string>({ uri, logger });
+    const { body: text } = await fetch<string>(options);
     const tarball = text.toString().split(endOfLine);
-    return downloadFromIterable(tarball, directory, { force, logger });
+    return downloadFromIterable(tarball, options.directory, options);
   }
 }

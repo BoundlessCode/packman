@@ -4,11 +4,13 @@ import { fetch } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
 import NpmPackageManifest from '../NpmPackageManifest';
 
-export type NpmDownloadPackageLockCommandOptions = CommandExecuteOptions & {
-  uri: string
-  directory: string
-  force?: boolean
-}
+export type NpmDownloadPackageLockCommandOptions =
+  CommandExecuteOptions
+  & {
+    uri: string
+    directory: string
+    force?: boolean
+  }
 
 export default class NpmDownloadPackageLockCommand implements Command {
   get definition() {
@@ -24,8 +26,7 @@ export default class NpmDownloadPackageLockCommand implements Command {
   }
 
   async execute(options: NpmDownloadPackageLockCommandOptions) {
-    const { uri, directory, force = false, logger } = options;
-    const { body: packageLock } = await fetch<NpmPackageManifest>({ uri, logger });
-    return downloadFromPackageLock(packageLock, directory, { force, logger });
+    const { body: packageLock } = await fetch<NpmPackageManifest>(options);
+    return downloadFromPackageLock(packageLock, options.directory, options);
   }
 }

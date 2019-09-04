@@ -48,10 +48,10 @@ function _enumerateDependencies(tarballs: TarballInfo[], dependencies) {
 }
 
 type DownloadTarballsOptions = LoggerOptions & {
-  force: boolean
+  force?: boolean
 }
 
-function _downloadTarballs(tarballs: TarballInfo[], baseDirectory = './tarballs', { force, logger }: DownloadTarballsOptions) {
+function _downloadTarballs(tarballs: TarballInfo[], baseDirectory = './tarballs', { force = false, logger }: DownloadTarballsOptions) {
   if (!existsSync(baseDirectory)) {
     mkdirSync(baseDirectory);
   }

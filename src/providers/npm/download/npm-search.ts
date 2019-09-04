@@ -4,7 +4,7 @@ import NpmPackageProvider from '../NpmPackageProvider';
 
 type GeneratePackageJsonOptions = LoggerOptions & {
   keyword: string
-  registry: string
+  registry?: string
 }
 
 type Package = {

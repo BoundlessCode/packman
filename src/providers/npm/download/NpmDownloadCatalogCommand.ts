@@ -1,15 +1,18 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, registryOption, directoryOption, forceOption } from '../../../core/commandOptions';
+import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
 import Cataloger, { EntryInfo } from '../../../core/Cataloger';
+import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
 import { getCurrentRegistry, getPackageUrl } from '../npm-utils';
 import { downloadFromIterable } from './downloader';
 
-export type NpmDownloadCatalogCommandOptions = CommandExecuteOptions & {
-  registry: string
-  directory: string
-  catalogFile: string
-  force: boolean
-};
+export type NpmDownloadCatalogCommandOptions =
+  NpmDownloadCommandOptions
+  & CommandExecuteOptions
+  & {
+    directory: string
+    catalogFile: string
+    force: boolean
+  };
 
 export default class NpmDownloadCatalogCommand implements Command {
   get definition() {
@@ -18,7 +21,7 @@ export default class NpmDownloadCatalogCommand implements Command {
       flags: '[catalogFile]',
       description: 'download tarballs for packages listed in the specified catalog file',
       options: [
-        registryOption,
+        ...npmDownloadOptions,
         directoryOption,
         forceOption,
         ...globalOptions,
@@ -27,9 +30,9 @@ export default class NpmDownloadCatalogCommand implements Command {
   }
 
   async execute(options: NpmDownloadCatalogCommandOptions) {
-    const { catalogFile, force, logger } = options;
-    const registry = options.registry || await getCurrentRegistry({ logger });
-    const cataloger = new Cataloger({ catalogFile, logger });
+    const { logger } = options;
+    const registry = options.registry || await getCurrentRegistry(options);
+    const cataloger = new Cataloger(options);
     logger.debug(`Using catalog file: ${cataloger.fullPath}`);
     if (cataloger.exists()) {
       await cataloger.initialize();
@@ -38,7 +41,7 @@ export default class NpmDownloadCatalogCommand implements Command {
         const url = getPackageUrl(packageInfo);
         return url.href;
       }));
-      return downloadFromIterable(packages, options.directory, { force, logger });
+      return downloadFromIterable(packages, options.directory, options);
     }
     else {
       logger.info(`Could not find a catalog file at ${cataloger.fullPath}`);

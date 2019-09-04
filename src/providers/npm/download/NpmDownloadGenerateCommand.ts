@@ -1,13 +1,18 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, outputFileOption, dependenciesOptions } from '../../../core/commandOptions';
 import { getDependencies, DependenciesOptions } from '../crawler';
+import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
 import { saveToFile } from './generator';
 
-export type NpmDownloadGenerateCommandOptions = CommandExecuteOptions & DependenciesOptions & {
-  name: string
-  version: string
-  outputFile: string
-}
+export type NpmDownloadGenerateCommandOptions =
+  NpmDownloadCommandOptions
+  & CommandExecuteOptions
+  & DependenciesOptions
+  & {
+    name: string
+    version: string
+    outputFile: string
+  }
 
 export default class NpmDownloadGenerateCommand implements Command {
   get definition() {
@@ -16,6 +21,7 @@ export default class NpmDownloadGenerateCommand implements Command {
       flags: '<name> [version]',
       description: 'generates the download links for a given package and version',
       options: [
+        ...npmDownloadOptions,
         outputFileOption,
         ...dependenciesOptions,
         ...globalOptions,
@@ -24,24 +30,7 @@ export default class NpmDownloadGenerateCommand implements Command {
   }
 
   async execute(options: NpmDownloadGenerateCommandOptions) {
-    const {
-      name,
-      version,
-      dependencies,
-      devDependencies,
-      peerDependencies,
-      outputFile,
-      logger,
-    } = options;
-    
-    const tarballsSet = await getDependencies({
-      name,
-      version,
-      dependencies,
-      devDependencies,
-      peerDependencies,
-      logger,
-    });
-    saveToFile(Array.from(tarballsSet), outputFile);
+    const tarballsSet = await getDependencies(options);
+    saveToFile(Array.from(tarballsSet), options.outputFile);
   }
 }

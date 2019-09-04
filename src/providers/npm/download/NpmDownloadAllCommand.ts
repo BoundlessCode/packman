@@ -1,18 +1,21 @@
 import { CommandExecuteOptions } from '../../../core/Command';
 
 import Command from '../../../core/Command';
-import { globalOptions, registryOption, directoryOption, forceOption } from '../../../core/commandOptions';
+import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
+import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
 import { getCurrentRegistry, getAllEndpointUrl } from '../npm-utils';
 import { getDependenciesFromSearchResults, SearchResults } from '../crawler';
 import { downloadFromIterable } from './downloader';
 
-export type NpmDownloadAllCommandOptions = CommandExecuteOptions & {
-  registry: string
-  directory: string
-  force?: boolean
-  filters?: [(currentPackage: any) => boolean]
-}
+export type NpmDownloadAllCommandOptions =
+  NpmDownloadCommandOptions
+  & CommandExecuteOptions
+  & {
+    directory: string
+    force?: boolean
+    filters?: [(currentPackage: any) => boolean]
+  }
 
 export default class NpmDownloadAllCommand implements Command {
   get definition() {
@@ -20,7 +23,7 @@ export default class NpmDownloadAllCommand implements Command {
       name: 'all',
       description: 'download tarballs for all packages hosted by the registry',
       options: [
-        registryOption,
+        ...npmDownloadOptions,
         directoryOption,
         forceOption,
         ...globalOptions,
@@ -29,11 +32,10 @@ export default class NpmDownloadAllCommand implements Command {
   }
 
   async execute(options: NpmDownloadAllCommandOptions) {
-    const { force = false, filters, logger } = options;
-    const registry = options.registry || await getCurrentRegistry({ logger });
-    const uri = getAllEndpointUrl(registry, { logger });
-    const { body: searchResults } = await fetch<SearchResults>({ uri, responseType: 'json', logger });
-    const packages = await getDependenciesFromSearchResults(searchResults, { ...options, registry, filters, logger });
-    return downloadFromIterable(packages, options.directory, { force, logger });
+    const registry = options.registry || await getCurrentRegistry(options);
+    const uri = getAllEndpointUrl(registry, options);
+    const { body: searchResults } = await fetch<SearchResults>({ ...options, uri, responseType: 'json' });
+    const packages = await getDependenciesFromSearchResults(searchResults, { ...options, registry });
+    return downloadFromIterable(packages, options.directory, options);
   }
 }

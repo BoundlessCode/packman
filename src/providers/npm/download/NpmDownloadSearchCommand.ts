@@ -1,16 +1,20 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, commonPackageOptions, forceOption, registryOption } from '../../../core/commandOptions';
-import { generatePackageJson } from './npm-search';
+import { globalOptions, commonPackageOptions, forceOption } from '../../../core/commandOptions';
+import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
 import { getPackageJsonDependencies, DependenciesOptions } from '../crawler';
+import { generatePackageJson } from './npm-search';
 import { downloadFromIterable } from './downloader';
 import NpmDownloadAllCommand from './NpmDownloadAllCommand';
 
-export type NpmDownloadSearchCommandOptions = CommandExecuteOptions & DependenciesOptions & {
-  registry: string
-  directory: string
-  keyword: string
-  force?: boolean
-}
+export type NpmDownloadSearchCommandOptions =
+  NpmDownloadCommandOptions
+  & CommandExecuteOptions
+  & DependenciesOptions
+  & {
+    directory: string
+    keyword: string
+    force?: boolean
+  }
 
 export default class NpmDownloadSearchCommand implements Command {
   get definition() {
@@ -19,7 +23,7 @@ export default class NpmDownloadSearchCommand implements Command {
       flags: '<keyword>',
       description: 'download tarballs based on a npm registry search results',
       options: [
-        registryOption,
+        ...npmDownloadOptions,
         forceOption,
         ...commonPackageOptions,
         ...globalOptions,
@@ -28,32 +32,12 @@ export default class NpmDownloadSearchCommand implements Command {
   }
 
   async execute(options: NpmDownloadSearchCommandOptions) {
-    const {
-      keyword,
-      force = false,
-      registry,
-      dependencies,
-      devDependencies,
-      peerDependencies,
-      directory,
-      logger,
-    } = options;
+    const { logger } = options;
 
     try {
-      const packageJson = await generatePackageJson({
-        keyword,
-        registry,
-        logger,
-      });
-      const tarballsSet = await getPackageJsonDependencies({
-        packageJson,
-        dependencies,
-        devDependencies,
-        peerDependencies,
-        registry,
-        logger,
-      });
-      return downloadFromIterable(tarballsSet, directory, { force, logger });
+      const packageJson = await generatePackageJson(options);
+      const tarballsSet = await getPackageJsonDependencies({ ...options, packageJson });
+      return downloadFromIterable(tarballsSet, options.directory, options);
     }
     catch (error) {
       if (error.statusCode === 404) {
@@ -69,7 +53,7 @@ export default class NpmDownloadSearchCommand implements Command {
                 'description' in currentPackage ? currentPackage.description : '',
                 'keywords' in currentPackage ? currentPackage.keywords.join(' ') : '',
               ];
-              return values.join(' ').indexOf(keyword) > -1;
+              return values.join(' ').indexOf(options.keyword) > -1;
             },
           ],
         });
