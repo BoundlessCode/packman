@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
 import { dependenciesOptions, NpmCopyOptions, npmCopyOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadSearchCommand from '../download/NpmDownloadSearchCommand';
@@ -12,8 +11,6 @@ export type NpmCopySearchCommandOptions =
   & CommandExecuteOptions
   & {
     keyword: string
-    source: string
-    target: string
     devDependencies: boolean
     peerDependencies: boolean
   }
@@ -27,15 +24,13 @@ export default class NpmCopySearchCommand implements Command {
       options: [
         ...npmCopyOptions,
         ...dependenciesOptions,
-        sourceRegistryOption,
-        targetRegistryOption,
       ],
     };
   }
 
   async execute(options: NpmCopySearchCommandOptions) {
-    const { source, logger } = options;
-    if (!source) {
+    const { sourceRegistry, logger } = options;
+    if (!sourceRegistry) {
       throw new Error('The source registry must be specified');
     }
 
@@ -43,14 +38,14 @@ export default class NpmCopySearchCommand implements Command {
     logger.info(`using the directory ${directory}`);
 
     const downloadCommand = new NpmDownloadSearchCommand();
-    await downloadCommand.execute({ ...options, directory, registry: source });
+    await downloadCommand.execute({ ...options, directory, registry: sourceRegistry });
     logger.info('finished downloading');
 
-    const target = options.target || await getCurrentRegistry(options);
-    logger.info(`publishing to the registry ${target}`);
+    const targetRegistry = options.targetRegistry || await getCurrentRegistry(options);
+    logger.info(`publishing to the registry ${targetRegistry}`);
 
     const publishCommand = new NpmPublishTarballsCommand();
-    await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
+    await publishCommand.execute({ ...options, packagesPath: directory, registry: targetRegistry, distTag: false });
     logger.info('finished copying');
   }
 }

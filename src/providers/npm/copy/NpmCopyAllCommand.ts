@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadAllCommand from '../download/NpmDownloadAllCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
@@ -19,15 +18,13 @@ export default class NpmCopyAllCommand implements Command {
       description: 'copy packages returned by the /-/all endpoint to the target registry',
       options: [
         ...npmCopyOptions,
-        sourceRegistryOption,
-        targetRegistryOption,
       ],
     };
   }
 
   async execute(options: NpmCopyAllCommandOptions) {
-    const { source, logger } = options;
-    if (!source) {
+    const { sourceRegistry, logger } = options;
+    if (!sourceRegistry) {
       throw new Error('The source registry must be specified');
     }
 
@@ -35,14 +32,14 @@ export default class NpmCopyAllCommand implements Command {
     logger.info(`using the directory ${directory}`);
 
     const downloadCommand = new NpmDownloadAllCommand();
-    await downloadCommand.execute({ ...options, directory, registry: source });
+    await downloadCommand.execute({ ...options, directory, registry: sourceRegistry });
     logger.info('finished downloading');
 
-    const target = options.target || await getCurrentRegistry(options);
-    logger.info(`publishing to the registry ${target}`);
+    const targetRegistry = options.targetRegistry || await getCurrentRegistry(options);
+    logger.info(`publishing to the registry ${targetRegistry}`);
 
     const publishCommand = new NpmPublishTarballsCommand();
-    await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
+    await publishCommand.execute({ ...options, packagesPath: directory, registry: targetRegistry, distTag: false });
     logger.info('finished copying');
   }
 }

@@ -26,8 +26,18 @@ export type NpmDownloadOptions =
     & {
     }
 
+export type NpmSourceRegistryOption = {
+    sourceRegistry: string
+}
+
+export type NpmTargetRegistryOption = {
+    targetRegistry: string
+}
+
 export type NpmCopyOptions =
     NpmDirectoryOption
+    & NpmSourceRegistryOption
+    & NpmTargetRegistryOption
     & {
     }
 
@@ -37,8 +47,19 @@ export const npmDownloadOptions = [
     forceOption,
 ] as CommandOption[];
 
+export const sourceRegistryOption = {
+    flags: '-s, --source <sourceRegistry>',
+    description: 'the source registry from which to copy packages (mandatory)',
+};
+export const targetRegistryOption = {
+    flags: '-t, --target <targetRegistry>',
+    description: 'the target registry the packages will be copied to, defaults to current registry',
+};
+
 export const npmCopyOptions = [
     directoryOption,
+    sourceRegistryOption,
+    targetRegistryOption,
 ] as CommandOption[];
 
 export const dependenciesOptions = [
