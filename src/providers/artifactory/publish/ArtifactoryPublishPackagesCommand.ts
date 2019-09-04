@@ -1,5 +1,5 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, registryOption } from '../../../core/commandOptions';
+import { globalOptions } from '../../../core/commandOptions';
 import ArtifactoryPublisher from './ArtifactoryPublisher';
 
 export type ArtifactoryPublishPackagesCommandOptions = CommandExecuteOptions & {
