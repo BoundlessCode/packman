@@ -9,13 +9,15 @@ import ArtifactoryPackageInfo from '../ArtifactoryPackageInfo';
 
 const PACKAGE_EXTENSION = 'tar.bz2';
 
-type ArtifactoryPublisherOptions = PublisherOptions & {
-  packagesPath: string
-  server: string
-  repo: string
-  packageType: string
-  api?: string
-}
+type ArtifactoryPublisherOptions =
+  PublisherOptions
+  & {
+    packagesPath: string
+    server: string
+    repo: string
+    packageType: string
+    api?: string
+  }
 
 export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisherOptions, ArtifactoryPackageInfo> {
   constructor(options: ArtifactoryPublisherOptions) {

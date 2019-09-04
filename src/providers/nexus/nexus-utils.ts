@@ -4,10 +4,12 @@ import { LoggerOptions } from '../../core/logger';
 import { fetch } from '../../core/fetcher';
 import Cataloger from '../../core/catalog/Cataloger';
 
-export type FetchNexusCatalogOptions = LoggerOptions & {
-  repository: string
-  endpoint: string
-}
+export type FetchNexusCatalogOptions =
+  LoggerOptions
+  & {
+    repository: string
+    endpoint: string
+  }
 
 export async function fetchNexusCatalog ({ repository, logger, endpoint }: FetchNexusCatalogOptions) {
   const cataloger = new Cataloger({ logger, logActionsAsInfo: true });

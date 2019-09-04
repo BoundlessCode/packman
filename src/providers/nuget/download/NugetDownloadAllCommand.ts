@@ -9,11 +9,13 @@ import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/catalog/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';
 
-export type NugetDownloadAllCommandOptions = GlobalOptions & {
-  registry: string
-  directory: string
-  catalogFile: string
-}
+export type NugetDownloadAllCommandOptions =
+  GlobalOptions
+  & {
+    registry: string
+    directory: string
+    catalogFile: string
+  }
 
 type NugetIndexSearchResults = {
   version: string

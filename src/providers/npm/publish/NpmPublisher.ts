@@ -8,12 +8,14 @@ import { packageVersionExists, updateDistTagToLatest } from './npm-publish-utils
 
 const TARBALL_EXTENSION = 'tgz';
 
-type NpmPublisherOptions = PublisherOptions & {
-  packagesPath: string
-  registry?: string
-  distTag: boolean
-  lenientSsl?: boolean
-}
+type NpmPublisherOptions =
+  PublisherOptions
+  & {
+    packagesPath: string
+    registry?: string
+    distTag: boolean
+    lenientSsl?: boolean
+  }
 
 export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPackageInfo> {
   constructor(options: NpmPublisherOptions) {

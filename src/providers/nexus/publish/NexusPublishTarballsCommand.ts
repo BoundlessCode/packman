@@ -3,11 +3,14 @@ import { GlobalOptions, globalOptions, registryOption } from '../../../core/comm
 import { LoggerOptions } from '../../../core/logger';
 import NexusPublisher from './NexusPublisher';
 
-export type NexusPublishTarballsCommandOptions = GlobalOptions & LoggerOptions & {
-  packagesPath: string
-  registry: string
-  distTag: boolean
-}
+export type NexusPublishTarballsCommandOptions =
+  GlobalOptions
+  & LoggerOptions
+  & {
+    packagesPath: string
+    registry: string
+    distTag: boolean
+  }
 
 export default class NexusPublishTarballsCommand implements Command {
   get definition() {

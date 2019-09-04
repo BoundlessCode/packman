@@ -2,10 +2,12 @@ import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, registryOption } from '../../../core/commandOptions';
 import NugetPublisher from './NugetPublisher';
 
-export type NugetPublishNupkgsCommandOptions = GlobalOptions & {
-  registry: string
-  packagesPath: string
-}
+export type NugetPublishNupkgsCommandOptions =
+  GlobalOptions
+  & {
+    registry: string
+    packagesPath: string
+  }
 
 export default class NugetPublishNupkgsCommand implements Command {
   get definition() {

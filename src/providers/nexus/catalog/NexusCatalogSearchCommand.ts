@@ -2,9 +2,11 @@ import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, directoryOption } from '../../../core/commandOptions';
 import { fetchNexusCatalog } from '../nexus-utils';
 
-export type NexusCatalogSearchCommandOptions = GlobalOptions & {
-  repository: string
-}
+export type NexusCatalogSearchCommandOptions =
+  GlobalOptions
+  & {
+    repository: string
+  }
 
 export default class NexusCatalogSearchCommand implements Command {
   get definition() {

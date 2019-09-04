@@ -2,12 +2,14 @@ import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import ArtifactoryPublisher from './ArtifactoryPublisher';
 
-export type ArtifactoryPublishPackagesCommandOptions = GlobalOptions & {
-  packagesPath: string
-  server: string
-  repo: string
-  packageType: string
-}
+export type ArtifactoryPublishPackagesCommandOptions =
+  GlobalOptions
+  & {
+    packagesPath: string
+    server: string
+    repo: string
+    packageType: string
+  }
 
 export default class ArtifactoryPublishPackagesCommand implements Command {
   get definition() {

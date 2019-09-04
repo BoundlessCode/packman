@@ -2,10 +2,12 @@ import { LoggerOptions } from '../../../core/logger';
 import { fetch } from '../../../core/fetcher';
 import NpmPackageProvider from '../NpmPackageProvider';
 
-type GeneratePackageJsonOptions = LoggerOptions & {
-  keyword: string
-  registry?: string
-}
+type GeneratePackageJsonOptions =
+  LoggerOptions
+  & {
+    keyword: string
+    registry?: string
+  }
 
 type Package = {
   package: {

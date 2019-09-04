@@ -2,11 +2,13 @@ import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import Bundler from '../../../core/Bundler';
 
-export type BundleZipCreateCommandOptions = GlobalOptions & {
-  // repository: string
-  directory?: string
-  bundleName?: boolean | string
-}
+export type BundleZipCreateCommandOptions =
+  GlobalOptions
+  & {
+    // repository: string
+    directory?: string
+    bundleName?: boolean | string
+  }
 
 export default class BundleZipCreateCommand implements Command {
   get definition() {

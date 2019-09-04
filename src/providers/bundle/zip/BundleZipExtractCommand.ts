@@ -2,8 +2,10 @@ import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import Bundler from '../../../core/Bundler';
 
-export type BundleZipExtractCommandOptions = GlobalOptions & {
-}
+export type BundleZipExtractCommandOptions =
+  GlobalOptions
+  & {
+  }
 
 export default class BundleZipExtractCommand implements Command {
   get definition() {
