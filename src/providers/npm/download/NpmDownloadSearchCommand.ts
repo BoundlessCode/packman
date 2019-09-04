@@ -1,7 +1,7 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, commonPackageOptions } from '../../../core/commandOptions';
-import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
-import { getPackageJsonDependencies, DependenciesOptions } from '../crawler';
+import { npmDownloadOptions, NpmDownloadOptions, DependenciesOptions } from '../npm-options';
+import { getPackageJsonDependencies } from '../crawler';
 import { generatePackageJson } from './npm-search';
 import { downloadFromIterable } from './downloader';
 import NpmDownloadAllCommand from './NpmDownloadAllCommand';

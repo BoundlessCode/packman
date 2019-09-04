@@ -1,6 +1,11 @@
 import { CommandOption } from '../../core/Command';
 import { registryOption, directoryOption, forceOption } from '../../core/commandOptions';
 
+export type DependenciesOptions = {
+    dependencies?: boolean
+    devDependencies?: boolean
+    peerDependencies?: boolean
+}
 
 export type NpmRegistryOption = {
     registry?: string

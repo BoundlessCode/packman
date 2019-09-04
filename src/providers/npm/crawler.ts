@@ -5,6 +5,7 @@ import { URL } from 'url';
 import { Logger, LoggerOptions } from '../../core/logger';
 import { fetch } from '../../core/fetcher';
 import NpmPackageProvider from './NpmPackageProvider';
+import { DependenciesOptions } from './npm-options';
 
 const provider = new NpmPackageProvider();
 const { defaultRegistry, maxRetries, requestTimeout } = provider;
@@ -14,12 +15,6 @@ let registryHits = 1;
 
 const packagesCache = new Map();
 const tarballs = new Set<string>();
-
-export type DependenciesOptions = {
-  dependencies?: boolean
-  devDependencies?: boolean
-  peerDependencies?: boolean
-}
 
 type GetDependenciesOptions = LoggerOptions & DependenciesOptions & {
   name: string
