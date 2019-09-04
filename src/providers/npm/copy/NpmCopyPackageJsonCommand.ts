@@ -1,18 +1,17 @@
 import dayjs from 'dayjs';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { dependenciesOptions, NpmCopyOptions, npmCopyOptions } from '../npm-options';
+import { NpmCopyOptions, npmCopyOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageJsonCommand from '../download/NpmDownloadPackageJsonCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
 
 export type NpmCopyPackageJsonCommandOptions =
   NpmCopyOptions
+  & DependenciesOptions
   & CommandExecuteOptions
   & {
     uri: string
-    devDependencies: boolean
-    peerDependencies: boolean
   }
 
 export default class NpmCopyPackageJsonCommand implements Command {
