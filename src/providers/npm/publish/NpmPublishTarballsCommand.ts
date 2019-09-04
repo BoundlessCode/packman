@@ -1,13 +1,16 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, registryOption } from '../../../core/commandOptions';
 import NpmPublisher from './NpmPublisher';
+import { NpmRegistryOption } from '../npm-options';
 
-export type NpmPublishTarballsCommandOptions = CommandExecuteOptions & {
-  packagesPath: string
-  registry: string
-  distTag: boolean
-  lenientSsl?: boolean
-}
+export type NpmPublishTarballsCommandOptions =
+  NpmRegistryOption
+  & CommandExecuteOptions
+  & {
+    packagesPath: string
+    distTag: boolean
+    lenientSsl?: boolean
+  }
 
 export default class NpmPublishTarballsCommand implements Command {
   get definition() {
@@ -23,8 +26,7 @@ export default class NpmPublishTarballsCommand implements Command {
   }
 
   async execute(options: NpmPublishTarballsCommandOptions) {
-    const { packagesPath, registry, distTag, lenientSsl = false, logger } = options;
-    const publisher = new NpmPublisher({ packagesPath, registry, distTag, lenientSsl, logger });
+    const publisher = new NpmPublisher(options);
     await publisher.publish();
   }
 }

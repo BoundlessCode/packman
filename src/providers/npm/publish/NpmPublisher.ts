@@ -10,9 +10,9 @@ const TARBALL_EXTENSION = 'tgz';
 
 type NpmPublisherOptions = PublisherOptions & {
   packagesPath: string
-  registry: string
+  registry?: string
   distTag: boolean
-  lenientSsl: boolean
+  lenientSsl?: boolean
 }
 
 export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPackageInfo> {
@@ -70,7 +70,7 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
 
   async publishPackage(packageInfo: NpmPackageInfo, options: NpmPublisherOptions) {
     const { registry: packageRegistry, index, directoryPath, packageName, packageVersion } = packageInfo;
-    const { lenientSsl, distTag, registry, logger } = options;
+    const { lenientSsl = false, distTag, registry, logger } = options;
 
     const scopedPackageName = getScopedPackageName(packageInfo);
     const baseMessageFormat = `publish [${index}] [%s]`;
