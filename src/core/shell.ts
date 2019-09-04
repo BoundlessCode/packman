@@ -1,11 +1,20 @@
-import { exec } from 'child_process';
+import { exec, ExecOptions } from 'child_process';
 import util from 'util';
 import path from 'path';
 import 'colors';
 
+import { LoggerOptions } from './logger';
+
 const execAsync = util.promisify(exec);
 
-export async function execute(command, options) {
+type ShellExecuteOptions =
+    LoggerOptions
+    & ExecOptions
+    & {
+        stdio?: number[]
+    }
+
+export async function execute(command: string, options: ShellExecuteOptions) {
     const childLogger = options.logger.child({ area: 'shell execute' });
     childLogger.debug('executing command:', command);
     const { stdout, stderr } = await execAsync(command, options);
@@ -16,7 +25,7 @@ export async function execute(command, options) {
     return stdout.toString().trim();
 }
 
-export function normalizeRootedDirectory(rootPath, { logger }) {
+export function normalizeRootedDirectory(rootPath: string, { logger }: LoggerOptions) {
     logger.debug('normalizing rooted directory:', rootPath);
 
     if(path.isAbsolute(rootPath)) {
