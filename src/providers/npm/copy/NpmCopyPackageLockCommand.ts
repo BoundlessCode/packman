@@ -7,13 +7,16 @@ import { directoryOption, targetRegistryOption } from '../../../core/commandOpti
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageLockCommand from '../download/NpmDownloadPackageLockCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
+import { NpmDirectoryOption } from '../npm-options';
 
-export type NpmCopyPackageLockCommandOptions = CommandExecuteOptions & {
-  uri: string
-  direcory: string
-  target: string
-  force?: boolean
-}
+export type NpmCopyPackageLockCommandOptions =
+  NpmDirectoryOption
+  & CommandExecuteOptions
+  & {
+    uri: string
+    target: string
+    force?: boolean
+  }
 
 export default class NpmCopyPackageLockCommand implements Command {
   get definition() {
@@ -29,21 +32,20 @@ export default class NpmCopyPackageLockCommand implements Command {
   }
 
   async execute(options: NpmCopyPackageLockCommandOptions) {
-    const { uri, logger } = options;
-    logger.info('copying packages');
-    logger.info('uri', uri);
-    logger.info('directory', options.direcory);
-    logger.info('target', options.target);
+    const { logger } = options;
+
     const directory = options.directory || `copy-${dayjs().format('YYYYMMDD-HHmmss')}`;
     logger.info(`using the directory ${directory}`);
+
     const downloadCommand = new NpmDownloadPackageLockCommand();
-    const downloads = await downloadCommand.execute({ uri, directory, logger });
-    logger.info('downloads', downloads);
+    await downloadCommand.execute({ ...options, directory });
     logger.info('finished downloading');
-    const target = options.target || await getCurrentRegistry({ logger });
+
+    const target = options.target || await getCurrentRegistry(options);
     logger.info(`publishing to the registry ${target}`);
+    
     const publishCommand = new NpmPublishTarballsCommand();
-    await publishCommand.execute({ packagesPath: directory, registry: target, distTag: false, logger });
+    await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');
   }
 }

@@ -5,9 +5,12 @@ import { directoryOption, sourceRegistryOption, targetRegistryOption } from '../
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadAllCommand from '../download/NpmDownloadAllCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
+import { NpmDirectoryOption } from '../npm-options';
 
-export type NpmCopyAllCommandOptions = CommandExecuteOptions & {
-}
+export type NpmCopyAllCommandOptions =
+  NpmDirectoryOption
+  & CommandExecuteOptions & {
+  }
 
 export default class NpmCopyAllCommand implements Command {
   get definition() {
@@ -23,25 +26,23 @@ export default class NpmCopyAllCommand implements Command {
   }
 
   async execute(options: NpmCopyAllCommandOptions) {
-    const { logger } = options;
-    logger.info('copying packages');
-    logger.info('directory', options.direcory);
-    logger.info('source', options.source);
-    logger.info('target', options.target);
-    const { source } = options;
+    const { source, logger } = options;
     if (!source) {
       throw new Error('The source registry must be specified');
     }
+
     const directory = options.directory || `copy-${dayjs().format('YYYYMMDD-HHmmss')}`;
     logger.info(`using the directory ${directory}`);
+
     const downloadCommand = new NpmDownloadAllCommand();
-    const downloads = await downloadCommand.execute({ directory, registry: source, logger });
-    logger.info('downloads', downloads);
+    await downloadCommand.execute({ ...options, directory, registry: source });
     logger.info('finished downloading');
-    const target = options.target || await getCurrentRegistry({ logger });
+
+    const target = options.target || await getCurrentRegistry(options);
     logger.info(`publishing to the registry ${target}`);
+    
     const publishCommand = new NpmPublishTarballsCommand();
-    await publishCommand.execute({ packagesPath: directory, registry: target, distTag: false, logger });
+    await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');
   }
 }

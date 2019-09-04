@@ -5,14 +5,17 @@ import { directoryOption, sourceRegistryOption, targetRegistryOption } from '../
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageCommand from '../download/NpmDownloadPackageCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
+import { NpmDirectoryOption } from '../npm-options';
 
-export type NpmCopyPackageCommandOptions = CommandExecuteOptions & {
-  name: string
-  version: string
-  direcory: string
-  source: string
-  target: string
-}
+export type NpmCopyPackageCommandOptions =
+  NpmDirectoryOption
+  & CommandExecuteOptions
+  & {
+    name: string
+    version: string
+    source: string
+    target: string
+  }
 
 export default class NpmCopyPackageCommand implements Command {
   get definition() {
@@ -29,27 +32,23 @@ export default class NpmCopyPackageCommand implements Command {
   }
 
   async execute(options: NpmCopyPackageCommandOptions) {
-    const { name, version, logger } = options;
-    logger.info('copying package');
-    logger.info('name', name);
-    logger.info('version', version);
-    logger.info('directory', options.direcory);
-    logger.info('source', options.source);
-    logger.info('target', options.target);
-    const { source } = options;
+    const { source, logger } = options;
     if (!source) {
       throw new Error('The source registry must be specified');
     }
+
     const directory = options.directory || `copy-${dayjs().format('YYYYMMDD-HHmmss')}`;
     logger.info(`using the directory ${directory}`);
+
     const downloadCommand = new NpmDownloadPackageCommand();
-    const downloads = await downloadCommand.execute({ name, version, registry: source, directory, logger });
-    logger.info('downloads', downloads);
+    await downloadCommand.execute({ ...options, registry: source, directory });
     logger.info('finished downloading');
-    const target = options.target || await getCurrentRegistry({ logger });
+
+    const target = options.target || await getCurrentRegistry(options);
     logger.info(`publishing to the registry ${target}`);
+    
     const publishCommand = new NpmPublishTarballsCommand();
-    await publishCommand.execute({ packagesPath: directory, registry: target, distTag: false, logger });
+    await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');
   }
 }
