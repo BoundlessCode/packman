@@ -26,10 +26,19 @@ export type NpmDownloadOptions =
     & {
     }
 
+export type NpmCopyOptions =
+    NpmDirectoryOption
+    & {
+    }
+
 export const npmDownloadOptions = [
     registryOption,
     directoryOption,
     forceOption,
+] as CommandOption[];
+
+export const npmCopyOptions = [
+    directoryOption,
 ] as CommandOption[];
 
 export const dependenciesOptions = [

@@ -3,14 +3,14 @@ import { CommandExecuteOptions } from '../../../core/Command';
 import dayjs from 'dayjs';
 
 import Command from '../../../core/Command';
-import { directoryOption, targetRegistryOption } from '../../../core/commandOptions';
+import { targetRegistryOption } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageLockCommand from '../download/NpmDownloadPackageLockCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
-import { NpmDirectoryOption } from '../npm-options';
+import { NpmCopyOptions, npmCopyOptions } from '../npm-options';
 
 export type NpmCopyPackageLockCommandOptions =
-  NpmDirectoryOption
+  NpmCopyOptions
   & CommandExecuteOptions
   & {
     uri: string
@@ -25,7 +25,7 @@ export default class NpmCopyPackageLockCommand implements Command {
       flags: '<uri>',
       description: 'copy packages specified in a package-lock.json file to the target registry',
       options: [
-        directoryOption,
+        ...npmCopyOptions,
         targetRegistryOption,
       ],
     };
@@ -43,7 +43,7 @@ export default class NpmCopyPackageLockCommand implements Command {
 
     const target = options.target || await getCurrentRegistry(options);
     logger.info(`publishing to the registry ${target}`);
-    
+
     const publishCommand = new NpmPublishTarballsCommand();
     await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');

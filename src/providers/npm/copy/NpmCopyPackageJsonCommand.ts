@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { directoryOption, sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
-import { dependenciesOptions, NpmDirectoryOption } from '../npm-options';
+import { sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
+import { dependenciesOptions, NpmCopyOptions, npmCopyOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageJsonCommand from '../download/NpmDownloadPackageJsonCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
 
 export type NpmCopyPackageJsonCommandOptions =
-  NpmDirectoryOption
+  NpmCopyOptions
   & CommandExecuteOptions
   & {
     uri: string
@@ -25,7 +25,7 @@ export default class NpmCopyPackageJsonCommand implements Command {
       flag: '<uri>',
       description: 'copy packages specified in a package.json file to the target registry',
       options: [
-        directoryOption,
+        ...npmCopyOptions,
         ...dependenciesOptions,
         sourceRegistryOption,
         targetRegistryOption,
@@ -48,7 +48,7 @@ export default class NpmCopyPackageJsonCommand implements Command {
 
     const target = options.target || await getCurrentRegistry(options);
     logger.info(`publishing to the registry ${target}`);
-    
+
     const publishCommand = new NpmPublishTarballsCommand();
     await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');

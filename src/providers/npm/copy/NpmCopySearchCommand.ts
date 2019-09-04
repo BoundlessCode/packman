@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { directoryOption, sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
-import { dependenciesOptions, NpmDirectoryOption } from '../npm-options';
+import { sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
+import { dependenciesOptions, NpmCopyOptions, npmCopyOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadSearchCommand from '../download/NpmDownloadSearchCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
 
 export type NpmCopySearchCommandOptions =
-  NpmDirectoryOption
+  NpmCopyOptions
   & CommandExecuteOptions
   & {
     keyword: string
@@ -25,7 +25,7 @@ export default class NpmCopySearchCommand implements Command {
       flags: '<keyword>',
       description: 'copy packages returned by an npm registry search to the target registry',
       options: [
-        directoryOption,
+        ...npmCopyOptions,
         ...dependenciesOptions,
         sourceRegistryOption,
         targetRegistryOption,
@@ -48,7 +48,7 @@ export default class NpmCopySearchCommand implements Command {
 
     const target = options.target || await getCurrentRegistry(options);
     logger.info(`publishing to the registry ${target}`);
-    
+
     const publishCommand = new NpmPublishTarballsCommand();
     await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');

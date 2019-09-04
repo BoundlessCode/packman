@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { directoryOption, sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
+import { sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadAllCommand from '../download/NpmDownloadAllCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
-import { NpmDirectoryOption } from '../npm-options';
+import { NpmCopyOptions, npmCopyOptions } from '../npm-options';
 
 export type NpmCopyAllCommandOptions =
-  NpmDirectoryOption
+  NpmCopyOptions
   & CommandExecuteOptions & {
   }
 
@@ -18,7 +18,7 @@ export default class NpmCopyAllCommand implements Command {
       name: 'all',
       description: 'copy packages returned by the /-/all endpoint to the target registry',
       options: [
-        directoryOption,
+        ...npmCopyOptions,
         sourceRegistryOption,
         targetRegistryOption,
       ],
@@ -40,7 +40,7 @@ export default class NpmCopyAllCommand implements Command {
 
     const target = options.target || await getCurrentRegistry(options);
     logger.info(`publishing to the registry ${target}`);
-    
+
     const publishCommand = new NpmPublishTarballsCommand();
     await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');
