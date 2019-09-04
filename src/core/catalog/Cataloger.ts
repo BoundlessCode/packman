@@ -1,38 +1,26 @@
-import { resolve, isAbsolute } from 'path';
-import { once } from 'events';
-import { appendFileSync, createReadStream, existsSync } from 'fs';
-import { createInterface } from 'readline';
-
-import { Logger, LoggerOptions } from '../logger';
+import { Logger } from '../logger';
+import CatalogPersister from './CatalogPersister';
+import { FileCatalogPersister } from './FileCatalogPersister';
+import { Entry, EntryInfo, CatalogerOptions } from './types';
 
 const SEPARATOR = ' ';
-const DEFAULT_FILE_NAME = '.catalog.packman';
-
-export type CatalogerOptions = LoggerOptions & {
-    catalogFile?: string
-    logActionsAsInfo?: boolean
-}
-
-export type EntryInfo = {
-    name: string
-    version: string
-}
-
-type Entry = string
 
 export default class Cataloger {
-    entries: Set<Entry>
-    fullPath: string;
-    logger: Logger;
-    logActionsAsInfo: boolean;
-    
-    constructor({ catalogFile = DEFAULT_FILE_NAME, logger, logActionsAsInfo = false }: CatalogerOptions) {
-        this.entries = new Set();
-        this.fullPath =
-            isAbsolute(catalogFile)
-                ? catalogFile
-                : resolve(catalogFile);
+    public readonly persister: CatalogPersister;
+
+    private readonly entries: Set<Entry>
+    private readonly logger: Logger;
+    private readonly logActionsAsInfo: boolean;
+
+    constructor(options: CatalogerOptions) {
+        const {
+            logger,
+            logActionsAsInfo = false,
+        } = options;
+
         this.logger = logger.child({ area: 'cataloger' });
+        this.entries = new Set();
+        this.persister = new FileCatalogPersister({ ...options, logger });
         this.logActionsAsInfo = logActionsAsInfo;
     }
 
@@ -46,38 +34,17 @@ export default class Cataloger {
     }
 
     async initialize() {
-        const fullPath = this.fullPath;
-        const entries = this.entries;
-        const logger = this.logger.child({ method: 'initialize' });
+        const { persister, entries } = this;
 
         try {
-            if (this.exists()) {
-                logger.info('loading', fullPath);
-                const readline = createInterface({
-                    input: createReadStream(fullPath),
-                    crlfDelay: Infinity,
-                });
-
-                readline.on('line', (line) => {
-                    entries.add(line);
-                    logger.debug('loaded', line, 'to set');
-                });
-
-                await once(readline, 'close');
-
-                logger.info('cataloger initialized');
-            }
-            else {
-                logger.info('file does not yet exist:', fullPath);
-            }
+            await persister.initialize(entries);
         }
         catch (error) {
-            logger.error(error);
+            this.logger.error(error);
         }
     }
 
     async catalog(packageInfo: EntryInfo) {
-        const fullPath = this.fullPath;
         const entry = this.unique(packageInfo);
         const logger = this.logger.child({ method: 'catalog', entry });
         const log = (this.logActionsAsInfo ? logger.info : logger.debug).bind(logger);
@@ -90,8 +57,8 @@ export default class Cataloger {
             entries.add(entry);
             log(`${entry} was added to the set`.green);
             try {
-                appendFileSync(fullPath, entry + '\n', 'utf8');
-                logger.debug('appended to', fullPath);
+                this.persister.append(entry);
+                logger.debug(`${entry} was persisted`);
             }
             catch (error) {
                 logger.error(error);
@@ -99,11 +66,11 @@ export default class Cataloger {
         }
     }
 
-    * stream(map: (input: EntryInfo) => string) {
-        map = map || (value => value);
+    * stream<T>(transformer?: (input: EntryInfo) => T): Iterable<T> {
+        const transform = transformer || (value => value as any as T);
         for (const entry of this.entries.values()) {
             const parsed = this.parse(entry);
-            const mapped = map(parsed);
+            const mapped = transform(parsed);
             yield mapped;
         }
     }
@@ -118,6 +85,6 @@ export default class Cataloger {
     }
 
     exists() {
-        return existsSync(this.fullPath);
+        return this.persister.exists();
     }
 }

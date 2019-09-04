@@ -1,6 +1,7 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
-import Cataloger, { EntryInfo } from '../../../core/catalog/Cataloger';
+import { EntryInfo } from '../../../core/catalog/types';
+import Cataloger from '../../../core/catalog/Cataloger';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getCurrentRegistry, getPackageUrl } from '../npm-utils';
 import { downloadFromIterable } from './downloader';
@@ -29,18 +30,18 @@ export default class NpmDownloadCatalogCommand implements Command {
     const { logger } = options;
     const registry = options.registry || await getCurrentRegistry(options);
     const cataloger = new Cataloger(options);
-    logger.debug(`Using catalog file: ${cataloger.fullPath}`);
+    logger.debug(`Using catalog file: ${cataloger.persister.target}`);
     if (cataloger.exists()) {
       await cataloger.initialize();
-      const packages = Array.from(cataloger.stream((entry) => {
+      const packages = cataloger.stream<string>((entry) => {
         const packageInfo = parsePackageInfo(entry, registry);
         const url = getPackageUrl(packageInfo);
         return url.href;
-      }));
+      });
       return downloadFromIterable(packages, options.directory, options);
     }
     else {
-      logger.info(`Could not find a catalog file at ${cataloger.fullPath}`);
+      logger.info(`Could not find a catalog file at ${cataloger.persister.target}`);
     }
   }
 }
