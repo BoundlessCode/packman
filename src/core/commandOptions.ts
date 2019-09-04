@@ -36,15 +36,6 @@ export const forceOption = '--force';
 export const lenientSslOption = '--lenient-ssl';
 export const verboseOption = '-v, --verbose';
 
-export const dependenciesOptions = [
-    dependenciesOption,
-    devDependenciesOption,
-    peerDependenciesOption,
-] as CommandOption[];
-export const commonPackageOptions = [
-    directoryOption,
-    ...(dependenciesOptions as CommandOption[]),
-] as CommandOption[];
 export const globalOptions = [
     lenientSslOption,
     verboseOption,

@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { directoryOption, sourceRegistryOption, targetRegistryOption, dependenciesOptions } from '../../../core/commandOptions';
+import { directoryOption, sourceRegistryOption, targetRegistryOption } from '../../../core/commandOptions';
+import { dependenciesOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageJsonCommand from '../download/NpmDownloadPackageJsonCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';

@@ -1,9 +1,9 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, commonPackageOptions } from '../../../core/commandOptions';
+import { globalOptions } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { getPackageJsonDependencies } from '../crawler';
 import NpmPackageManifest from '../NpmPackageManifest';
-import { npmDownloadOptions, NpmDownloadOptions, DependenciesOptions } from '../npm-options';
+import { NpmDownloadOptions, npmDownloadOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadPackageJsonCommandOptions =
@@ -22,7 +22,7 @@ export default class NpmDownloadPackageJsonCommand implements Command {
       description: 'download tarballs based on a package.json',
       options: [
         ...npmDownloadOptions,
-        ...commonPackageOptions,
+        ...dependenciesOptions,
         ...globalOptions,
       ],
     };
