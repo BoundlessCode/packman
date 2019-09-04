@@ -18,7 +18,7 @@ export default class NpmCatalogAllCommand implements Command {
     return {
       name: 'all',
       flags: '[catalogFile]',
-      description: 'download tarballs for all packages hosted by the registry',
+      description: 'create a catalog of all the packages hosted by the registry',
       options: [
         registryOption,
         ...globalOptions,
