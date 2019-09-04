@@ -1,5 +1,5 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, commonPackageOptions, forceOption } from '../../../core/commandOptions';
+import { globalOptions, commonPackageOptions } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { getPackageJsonDependencies, DependenciesOptions } from '../crawler';
 import NpmPackageManifest from '../NpmPackageManifest';
@@ -12,7 +12,6 @@ export type NpmDownloadPackageJsonCommandOptions =
   & DependenciesOptions
   & {
     uri: string
-    force?: boolean
   }
 
 export default class NpmDownloadPackageJsonCommand implements Command {
@@ -23,7 +22,6 @@ export default class NpmDownloadPackageJsonCommand implements Command {
       description: 'download tarballs based on a package.json',
       options: [
         ...npmDownloadOptions,
-        forceOption,
         ...commonPackageOptions,
         ...globalOptions,
       ],

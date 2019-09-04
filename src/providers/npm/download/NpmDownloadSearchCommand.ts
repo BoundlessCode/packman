@@ -1,5 +1,5 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, commonPackageOptions, forceOption } from '../../../core/commandOptions';
+import { globalOptions, commonPackageOptions } from '../../../core/commandOptions';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getPackageJsonDependencies, DependenciesOptions } from '../crawler';
 import { generatePackageJson } from './npm-search';
@@ -12,7 +12,6 @@ export type NpmDownloadSearchCommandOptions =
   & DependenciesOptions
   & {
     keyword: string
-    force?: boolean
   }
 
 export default class NpmDownloadSearchCommand implements Command {
@@ -23,7 +22,6 @@ export default class NpmDownloadSearchCommand implements Command {
       description: 'download tarballs based on a npm registry search results',
       options: [
         ...npmDownloadOptions,
-        forceOption,
         ...commonPackageOptions,
         ...globalOptions,
       ],

@@ -1,16 +1,16 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, directoryOption } from '../../../core/commandOptions';
+import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
 import NpmPackageManifest from '../NpmPackageManifest';
-import { NpmDirectoryOption } from '../npm-options';
+import { NpmDirectoryOption, NpmForceOption } from '../npm-options';
 
 export type NpmDownloadPackageLockCommandOptions =
   NpmDirectoryOption
+  & NpmForceOption
   & CommandExecuteOptions
   & {
     uri: string
-    force?: boolean
   }
 
 export default class NpmDownloadPackageLockCommand implements Command {
@@ -21,6 +21,7 @@ export default class NpmDownloadPackageLockCommand implements Command {
       description: 'download tarballs based on a package-lock.json',
       options: [
         directoryOption,
+        forceOption,
         ...globalOptions,
       ],
     };

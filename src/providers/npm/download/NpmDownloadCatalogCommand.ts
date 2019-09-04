@@ -1,5 +1,5 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, forceOption } from '../../../core/commandOptions';
+import { globalOptions } from '../../../core/commandOptions';
 import Cataloger, { EntryInfo } from '../../../core/Cataloger';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getCurrentRegistry, getPackageUrl } from '../npm-utils';
@@ -10,7 +10,6 @@ export type NpmDownloadCatalogCommandOptions =
   & CommandExecuteOptions
   & {
     catalogFile: string
-    force: boolean
   };
 
 export default class NpmDownloadCatalogCommand implements Command {
@@ -21,7 +20,6 @@ export default class NpmDownloadCatalogCommand implements Command {
       description: 'download tarballs for packages listed in the specified catalog file',
       options: [
         ...npmDownloadOptions,
-        forceOption,
         ...globalOptions,
       ],
     };

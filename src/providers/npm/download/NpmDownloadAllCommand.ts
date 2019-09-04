@@ -1,5 +1,5 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, forceOption } from '../../../core/commandOptions';
+import { globalOptions } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getCurrentRegistry, getAllEndpointUrl } from '../npm-utils';
@@ -10,7 +10,6 @@ export type NpmDownloadAllCommandOptions =
   NpmDownloadOptions
   & CommandExecuteOptions
   & {
-    force?: boolean
     filters?: [(currentPackage: any) => boolean]
   }
 
@@ -21,7 +20,6 @@ export default class NpmDownloadAllCommand implements Command {
       description: 'download tarballs for all packages hosted by the registry',
       options: [
         ...npmDownloadOptions,
-        forceOption,
         ...globalOptions,
       ],
     };

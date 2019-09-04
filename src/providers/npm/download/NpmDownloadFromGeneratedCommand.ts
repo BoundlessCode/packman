@@ -1,16 +1,16 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
-import { NpmDirectoryOption } from '../npm-options';
+import { NpmDirectoryOption, NpmForceOption } from '../npm-options';
 import { downloadFromIterable } from './downloader';
 import { endOfLine } from './generator';
 
 export type NpmDownloadFromGeneratedCommandOptions =
   NpmDirectoryOption
+  & NpmForceOption
   & CommandExecuteOptions
   & {
     uri: string
-    force: boolean
   }
 
 export default class NpmDownloadFromGeneratedCommand implements Command {
