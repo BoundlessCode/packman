@@ -7,7 +7,6 @@ export type ArtifactoryPublishPackagesCommandOptions = GlobalOptions & {
   server: string
   repo: string
   packageType: string
-  lenientSsl?: boolean
 }
 
 export default class ArtifactoryPublishPackagesCommand implements Command {
@@ -24,8 +23,7 @@ export default class ArtifactoryPublishPackagesCommand implements Command {
   }
 
   async execute(options: ArtifactoryPublishPackagesCommandOptions) {
-    const { packagesPath, server, repo, packageType, lenientSsl = false, logger } = options;
-    const publisher = new ArtifactoryPublisher({ packagesPath, server, repo, packageType, lenientSsl, logger });
+    const publisher = new ArtifactoryPublisher(options);
     await publisher.publish();
   }
 }

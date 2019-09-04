@@ -14,7 +14,6 @@ type ArtifactoryPublisherOptions = PublisherOptions & {
   server: string
   repo: string
   packageType: string
-  lenientSsl: boolean
   api?: string
 }
 

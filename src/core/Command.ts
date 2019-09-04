@@ -19,6 +19,7 @@ export type CommandOption = string | {
 }
 
 export type GlobalOptions = LoggerOptions & {
+  lenientSsl?: boolean
   [name: string]: any
 }
 

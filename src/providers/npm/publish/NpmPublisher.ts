@@ -70,14 +70,14 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
 
   async publishPackage(packageInfo: NpmPackageInfo, options: NpmPublisherOptions) {
     const { registry: packageRegistry, index, directoryPath, packageName, packageVersion } = packageInfo;
-    const { lenientSsl = false, distTag, registry, logger } = options;
+    const { distTag, registry, logger } = options;
 
     const scopedPackageName = getScopedPackageName(packageInfo);
     const baseMessageFormat = `publish [${index}] [%s]`;
     const debugMessageFormat = `${baseMessageFormat} ${directoryPath} ...`;
     const infoMessageFormat = `${baseMessageFormat} ${scopedPackageName} ${packageVersion}`;
 
-    if (await packageVersionExists(packageInfo, { lenientSsl, logger })) {
+    if (await packageVersionExists(packageInfo, options)) {
       logger.info(infoMessageFormat, 'exists'.yellow);
       return;
     }

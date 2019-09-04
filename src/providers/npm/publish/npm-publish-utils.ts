@@ -7,7 +7,7 @@ import { getPackageUrl } from '../npm-utils';
 import PackageInfo from '../../../core/PackageInfo';
 
 type PackageVersionExistsOptions = LoggerOptions & {
-    lenientSsl: boolean
+    lenientSsl?: boolean
 }
 
 type PackageResponse = {
@@ -18,7 +18,7 @@ type PackageResponse = {
     }
 }
 
-export async function packageVersionExists(packageInfo: PackageInfo, { lenientSsl, logger }: PackageVersionExistsOptions) {
+export async function packageVersionExists(packageInfo: PackageInfo, { lenientSsl = false, logger }: PackageVersionExistsOptions) {
     const { packageName, packageVersion = '' } = packageInfo;
     const uri = getPackageUrl(packageInfo);
     try {

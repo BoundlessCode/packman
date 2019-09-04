@@ -9,7 +9,6 @@ export type NpmPublishTarballsCommandOptions =
   & {
     packagesPath: string
     distTag: boolean
-    lenientSsl?: boolean
   }
 
 export default class NpmPublishTarballsCommand implements Command {
