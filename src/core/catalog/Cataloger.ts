@@ -3,7 +3,7 @@ import { once } from 'events';
 import { appendFileSync, createReadStream, existsSync } from 'fs';
 import { createInterface } from 'readline';
 
-import { Logger, LoggerOptions } from './logger';
+import { Logger, LoggerOptions } from '../logger';
 
 const SEPARATOR = ' ';
 const DEFAULT_FILE_NAME = '.catalog.packman';

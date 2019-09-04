@@ -6,7 +6,7 @@ import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
-import Cataloger from '../../../core/Cataloger';
+import Cataloger from '../../../core/catalog/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';
 
 export type NugetDownloadAllCommandOptions = CommandExecuteOptions & {
