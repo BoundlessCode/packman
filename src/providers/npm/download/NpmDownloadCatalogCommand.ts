@@ -1,15 +1,14 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
+import { globalOptions, forceOption } from '../../../core/commandOptions';
 import Cataloger, { EntryInfo } from '../../../core/Cataloger';
-import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
+import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getCurrentRegistry, getPackageUrl } from '../npm-utils';
 import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadCatalogCommandOptions =
-  NpmDownloadCommandOptions
+  NpmDownloadOptions
   & CommandExecuteOptions
   & {
-    directory: string
     catalogFile: string
     force: boolean
   };
@@ -22,7 +21,6 @@ export default class NpmDownloadCatalogCommand implements Command {
       description: 'download tarballs for packages listed in the specified catalog file',
       options: [
         ...npmDownloadOptions,
-        directoryOption,
         forceOption,
         ...globalOptions,
       ],

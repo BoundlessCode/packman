@@ -1,18 +1,17 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, commonPackageOptions, forceOption } from '../../../core/commandOptions';
 import BundleZipCreateCommand from '../../bundle/zip/BundleZipCreateCommand';
-import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
+import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getDependencies, DependenciesOptions } from '../crawler';
 import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadPackageCommandOptions =
-  NpmDownloadCommandOptions
+  NpmDownloadOptions
   & CommandExecuteOptions
   & DependenciesOptions
   & {
     name: string
     version?: string
-    directory: string
     force?: boolean
     bundleName?: string
   }

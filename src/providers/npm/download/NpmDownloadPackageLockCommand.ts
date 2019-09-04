@@ -3,12 +3,13 @@ import { globalOptions, directoryOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
 import NpmPackageManifest from '../NpmPackageManifest';
+import { NpmDirectoryOption } from '../npm-options';
 
 export type NpmDownloadPackageLockCommandOptions =
-  CommandExecuteOptions
+  NpmDirectoryOption
+  & CommandExecuteOptions
   & {
     uri: string
-    directory: string
     force?: boolean
   }
 

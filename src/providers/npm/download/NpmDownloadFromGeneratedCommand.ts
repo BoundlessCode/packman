@@ -1,13 +1,14 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
 import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
+import { NpmDirectoryOption } from '../npm-options';
 import { downloadFromIterable } from './downloader';
 import { endOfLine } from './generator';
 
 export type NpmDownloadFromGeneratedCommandOptions =
-  CommandExecuteOptions
+  NpmDirectoryOption
+  & CommandExecuteOptions
   & {
-    directory: string
     uri: string
     force: boolean
   }

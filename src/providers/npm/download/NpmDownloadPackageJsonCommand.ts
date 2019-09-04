@@ -3,15 +3,14 @@ import { globalOptions, commonPackageOptions, forceOption } from '../../../core/
 import { fetch } from '../../../core/fetcher';
 import { getPackageJsonDependencies, DependenciesOptions } from '../crawler';
 import NpmPackageManifest from '../NpmPackageManifest';
-import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
+import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadPackageJsonCommandOptions =
-  NpmDownloadCommandOptions
+  NpmDownloadOptions
   & CommandExecuteOptions
   & DependenciesOptions
   & {
-    directory: string
     uri: string
     force?: boolean
   }

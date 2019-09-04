@@ -1,10 +1,22 @@
 import { CommandOption } from '../../core/Command';
-import { registryOption } from '../../core/commandOptions';
+import { registryOption, directoryOption } from '../../core/commandOptions';
 
-export type NpmDownloadCommandOptions = {
+
+export type NpmRegistryOption = {
     registry?: string
 }
 
+export type NpmDirectoryOption = {
+    directory: string
+}
+
+export type NpmDownloadOptions =
+    NpmRegistryOption
+    & NpmDirectoryOption
+    & {
+    }
+
 export const npmDownloadOptions = [
     registryOption,
+    directoryOption,
 ] as CommandOption[];

@@ -1,11 +1,11 @@
 import Command, { CommandExecuteOptions } from '../../../core/Command';
-import { globalOptions, outputFileOption, dependenciesOptions } from '../../../core/commandOptions';
+import { globalOptions, outputFileOption, dependenciesOptions, registryOption } from '../../../core/commandOptions';
 import { getDependencies, DependenciesOptions } from '../crawler';
-import { npmDownloadOptions, NpmDownloadCommandOptions } from '../npm-options';
+import { NpmRegistryOption } from '../npm-options';
 import { saveToFile } from './generator';
 
 export type NpmDownloadGenerateCommandOptions =
-  NpmDownloadCommandOptions
+  NpmRegistryOption
   & CommandExecuteOptions
   & DependenciesOptions
   & {
@@ -21,7 +21,7 @@ export default class NpmDownloadGenerateCommand implements Command {
       flags: '<name> [version]',
       description: 'generates the download links for a given package and version',
       options: [
-        ...npmDownloadOptions,
+        registryOption,
         outputFileOption,
         ...dependenciesOptions,
         ...globalOptions,
