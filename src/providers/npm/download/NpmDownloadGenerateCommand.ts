@@ -1,5 +1,5 @@
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions, outputFileOption, registryOption } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions, outputFileOption, registryOption } from '../../../core/commandOptions';
 import { getDependencies } from '../crawler';
 import { NpmRegistryOption, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { saveToFile } from './generator';

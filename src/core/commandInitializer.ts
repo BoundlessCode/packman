@@ -4,8 +4,8 @@ import sade from '@boco/sade';
 import camelcase from 'camelcase';
 
 import { logger } from './logger';
-import Command, { CommandDefinition, CommandOption, HasCommandDefinition } from './Command';
-import { CommandOptionsObject } from './commandOptions.js';
+import Command, { CommandDefinition, HasCommandDefinition } from './Command';
+import { CommandOptionsObject, CommandOption } from './commandOptions';
 
 const lifecycleLogger = logger.child({});
 

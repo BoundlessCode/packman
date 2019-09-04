@@ -1,5 +1,5 @@
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { getPackageJsonDependencies } from '../crawler';
 import NpmPackageManifest from '../NpmPackageManifest';

@@ -1,5 +1,5 @@
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { NpmDirectoryOption, NpmForceOption } from '../npm-options';
 import { downloadFromIterable } from './downloader';

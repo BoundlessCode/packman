@@ -1,5 +1,5 @@
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import Cataloger, { EntryInfo } from '../../../core/catalog/Cataloger';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getCurrentRegistry, getPackageUrl } from '../npm-utils';

@@ -1,7 +1,17 @@
-import { CommandOption } from './Command';
+import { LoggerOptions } from './logger';
+
+export type CommandOption = string | {
+    flags: string
+    description?: string
+}
 
 export type CommandOptionsObject = {
     [name: string]: string | CommandOption | CommandOption[]
+}
+
+export type GlobalOptions = LoggerOptions & {
+    lenientSsl?: boolean
+    [name: string]: any
 }
 
 export const directoryOption = {

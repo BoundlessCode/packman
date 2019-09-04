@@ -1,4 +1,4 @@
-import { LoggerOptions } from './logger';
+import { CommandOption, GlobalOptions } from './commandOptions'
 
 export type CommandDefinition = {
   name: string
@@ -11,16 +11,6 @@ export type CommandDefinition = {
     dir: string,
   }
   children?: CommandDefinition[]
-}
-
-export type CommandOption = string | {
-  flags: string
-  description?: string
-}
-
-export type GlobalOptions = LoggerOptions & {
-  lenientSsl?: boolean
-  [name: string]: any
 }
 
 export interface HasCommandDefinition {

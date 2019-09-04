@@ -1,5 +1,4 @@
-import { CommandOption } from '../../core/Command';
-import { registryOption, directoryOption, forceOption, dependenciesOption, devDependenciesOption, peerDependenciesOption } from '../../core/commandOptions';
+import { registryOption, directoryOption, forceOption, dependenciesOption, devDependenciesOption, peerDependenciesOption, CommandOption } from '../../core/commandOptions';
 
 export type DependenciesOptions = {
     dependencies?: boolean

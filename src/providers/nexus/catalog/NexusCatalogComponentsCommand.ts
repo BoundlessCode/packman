@@ -1,5 +1,5 @@
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions, directoryOption } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions, directoryOption } from '../../../core/commandOptions';
 import { fetchNexusCatalog } from '../nexus-utils';
 
 export type NexusCatalogComponentsCommandOptions = GlobalOptions & {

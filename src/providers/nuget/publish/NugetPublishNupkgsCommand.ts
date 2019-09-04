@@ -1,5 +1,5 @@
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions, registryOption } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions, registryOption } from '../../../core/commandOptions';
 import NugetPublisher from './NugetPublisher';
 
 export type NugetPublishNupkgsCommandOptions = GlobalOptions & {

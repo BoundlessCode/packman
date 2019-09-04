@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import { NpmCopyOptions, npmCopyOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadSearchCommand from '../download/NpmDownloadSearchCommand';

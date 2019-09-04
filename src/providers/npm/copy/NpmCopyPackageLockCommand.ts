@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions, directoryOption } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions, directoryOption } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageLockCommand from '../download/NpmDownloadPackageLockCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';

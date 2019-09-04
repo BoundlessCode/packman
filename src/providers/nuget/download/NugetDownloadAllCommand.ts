@@ -2,8 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import { URL } from 'url';
 
-import Command, { GlobalOptions } from '../../../core/Command';
-import { globalOptions, registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
+import Command from '../../../core/Command';
+import { GlobalOptions, globalOptions, registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/catalog/Cataloger';
