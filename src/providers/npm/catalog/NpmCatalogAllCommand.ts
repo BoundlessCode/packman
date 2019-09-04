@@ -5,11 +5,13 @@ import Cataloger from '../../../core/Cataloger';
 import { CommandExecuteOptions } from '../../../core/Command';
 import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
 import NpmPackageManifest from '../NpmPackageManifest';
+import { NpmRegistryOption } from '../npm-options';
 
-export type NpmCatalogAllCommandOptions = CommandExecuteOptions & {
-  registry: string
-  catalogFile: string
-}
+export type NpmCatalogAllCommandOptions =
+  NpmRegistryOption
+  & CommandExecuteOptions & {
+    catalogFile: string
+  }
 
 export default class NpmCatalogAllCommand implements Command {
   get definition() {
@@ -25,12 +27,12 @@ export default class NpmCatalogAllCommand implements Command {
   }
 
   async execute(options: NpmCatalogAllCommandOptions) {
-    const { catalogFile, logger } = options;
-    const registry = options.registry || await getCurrentRegistry({ logger });
-    const allEndpointUrl = getAllEndpointUrl(registry, { logger });
-    const { body: searchResults } = await fetch<object>({ uri: allEndpointUrl, responseType: 'json', logger });
+    const { logger } = options;
+    const registry = options.registry || await getCurrentRegistry(options);
+    const allEndpointUrl = getAllEndpointUrl(registry, options);
+    const { body: searchResults } = await fetch<object>({ ...options, uri: allEndpointUrl, responseType: 'json' });
 
-    const cataloger = new Cataloger({ catalogFile, logger });
+    const cataloger = new Cataloger(options);
     await cataloger.initialize();
 
     for (const packageName of Object.keys(searchResults)) {
@@ -42,7 +44,7 @@ export default class NpmCatalogAllCommand implements Command {
       }
 
       const packageUrl = getPackageUrl({ packageName, registry });
-      const { body: { versions } } = await fetch<NpmPackageManifest>({ uri: packageUrl, responseType: 'json', logger });
+      const { body: { versions } } = await fetch<NpmPackageManifest>({ ...options, uri: packageUrl, responseType: 'json' });
 
       if (versions) {
         for (const packageVersion of Object.keys(versions)) {
