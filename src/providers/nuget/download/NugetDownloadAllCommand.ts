@@ -3,18 +3,18 @@ import fs from 'fs';
 import { URL } from 'url';
 
 import Command from '../../../core/Command';
-import { GlobalOptions, globalOptions, registryOption, directoryOption, catalogOption } from '../../../core/commandOptions';
+import { GlobalOptions, globalOptions, registryOption, directoryOption, catalogOption, CatalogFileOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/catalog/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';
 
 export type NugetDownloadAllCommandOptions =
-  GlobalOptions
+  CatalogFileOption
+  & GlobalOptions
   & {
     registry: string
     directory: string
-    catalogFile: string
   }
 
 type NugetIndexSearchResults = {

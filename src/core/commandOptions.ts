@@ -9,6 +9,10 @@ export type CommandOptionsObject = {
     [name: string]: string | CommandOption | CommandOption[]
 }
 
+export type CatalogFileOption = {
+    catalogFile?: string
+}
+
 export type GlobalOptions = LoggerOptions & {
     lenientSsl?: boolean
     [name: string]: any

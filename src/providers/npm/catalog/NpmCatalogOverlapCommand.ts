@@ -1,5 +1,5 @@
 import Command from '../../../core/Command';
-import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
+import { GlobalOptions, globalOptions, CatalogFileOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import Cataloger from '../../../core/catalog/Cataloger';
 import { EntryInfo } from '../../../core/catalog/types';
@@ -12,9 +12,9 @@ import { SearchResults } from '../crawler';
 export type NpmCatalogOverlapCommandOptions =
   NpmSourceRegistryOption
   & NpmTargetRegistryOption
+  & CatalogFileOption
   & GlobalOptions
   & {
-    catalogFile: string
   }
 
 export default class NpmCatalogOverlapCommand implements Command {

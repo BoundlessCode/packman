@@ -1,5 +1,5 @@
 import Command from '../../../core/Command';
-import { GlobalOptions, globalOptions, registryOption } from '../../../core/commandOptions';
+import { GlobalOptions, globalOptions, registryOption, CatalogFileOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import Cataloger from '../../../core/catalog/Cataloger';
 import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
@@ -8,9 +8,9 @@ import { NpmRegistryOption } from '../npm-options';
 
 export type NpmCatalogAllCommandOptions =
   NpmRegistryOption
+  & CatalogFileOption
   & GlobalOptions
   & {
-    catalogFile: string
   }
 
 export default class NpmCatalogAllCommand implements Command {
