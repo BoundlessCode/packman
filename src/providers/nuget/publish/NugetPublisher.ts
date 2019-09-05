@@ -88,8 +88,8 @@ export default class NugetPublisher extends Publisher<NugetPublisherOptions, Nug
   }
 
   async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
-    const targetRegistry = registry || this.options.registry;
+    const target = registry || this.options.registry;
     const { logger } = this.options;
-    await execute(`dotnet nuget push ${filePath} -s ${targetRegistry}`, { stdio: [0, 1, 2], logger });
+    await execute(`dotnet nuget push ${filePath} -s ${target}`, { stdio: [0, 1, 2], logger });
   }
 }

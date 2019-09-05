@@ -29,8 +29,8 @@ export default class NpmCopyPackageCommand implements Command {
   }
 
   async execute(options: NpmCopyPackageCommandOptions) {
-    const { sourceRegistry, logger } = options;
-    if (!sourceRegistry) {
+    const { source, logger } = options;
+    if (!source) {
       throw new Error('The source registry must be specified');
     }
 
@@ -38,14 +38,14 @@ export default class NpmCopyPackageCommand implements Command {
     logger.info(`using the directory ${directory}`);
 
     const downloadCommand = new NpmDownloadPackageCommand();
-    await downloadCommand.execute({ ...options, registry: sourceRegistry, directory });
+    await downloadCommand.execute({ ...options, registry: source, directory });
     logger.info('finished downloading');
 
-    const targetRegistry = options.targetRegistry || await getCurrentRegistry(options);
-    logger.info(`publishing to the registry ${targetRegistry}`);
+    const target = options.target || await getCurrentRegistry(options);
+    logger.info(`publishing to the registry ${target}`);
 
     const publishCommand = new NpmPublishTarballsCommand();
-    await publishCommand.execute({ ...options, packagesPath: directory, registry: targetRegistry, distTag: false });
+    await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');
   }
 }

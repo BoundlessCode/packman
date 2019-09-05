@@ -26,11 +26,11 @@ export type NpmDownloadOptions =
     }
 
 export type NpmSourceRegistryOption = {
-    sourceRegistry: string
+    source: string
 }
 
 export type NpmTargetRegistryOption = {
-    targetRegistry: string
+    target: string
 }
 
 export type NpmCopyOptions =

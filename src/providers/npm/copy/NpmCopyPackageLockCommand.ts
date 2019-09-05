@@ -40,11 +40,11 @@ export default class NpmCopyPackageLockCommand implements Command {
     await downloadCommand.execute({ ...options, directory });
     logger.info('finished downloading');
 
-    const targetRegistry = options.targetRegistry || await getCurrentRegistry(options);
-    logger.info(`publishing to the registry ${targetRegistry}`);
+    const target = options.target || await getCurrentRegistry(options);
+    logger.info(`publishing to the registry ${target}`);
 
     const publishCommand = new NpmPublishTarballsCommand();
-    await publishCommand.execute({ ...options, packagesPath: directory, registry: targetRegistry, distTag: false });
+    await publishCommand.execute({ ...options, packagesPath: directory, registry: target, distTag: false });
     logger.info('finished copying');
   }
 }
