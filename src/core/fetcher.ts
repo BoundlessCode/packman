@@ -99,7 +99,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     return { body: (resolveWithFullResponse ? response : response.data) as TResponse };
   } catch (error) {
     activeRequests--;
-    logger.error(`failed to fetch [${activeRequests}]:`.red, summary, error);
+    logger.error(`failed to fetch [${activeRequests}]:`.red, summary, 'message' in error ? error.message.red : error);
     throw error;
   }
 }
