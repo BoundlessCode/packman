@@ -10,7 +10,7 @@ import NpmPackageManifest from '../NpmPackageManifest';
 import { NpmSourceRegistryOption, NpmTargetRegistryOption, sourceRegistryOption, targetRegistryOption } from '../npm-options';
 import { SearchResults } from '../crawler';
 
-export type NpmCatalogOverlapCommandOptions =
+export type NpmCatalogSameCommandOptions =
   NpmSourceRegistryOption
   & NpmTargetRegistryOption
   & CatalogFileOption
@@ -18,10 +18,10 @@ export type NpmCatalogOverlapCommandOptions =
   & {
   }
 
-export default class NpmCatalogOverlapCommand implements Command {
+export default class NpmCatalogSameCommand implements Command {
   get definition() {
     return {
-      name: 'overlap',
+      name: 'same',
       flags: '[catalogFile]',
       description: 'create a catalog of the versioned packages in both specified registries',
       options: [
@@ -32,7 +32,7 @@ export default class NpmCatalogOverlapCommand implements Command {
     };
   }
 
-  async execute(options: NpmCatalogOverlapCommandOptions) {
+  async execute(options: NpmCatalogSameCommandOptions) {
     // Scan the target registry first because we assume it's smaller. The idea is that the
     // source registry will probably usually be npmjs.org, or another huge registry. Also,
     // the target registry is more likely to have an "all" endpoint or other convenient mechanism.
