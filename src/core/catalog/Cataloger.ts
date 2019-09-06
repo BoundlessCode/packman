@@ -49,8 +49,7 @@ export default class Cataloger {
         return { name, version };
     }
 
-    async initialize() {
-        const { persister } = this;
+    async initialize(persister: CatalogPersister = this.persister) {
         try {
             await persister.load();
         }
