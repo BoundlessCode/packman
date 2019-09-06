@@ -87,27 +87,28 @@ export function getPackageFileInfo({ filePath, extension }: GetPackageFileInfoOp
     const fileInfo = path.parse(filePath);
 
     if (fileInfo.ext === `.${extension}`) {
-      const directoryPath = fileInfo.dir;
-      const directoryParts = directoryPath.split(path.posix.sep);
+        const directoryPath = fileInfo.dir;
+        const directoryParts = directoryPath.split(path.posix.sep);
 
-      const packageName = directoryParts.pop();
+        const packageName = directoryParts.pop();
 
-      if (!packageName) {
-        throw new Error(`could not extract package name from directoryPath ${directoryPath}`);
-      }
+        if (!packageName) {
+            throw new Error(`could not extract package name from directoryPath ${directoryPath}`);
+        }
 
-      const potentialScope = directoryParts.pop() || '';
-      const packageScope = potentialScope.startsWith('@') ? potentialScope : undefined;
+        const potentialScope = directoryParts.pop() || '';
+        const packageScope = potentialScope.startsWith('@') ? potentialScope : undefined;
 
-      const fileName = fileInfo.name;
-      const packageVersion = fileName.slice(fileName.lastIndexOf('-') + 1);
+        const fileName = fileInfo.name;
+        const versionMatch = fileName.match(/-(\d+\.\d+\.\d+.*)/);
+        const packageVersion = versionMatch && versionMatch[1] || '';
 
-      return {
-        directoryPath,
-        filePath,
-        packageName,
-        packageVersion,
-        packageScope,
-      };
-    }
+        return {
+            directoryPath,
+            filePath,
+            packageName,
+            packageVersion,
+            packageScope,
+        };
+    };
 }
