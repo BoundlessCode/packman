@@ -58,8 +58,8 @@ export default class Cataloger {
         }
     }
 
-    async catalog(packageInfo: EntryInfo) {
-        const entry = this.unique(packageInfo);
+    async catalog(entryInfo: EntryInfo) {
+        const entry = this.unique(entryInfo);
         const logger = this.logger.child({ method: 'catalog', entry });
         const log = (this.logActionsAsInfo ? logger.info : logger.debug).bind(logger);
         const persister = this.persister;
