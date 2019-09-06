@@ -79,6 +79,12 @@ export default class Cataloger {
         }
     }
 
+    async remove(entryInfo: EntryInfo) {
+        const entry = this.unique(entryInfo);
+        await this.persister.remove(entry);
+        this.logger.debug(`${entry} was removed from the set`);
+    }
+
     * stream<T>(transformer?: (input: EntryInfo) => T): Iterable<T> {
         const transform = transformer || (value => value as any as T);
         for (const entry of this.persister.stream()) {

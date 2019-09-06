@@ -2,6 +2,7 @@ import { resolve, isAbsolute } from 'path';
 import { once } from 'events';
 import { appendFileSync, createReadStream, existsSync } from 'fs';
 import { createInterface } from 'readline';
+import replace from 'replace-in-file';
 
 import { LoggerOptions } from '../logger';
 import CatalogPersister from './CatalogPersister';
@@ -75,6 +76,24 @@ export default class FileCatalogPersister implements CatalogPersister {
     await this.basePersister.append(entry);
     appendFileSync(this.fullPath, entry + '\n', 'utf8');
     this.options.logger.debug('appended to', this.fullPath);
+  }
+
+  async remove(entry: Entry) {
+    const { fullPath, options } = this;
+    const { logger } = options;
+
+    try {
+      const results = await replace({
+        files: fullPath,
+        from: new RegExp(`^${entry}\n`, 'gm'),
+        to: '',
+      });
+      logger.debug('file persister remove replace results:', results);
+      await this.basePersister.remove(entry);
+    }
+    catch (error) {
+      logger.debug(`Unable to remove entry ${entry} from file ${fullPath} because`, 'message' in error ? error.message : error);
+    }
   }
 
   has(entry: Entry): boolean {
