@@ -39,7 +39,7 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
   getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions): NpmPackageInfo | undefined {
     const fileInfo = path.parse(filePath);
 
-    if (fileInfo.ext === extension) {
+    if (fileInfo.ext === `.${extension}`) {
       counter.increment();
 
       const directoryPath = fileInfo.dir;
