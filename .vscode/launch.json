@@ -246,6 +246,31 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "npm catalog tarballs",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "npm",
+                "catalog",
+                "tarballs",
+                "/Users/noam/dev/projects/boco/packman/catalog.packman",
+                "/Users/noam/dev/projects/boco/packman/tarballs",
+                "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "npm download catalog",
             "program": "${workspaceFolder}/bin/packman",
             "args": [
