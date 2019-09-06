@@ -16,15 +16,24 @@ export type NpmCatalogSameCommandOptions =
   & CatalogFileOption
   & GlobalOptions
   & {
+    sameCatalogFile: string
+    diffCatalogFile: string
   }
 
-export default class NpmCatalogSameCommand implements Command {
+type Catalogers = {
+  targetCataloger: Cataloger
+  sameCataloger?: Cataloger
+  diffCataloger?: Cataloger
+}
+
+export default class NpmCatalogCompareCommand implements Command {
   get definition() {
     return {
-      name: 'same',
-      flags: '[catalogFile]',
+      name: 'compare',
       description: 'create a catalog of the versioned packages in both specified registries, optimized for a smaller target registry',
       options: [
+        '--same <sameCatalogFile>',
+        '--diff <diffCatalogFile>',
         sourceRegistryOption,
         targetRegistryOption,
         ...globalOptions,
@@ -37,7 +46,7 @@ export default class NpmCatalogSameCommand implements Command {
     // source registry will probably usually be npmjs.org, or another huge registry. Also,
     // the target registry is more likely to have an "all" endpoint or other convenient mechanism.
 
-    const { source, logger } = options;
+    const { source, sameCatalogFile, diffCatalogFile, logger } = options;
     if (!source) {
       throw new Error('The source registry must be specified');
     }
@@ -45,11 +54,15 @@ export default class NpmCatalogSameCommand implements Command {
     const target = options.target || await getCurrentRegistry(options);
     logger.info(`scanning target registry ${target}`);
 
-    const cataloger = await createCataloger({ ...options, registry: target });
+    const catalogers: Catalogers = {
+      targetCataloger: await createCataloger({ ...options, registry: target }),
+      sameCataloger: sameCatalogFile ? new Cataloger({ ...options, catalogFile: sameCatalogFile, logActionsAsInfo: true }) : undefined,
+      diffCataloger: diffCatalogFile ? new Cataloger({ ...options, catalogFile: diffCatalogFile, logActionsAsInfo: true }) : undefined,
+    };
 
-    await compareRegistries(cataloger, options);
+    await compareRegistries(catalogers, options);
 
-    await storeResults(cataloger, options);
+    // await storeResults(catalogers, options);
   }
 }
 
@@ -93,12 +106,13 @@ async function createCataloger(options: NpmCatalogSameCommandOptions): Promise<C
   return cataloger;
 }
 
-async function compareRegistries(cataloger: Cataloger, options: NpmCatalogSameCommandOptions) {
+async function compareRegistries(catalogers: Catalogers, options: NpmCatalogSameCommandOptions) {
   const { logger, source } = options;
+  const { targetCataloger, sameCataloger, diffCataloger } = catalogers;
 
   logger.info(`start comparing to source registry ${source}`);
 
-  for (const entry of cataloger.stream<EntryInfo>()) {
+  for (const entry of targetCataloger.stream<EntryInfo>()) {
     const packageInfo: PackageInfo = {
       packageName: entry.name,
       packageVersion: entry.version,
@@ -115,26 +129,37 @@ async function compareRegistries(cataloger: Cataloger, options: NpmCatalogSameCo
 
     const summary = `${entry.name}@${entry.version}`;
     if (exists) {
+      if (sameCataloger) {
+        await sameCataloger.catalog(entry);
+      }
       logger.info('same:'.green, summary);
     }
-    else {
-      await cataloger.remove(entry);
+    else if (!exists) {
+      if (diffCataloger) {
+        await diffCataloger.catalog(entry);
+      }
       logger.info('diff:'.red, summary);
     }
   }
 
   logger.info(`done comparing to source registry ${source}`);
+  if (sameCataloger) {
+    logger.info('same'.green, 'results stored in', sameCataloger.persister.target.magenta);
+  }
+  if (diffCataloger) {
+    logger.info('diff'.red, 'results stored in', diffCataloger.persister.target.magenta);
+  }
 }
 
-async function storeResults(cataloger: Cataloger, options: NpmCatalogSameCommandOptions) {
-  const { logger } = options;
+// async function storeResults(cataloger: Cataloger, options: NpmCatalogSameCommandOptions) {
+//   const { logger } = options;
 
-  const samePersister = new FileCatalogPersister({
-    catalogFile: options.catalogFile,
-    logger,
-  }, cataloger.persister);
+//   const samePersister = new FileCatalogPersister({
+//     catalogFile: options.catalogFile,
+//     logger,
+//   }, cataloger.persister);
 
-  await cataloger.saveTo(samePersister);
+//   await cataloger.saveTo(samePersister);
 
-  logger.info('stored the results in', samePersister.target.magenta);
-}
+//   logger.info('stored the results in', samePersister.target.magenta);
+// }
