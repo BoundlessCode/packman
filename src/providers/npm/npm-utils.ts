@@ -6,6 +6,8 @@ import { execute } from '../../core/shell';
 import PackageInfo from '../../core/PackageInfo';
 import { fetch } from '../../core/fetcher';
 
+export const TARBALL_EXTENSION = 'tgz';
+
 export async function getCurrentRegistry({ logger }: LoggerOptions) {
     return await execute('npm get registry', { logger });
 }

@@ -1,14 +1,24 @@
-import { Logger } from '../logger';
+import { Logger, LoggerOptions } from '../logger';
 import CatalogPersister from './CatalogPersister';
-import { FileCatalogPersister } from './FileCatalogPersister';
-import { Entry, EntryInfo, CatalogerOptions } from './types';
+import FileCatalogPersister, { FileCatalogPersisterOptions } from './FileCatalogPersister';
+import MemoryCatalogPersister, { MemoryCatalogPersisterOptions } from './MemoryCatalogPersister';
+import Entry from './Entry';
+import EntryInfo from './EntryInfo';
 
 const SEPARATOR = ' ';
+
+type CatalogerOptions =
+    LoggerOptions
+    & FileCatalogPersisterOptions
+    & MemoryCatalogPersisterOptions
+    & {
+        logActionsAsInfo?: boolean
+        mode?: 'file' | 'memory'
+    }
 
 export default class Cataloger {
     public readonly persister: CatalogPersister;
 
-    private readonly entries: Set<Entry>
     private readonly logger: Logger;
     private readonly logActionsAsInfo: boolean;
 
@@ -16,11 +26,17 @@ export default class Cataloger {
         const {
             logger,
             logActionsAsInfo = false,
+            mode = 'file',
         } = options;
 
         this.logger = logger.child({ area: 'cataloger' });
-        this.entries = new Set();
-        this.persister = new FileCatalogPersister({ ...options, logger });
+
+        const memoryPersister = new MemoryCatalogPersister({ ...options, logger });
+        this.persister =
+            mode === 'file'
+                ? new FileCatalogPersister({ ...options, logger }, memoryPersister)
+                : memoryPersister;
+
         this.logActionsAsInfo = logActionsAsInfo;
     }
 
@@ -34,10 +50,9 @@ export default class Cataloger {
     }
 
     async initialize() {
-        const { persister, entries } = this;
-
+        const { persister } = this;
         try {
-            await persister.initialize(entries);
+            await persister.initialize();
         }
         catch (error) {
             this.logger.error(error);
@@ -48,16 +63,14 @@ export default class Cataloger {
         const entry = this.unique(packageInfo);
         const logger = this.logger.child({ method: 'catalog', entry });
         const log = (this.logActionsAsInfo ? logger.info : logger.debug).bind(logger);
+        const persister = this.persister;
 
-        const entries = this.entries;
-        if (entries.has(entry)) {
+        if (persister.has(entry)) {
             log(`${entry} is already in the set`.yellow);
         }
         else {
-            entries.add(entry);
-            log(`${entry} was added to the set`.green);
             try {
-                this.persister.append(entry);
+                await this.persister.append(entry);
                 logger.debug(`${entry} was persisted`);
             }
             catch (error) {
@@ -68,7 +81,7 @@ export default class Cataloger {
 
     * stream<T>(transformer?: (input: EntryInfo) => T): Iterable<T> {
         const transform = transformer || (value => value as any as T);
-        for (const entry of this.entries.values()) {
+        for (const entry of this.persister.stream()) {
             const parsed = this.parse(entry);
             const mapped = transform(parsed);
             yield mapped;
@@ -77,7 +90,7 @@ export default class Cataloger {
 
     contains(packageInfo: EntryInfo) {
         const entry = this.unique(packageInfo);
-        const contains = this.entries.has(entry);
+        const contains = this.persister.has(entry);
         const logger = this.logger.child({ method: 'contains' });
 
         logger.debug(contains ? 'the package is in the catalog' : 'the package is not in the catalog', packageInfo);

@@ -1,8 +1,10 @@
-import { Entry } from './types';
+import Entry from './Entry';
 
 export default interface CatalogPersister {
   readonly target: string;
-  initialize(entries: Set<Entry>): Promise<void>;
+  initialize(): Promise<void>;
   exists(): boolean;
-  append(entry: string);
+  append(entry: Entry): Promise<void>;
+  has(entry: Entry): boolean;
+  stream(): Iterable<Entry>;
 }

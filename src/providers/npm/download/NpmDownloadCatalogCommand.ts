@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, CatalogFileOption } from '../../../core/commandOptions';
-import { EntryInfo } from '../../../core/catalog/types';
+import EntryInfo from "../../../core/catalog/EntryInfo";
 import Cataloger from '../../../core/catalog/Cataloger';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getCurrentRegistry, getPackageUrl } from '../npm-utils';
