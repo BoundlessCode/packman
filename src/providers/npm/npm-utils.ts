@@ -53,7 +53,7 @@ export type PackageResponse = {
     }
 }
 
-export async function packageVersionExists(packageInfo: PackageInfo, { lenientSsl = false, logger }: PackageVersionExistsOptions) {
+export async function packageVersionExists(packageInfo: PackageInfo, { lenientSsl = false, logger }: PackageVersionExistsOptions): Promise<boolean> {
     const { packageName, packageVersion = '' } = packageInfo;
     const uri = getPackageUrl(packageInfo);
     try {
@@ -64,7 +64,7 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
             rejectUnauthorized: !lenientSsl,
             logger,
         });
-        return packageVersion && (version === packageVersion || !!versions[packageVersion]);
+        return !!packageVersion && (version === packageVersion || !!versions[packageVersion]);
     }
     catch (error) {
         if (error.statusCode && error.statusCode === 404) {
