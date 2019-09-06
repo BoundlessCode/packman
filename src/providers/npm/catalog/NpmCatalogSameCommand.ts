@@ -23,7 +23,7 @@ export default class NpmCatalogSameCommand implements Command {
     return {
       name: 'same',
       flags: '[catalogFile]',
-      description: 'create a catalog of the versioned packages in both specified registries',
+      description: 'create a catalog of the versioned packages in both specified registries, optimized for a smaller target registry',
       options: [
         sourceRegistryOption,
         targetRegistryOption,
