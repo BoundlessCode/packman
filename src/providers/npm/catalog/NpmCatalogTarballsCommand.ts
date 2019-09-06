@@ -2,7 +2,7 @@ import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, catalogOption, CatalogFileOption } from '../../../core/commandOptions';
 import { normalizeRootedDirectory } from '../../../core/shell';
 import Cataloger from '../../../core/catalog/Cataloger';
-import { TARBALL_EXTENSION } from '../npm-utils';
+import { TARBALL_EXTENSION, getScopedPackageName } from '../npm-utils';
 import NpmPublisher from '../publish/NpmPublisher';
 
 export type NpmCatalogTarballsCommandOptions =
@@ -37,7 +37,9 @@ export default class NpmCatalogTarballsCommand implements Command {
 
     const packages = publisher.collectPackagesByPath({ ...options, rootPath, extension: TARBALL_EXTENSION });
 
-    for (const { packageName: name, packageVersion: version = '' } of packages) {
+    for (const packageInfo of packages) {
+      const { packageVersion: version = '' } = packageInfo;
+      const name = getScopedPackageName(packageInfo);
       logger.debug(`found package ${name}@${version}, cataloging`);
       await cataloger.catalog({ name, version });
     }
