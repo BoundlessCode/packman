@@ -105,4 +105,12 @@ export default class Cataloger {
     exists() {
         return this.persister.exists();
     }
+
+    async saveTo(targetPersister: CatalogPersister) {
+        // bypass Catalog#persister because we're copying directly between persisters
+        // and don't need to parse and transform the entries
+        for (const entry of this.persister.stream()) {
+            targetPersister.append(entry);
+        }
+    }
 }

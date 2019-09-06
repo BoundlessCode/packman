@@ -45,40 +45,23 @@ export default class NpmCatalogSameCommand implements Command {
     const target = options.target || await getCurrentRegistry(options);
     logger.info(`scanning target registry ${target}`);
 
-    const targetCataloger = await createCatalog({ ...options, registry: target });
+    const cataloger = await createCataloger({ ...options, registry: target });
 
-    const overlapCataloger = new Cataloger(options);
-    await overlapCataloger.initialize();
+    await compareRegistries(cataloger, options);
 
-    logger.info(`start comparing to source registry ${source}`);
-    for (const entry of targetCataloger.stream<EntryInfo>()) {
-      const packageInfo: PackageInfo = {
-        packageName: entry.name,
-        packageVersion: entry.version,
-        registry: source,
-      };
-      try {
-        const exists = await packageVersionExists(packageInfo, options);
-        if (exists) {
-          overlapCataloger.catalog(entry);
-          logger.info(`${entry.name}@${entry.version}`.yellow);
-        }
-      }
-      catch(error) {
-        logger.info('package not found', `${packageInfo.packageName}@${packageInfo.packageVersion}`.magenta, 'message' in error ? error.message.red : error);
-      }
-    }
-    logger.info(`done comparing to source registry ${source}`);
+    await storeResults(cataloger, options);
   }
 }
 
-async function createCatalog(options): Promise<Cataloger> {
+async function createCataloger(options: NpmCatalogSameCommandOptions): Promise<Cataloger> {
   const { registry, logger } = options;
   const uri = getAllEndpointUrl(registry, options);
   const { body: searchResults } = await fetch<SearchResults>({ ...options, uri, responseType: 'json' });
 
-  const targetCataloger = new Cataloger(options);
-  await targetCataloger.initialize();
+  const cataloger = new Cataloger({ ...options, mode: 'memory' });
+  const { catalogFile } = options;
+  const filePersister = new FileCatalogPersister({ catalogFile, logger }, cataloger.persister);
+  await cataloger.initialize(filePersister);
 
   for (const packageName of Object.keys(searchResults)) {
     logger.debug(`cataloging package ${packageName}`);
@@ -94,7 +77,7 @@ async function createCatalog(options): Promise<Cataloger> {
     if (versions) {
       for (const packageVersion of Object.keys(versions)) {
         logger.debug(`catalogin package version ${packageName} ${packageVersion}`);
-        targetCataloger.catalog({
+        await cataloger.catalog({
           name: packageName,
           version: packageVersion,
         });
@@ -107,5 +90,51 @@ async function createCatalog(options): Promise<Cataloger> {
     logger.debug(`finished cataloging ${packageName}`);
   }
 
-  return targetCataloger;
+  return cataloger;
+}
+
+async function compareRegistries(cataloger: Cataloger, options: NpmCatalogSameCommandOptions) {
+  const { logger, source } = options;
+
+  logger.info(`start comparing to source registry ${source}`);
+
+  for (const entry of cataloger.stream<EntryInfo>()) {
+    const packageInfo: PackageInfo = {
+      packageName: entry.name,
+      packageVersion: entry.version,
+      registry: source,
+    };
+
+    let exists = false;
+    try {
+      exists = await packageVersionExists(packageInfo, options);
+    }
+    catch (error) {
+      logger.debug('package not found', `${packageInfo.packageName}@${packageInfo.packageVersion}`.magenta, 'message' in error ? error.message.red : error);
+    }
+
+    const summary = `${entry.name}@${entry.version}`;
+    if (exists) {
+      logger.info('same:'.green, summary);
+    }
+    else {
+      await cataloger.remove(entry);
+      logger.info('diff:'.red, summary);
+    }
+  }
+
+  logger.info(`done comparing to source registry ${source}`);
+}
+
+async function storeResults(cataloger: Cataloger, options: NpmCatalogSameCommandOptions) {
+  const { logger } = options;
+
+  const samePersister = new FileCatalogPersister({
+    catalogFile: options.catalogFile,
+    logger,
+  }, cataloger.persister);
+
+  await cataloger.saveTo(samePersister);
+
+  logger.info('stored the results in', samePersister.target.magenta);
 }

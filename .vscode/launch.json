@@ -271,6 +271,34 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "npm catalog same",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "npm",
+                "catalog",
+                "same",
+                "same.packman",
+                "--source",
+                "https://registry.npmjs.org/",
+                "--target",
+                "http://localhost:4873/",
+                // "--verbose",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "npm download catalog",
             "program": "${workspaceFolder}/bin/packman",
             "args": [
@@ -737,34 +765,6 @@
                 "repo-name",
                 "conda",
                 "--verbose",
-            ],
-            "outputCapture": "std",
-            "skipFiles": [
-                "${workspaceFolder}/node_modules/**/*.js",
-                "<node_internals>/**/*.js",
-            ],
-            "preLaunchTask": "npm: build",
-            "outFiles": [
-                "${workspaceFolder}/lib/**/*.js"
-            ],
-            "protocol": "inspector",
-            "sourceMaps": true,
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "npm catalog overlap",
-            "program": "${workspaceFolder}/bin/packman",
-            "args": [
-                "npm",
-                "catalog",
-                "overlap",
-                "overlap.packman",
-                "--source",
-                "https://registry.npmjs.org/",
-                "--target",
-                "http://localhost:4873/",
-                // "--verbose",
             ],
             "outputCapture": "std",
             "skipFiles": [
