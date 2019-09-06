@@ -52,7 +52,7 @@ export default class Cataloger {
     async initialize() {
         const { persister } = this;
         try {
-            await persister.initialize();
+            await persister.load();
         }
         catch (error) {
             this.logger.error(error);

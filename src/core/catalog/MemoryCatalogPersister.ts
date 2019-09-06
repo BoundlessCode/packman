@@ -18,7 +18,7 @@ export default class MemoryCatalogPersister implements CatalogPersister {
     this.entries = new Set();
   }
 
-  async initialize() {
+  async load() {
     this.options.logger.debug('memory persister initialized');
   }
 

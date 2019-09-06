@@ -34,9 +34,9 @@ export default class FileCatalogPersister implements CatalogPersister {
     logger.debug(`file persister using ${this.fullPath}`);
   }
 
-  async initialize() {
+  async load() {
     const { basePersister } = this;
-    await basePersister.initialize();
+    await basePersister.load();
 
     const { fullPath, options } = this;
     const { logger } = options;
