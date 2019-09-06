@@ -57,11 +57,11 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
   }
 
   * collectPackagesByPath(options: CollectFileOptions): Iterable<TPackageInfo> {
-    const { rootPath, logger, extension } = options;
+    const { logger } = options;
 
     const counter = new Counter();
 
-    const filePaths = collectFilePaths({ rootPath, logger, extension });
+    const filePaths = collectFilePaths(options);
 
     for (const filePath of filePaths) {
       logger.debug('collecting', filePath);
