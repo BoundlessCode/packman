@@ -2,7 +2,7 @@ import path from 'path';
 
 import { execute, normalizeRootedDirectory } from '../../../core/shell';
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
-import { getCurrentRegistry, getScopedPackageName, packageVersionExists, TARBALL_EXTENSION } from '../npm-utils';
+import { getCurrentRegistry, getScopedPackageName, packageVersionExists, TARBALL_EXTENSION, getPackageFileInfo } from '../npm-utils';
 import NpmPackageInfo from '../NpmPackageInfo';
 import { updateDistTagToLatest } from './npm-publish-utils';
 
@@ -37,33 +37,14 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
   }
 
   getPackageFileInfo({ filePath, extension, counter }: GetPackageFileInfoOptions): NpmPackageInfo | undefined {
-    const fileInfo = path.parse(filePath);
+    const packageInfo = getPackageFileInfo({ filePath, extension });
 
-    if (fileInfo.ext === `.${extension}`) {
+    if (packageInfo) {
       counter.increment();
 
-      const directoryPath = fileInfo.dir;
-      const directoryParts = directoryPath.split(path.posix.sep);
-
-      const packageName = directoryParts.pop();
-
-      if(!packageName) {
-        throw new Error(`could not extract package name from directoryPath ${directoryPath}`);
-      }
-
-      const potentialScope = directoryParts.pop() || '';
-      const packageScope = potentialScope.startsWith('@') ? potentialScope : undefined;
-
-      const fileName = fileInfo.name;
-      const packageVersion = fileName.slice(fileName.lastIndexOf('-') + 1);
-
       return {
+        ...packageInfo,
         index: counter.current,
-        directoryPath,
-        filePath,
-        packageName,
-        packageVersion,
-        packageScope,
       };
     }
   }

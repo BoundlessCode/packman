@@ -1,10 +1,12 @@
 import { URL } from 'url';
 import validate from 'validate-npm-package-name';
+import path from 'path';
 
 import { LoggerOptions } from '../../core/logger';
 import { execute } from '../../core/shell';
 import PackageInfo from '../../core/PackageInfo';
 import { fetch } from '../../core/fetcher';
+import NpmPackageInfo from './NpmPackageInfo';
 
 export const TARBALL_EXTENSION = 'tgz';
 
@@ -73,5 +75,39 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
         }
         logger.debug('package version exists error', { packageInfo, uri: uri, error });
         throw error;
+    }
+}
+
+export type GetPackageFileInfoOptions = {
+    filePath: string
+    extension: string
+}
+
+export function getPackageFileInfo({ filePath, extension }: GetPackageFileInfoOptions): NpmPackageInfo | undefined {
+    const fileInfo = path.parse(filePath);
+
+    if (fileInfo.ext === `.${extension}`) {
+      const directoryPath = fileInfo.dir;
+      const directoryParts = directoryPath.split(path.posix.sep);
+
+      const packageName = directoryParts.pop();
+
+      if (!packageName) {
+        throw new Error(`could not extract package name from directoryPath ${directoryPath}`);
+      }
+
+      const potentialScope = directoryParts.pop() || '';
+      const packageScope = potentialScope.startsWith('@') ? potentialScope : undefined;
+
+      const fileName = fileInfo.name;
+      const packageVersion = fileName.slice(fileName.lastIndexOf('-') + 1);
+
+      return {
+        directoryPath,
+        filePath,
+        packageName,
+        packageVersion,
+        packageScope,
+      };
     }
 }
