@@ -20,7 +20,6 @@ export default class NpmCatalogTarballsCommand implements Command {
       flags: '<catalogFile> <packagesPath>',
       description: 'create a catalog of tarballs (.tgz files) in the specified directory',
       options: [
-        catalogOption,
         ...globalOptions,
       ],
     };
