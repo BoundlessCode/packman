@@ -15,13 +15,13 @@ describe('npm-utils', function () {
     });
 
     describe('#getPackageFileInfo', function () {
-        const extension = TARBALL_EXTENSION;
+        const extension = `.${TARBALL_EXTENSION}`;
 
         it('returns package info for simple versioned package', function () {
             const name = 'simple';
             const version = '1.2.3';
             const options = {
-                filePath: `/path/to/${name}/${name}-${version}.${extension}`,
+                filePath: `/path/to/${name}/${name}-${version}${extension}`,
                 extension,
             };
 
@@ -39,7 +39,7 @@ describe('npm-utils', function () {
             const version = '1.2.3';
             const scope = '@ns';
             const options = {
-                filePath: `/path/to/${scope}/${name}/${name}-${version}.${extension}`,
+                filePath: `/path/to/${scope}/${name}/${name}-${version}${extension}`,
                 extension,
             };
 
@@ -57,7 +57,7 @@ describe('npm-utils', function () {
             const version = '1.2.3-alpha-4';
             const scope = '@ns';
             const options = {
-                filePath: `/path/to/${scope}/${name}/${name}-${version}.${extension}`,
+                filePath: `/path/to/${scope}/${name}/${name}-${version}${extension}`,
                 extension,
             };
 
@@ -70,6 +70,16 @@ describe('npm-utils', function () {
             });
         });
 
+        it('returns undefined when extension argument has extraneous dot', function () {
+            const options = {
+                filePath: `file${extension}`,
+                extension: `.${extension}`,
+            };
+
+            const packageInfo = getPackageFileInfo(options);
+
+            expect(packageInfo).to.be.undefined;
+        });
     });
 
 });

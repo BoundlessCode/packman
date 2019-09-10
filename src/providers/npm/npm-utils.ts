@@ -86,7 +86,7 @@ export type GetPackageFileInfoOptions = {
 export function getPackageFileInfo({ filePath, extension }: GetPackageFileInfoOptions): NpmPackageInfo | undefined {
     const fileInfo = path.parse(filePath);
 
-    if (fileInfo.ext === `.${extension}`) {
+    if (fileInfo.ext === extension) {
         const directoryPath = fileInfo.dir;
         const directoryParts = directoryPath.split(path.posix.sep);
 
