@@ -51,24 +51,30 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
 
   async publishPackage(packageInfo: NpmPackageInfo, options: NpmPublisherOptions) {
     const { registry: packageRegistry, index, directoryPath, packageName, packageVersion } = packageInfo;
-    const { distTag, registry, logger } = options;
+    const { distTag, registry: optionsRegistry, logger } = options;
 
-    const scopedPackageName = getScopedPackageName(packageInfo);
+
+    const fullPackageInfo = {
+      ...packageInfo,
+      registry: packageRegistry || optionsRegistry,
+    };
+
+    const scopedPackageName = getScopedPackageName(fullPackageInfo);
     const baseMessageFormat = `publish [${index}] [%s]`;
     const debugMessageFormat = `${baseMessageFormat} ${directoryPath} ...`;
     const infoMessageFormat = `${baseMessageFormat} ${scopedPackageName} ${packageVersion}`;
 
-    if (await packageVersionExists(packageInfo, options)) {
+    if (await packageVersionExists(fullPackageInfo, options)) {
       logger.info(infoMessageFormat, 'exists'.yellow);
       return;
     }
 
     logger.info(debugMessageFormat, 'publishing'.cyan);
-    await this.executePublishCommand(packageInfo);
+    await this.executePublishCommand(fullPackageInfo);
     logger.info(infoMessageFormat, 'published'.green);
 
     // we only support updating the dist-tag when the package comes from the target registry
-    if (distTag && registry === packageInfo.registry) {
+    if (distTag && optionsRegistry === packageRegistry) {
       logger.debug(debugMessageFormat, 'updating dist-tag'.cyan);
       await updateDistTagToLatest(packageRegistry as string, packageName, logger);
       logger.info(infoMessageFormat, 'updated dist-tag'.green);
