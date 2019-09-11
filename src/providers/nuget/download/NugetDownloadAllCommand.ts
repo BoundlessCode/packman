@@ -15,6 +15,7 @@ export type NugetDownloadAllCommandOptions =
   & {
     registry: string
     directory: string
+    prerelease: boolean
   }
 
 type NugetIndexSearchResults = {
@@ -49,13 +50,14 @@ export default class NugetDownloadAllCommand implements Command {
         registryOption,
         directoryOption,
         catalogOption,
+        '--prerelease',
         ...globalOptions,
       ],
     };
   }
 
   async execute(options: NugetDownloadAllCommandOptions) {
-    const { logger, directory, catalogFile } = options;
+    const { logger, directory, catalogFile, prerelease } = options;
 
     const provider = new NugetPackageProvider();
     const registry = await provider.getRegistry(options);
@@ -104,7 +106,7 @@ export default class NugetDownloadAllCommand implements Command {
         const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/gm
         const matches = semverPattern.exec(normalizedVersion);
         const prereleaseVersion = matches && matches[4];
-        const include = !prereleaseVersion;
+        const include = prerelease || !prereleaseVersion;
 
         if (include) {
           const packageInfo = {
