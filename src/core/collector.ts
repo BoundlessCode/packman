@@ -9,7 +9,7 @@ export type CollectFileOptions = LoggerOptions & {
     extension: string
 }
 
-export function collectFilePaths({ rootPath, logger, extension }: CollectFileOptions) {
+export function collectFilePaths({ rootPath, logger, extension }: CollectFileOptions): Iterable<string> {
     const stat = fs.lstatSync(rootPath);
 
     const filePaths: string[] = [];
