@@ -69,7 +69,8 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
         return !!packageVersion && (version === packageVersion || !!versions[packageVersion]);
     }
     catch (error) {
-        if (error.statusCode && error.statusCode === 404) {
+        const statusCode = error.statusCode || (error.response && error.response.status);
+        if (statusCode === 404) {
             logger.debug(`the package ${packageName.cyan}@${(packageVersion || '').cyan} could not be found at ${uri}`.yellow);
             return false;
         }
