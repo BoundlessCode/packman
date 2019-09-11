@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+import Counter from '../../core/counter';
 import { getScopedPackageName, getPackageFileInfo, TARBALL_EXTENSION } from './npm-utils';
 
 describe('npm-utils', function () {
@@ -16,13 +17,18 @@ describe('npm-utils', function () {
 
     describe('#getPackageFileInfo', function () {
         const extension = `.${TARBALL_EXTENSION}`;
+        const baseOptions = {
+            counter: new Counter(),
+            extension,
+            registry: 'https://registry',
+        }
 
         it('returns package info for simple versioned package', function () {
             const name = 'simple';
             const version = '1.2.3';
             const options = {
+                ...baseOptions,
                 filePath: `/path/to/${name}/${name}-${version}${extension}`,
-                extension,
             };
 
             const packageInfo = getPackageFileInfo(options);
@@ -39,8 +45,8 @@ describe('npm-utils', function () {
             const version = '1.2.3';
             const scope = '@ns';
             const options = {
+                ...baseOptions,
                 filePath: `/path/to/${scope}/${name}/${name}-${version}${extension}`,
-                extension,
             };
 
             const packageInfo = getPackageFileInfo(options);
@@ -57,8 +63,8 @@ describe('npm-utils', function () {
             const version = '1.2.3-alpha-4';
             const scope = '@ns';
             const options = {
+                ...baseOptions,
                 filePath: `/path/to/${scope}/${name}/${name}-${version}${extension}`,
-                extension,
             };
 
             const packageInfo = getPackageFileInfo(options);
@@ -72,6 +78,7 @@ describe('npm-utils', function () {
 
         it('returns undefined when extension argument has extraneous dot', function () {
             const options = {
+                ...baseOptions,
                 filePath: `file${extension}`,
                 extension: `.${extension}`,
             };
