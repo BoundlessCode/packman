@@ -98,43 +98,53 @@ export default class NugetDownloadAllCommand implements Command {
         const entryNameDisplay = `${entryId} ${entryVersion}`.yellow;
         const normalizedPackageId = entryId.toLowerCase();
         const normalizedVersion = entryVersion.toLowerCase();
-        const packageInfo = {
-          name: normalizedPackageId,
-          version: normalizedVersion,
-        };
-        const installPath = path.join(directory, normalizedPackageId, normalizedVersion);
-        const nupkgExtension = '.nupkg';
-        const packageFileName = `${normalizedPackageId}.${normalizedVersion}${nupkgExtension}`;
-        const packageFilePath = path.join(installPath, packageFileName);
 
-        const itemLogger = logger.child({ package: packageFileName, path: packageFilePath });
+        // semver regex pattern copied from:
+        // https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+        const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/gm
+        const matches = semverPattern.exec(normalizedVersion);
+        const prereleaseVersion = matches && matches[4];
+        const include = !prereleaseVersion;
 
-        if (cataloger && cataloger.contains(packageInfo)) {
-          itemLogger.info('skipping'.magenta, 'already cataloged', entryNameDisplay);
-        }
-        else if (fs.existsSync(packageFilePath)) {
-          if (cataloger) {
-            await cataloger.catalog(packageInfo);
+        if (include) {
+          const packageInfo = {
+            name: normalizedPackageId,
+            version: normalizedVersion,
+          };
+          const installPath = path.join(directory, normalizedPackageId, normalizedVersion);
+          const nupkgExtension = '.nupkg';
+          const packageFileName = `${normalizedPackageId}.${normalizedVersion}${nupkgExtension}`;
+          const packageFilePath = path.join(installPath, packageFileName);
+
+          const itemLogger = logger.child({ package: packageFileName, path: packageFilePath });
+
+          if (cataloger && cataloger.contains(packageInfo)) {
+            itemLogger.info('skipping'.magenta, 'already cataloged', entryNameDisplay);
           }
-          itemLogger.info('skipping'.magenta, 'file exists', entryNameDisplay);
-        }
-        else {
-          try {
-            itemLogger.info('starting download:'.cyan, entryNameDisplay);
-            const downloadOptions = {
-              directory: installPath,
-              filename: packageFileName,
-              logger,
-            };
-            const { duration } = await downloadFileAsync(itemUrl, downloadOptions);
+          else if (fs.existsSync(packageFilePath)) {
             if (cataloger) {
               await cataloger.catalog(packageInfo);
             }
-            itemLogger.info('finished download'.green, `in ${duration}`, entryNameDisplay);
+            itemLogger.info('skipping'.magenta, 'file exists', entryNameDisplay);
           }
-          catch (error) {
-            itemLogger.info('failed to download'.red, entryNameDisplay);
-            itemLogger.error(error);
+          else {
+            try {
+              itemLogger.info('starting download:'.cyan, entryNameDisplay);
+              const downloadOptions = {
+                directory: installPath,
+                filename: packageFileName,
+                logger,
+              };
+              const { duration } = await downloadFileAsync(itemUrl, downloadOptions);
+              if (cataloger) {
+                await cataloger.catalog(packageInfo);
+              }
+              itemLogger.info('finished download'.green, `in ${duration}`, entryNameDisplay);
+            }
+            catch (error) {
+              itemLogger.info('failed to download'.red, entryNameDisplay);
+              itemLogger.error(error);
+            }
           }
         }
       });
