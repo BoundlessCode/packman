@@ -57,7 +57,12 @@ export default class NugetDownloadAllCommand implements Command {
   }
 
   async execute(options: NugetDownloadAllCommandOptions) {
-    const { logger, directory, catalogFile, prerelease } = options;
+    const {
+      logger,
+      directory,
+      catalogFile,
+      prerelease = false,
+    } = options;
 
     const provider = new NugetPackageProvider();
     const registry = await provider.getRegistry(options);
