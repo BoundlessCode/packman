@@ -60,7 +60,7 @@ export default class NugetDownloadAllCommand implements Command {
     const provider = new NugetPackageProvider();
     const registry = await provider.getRegistry(options);
 
-    const cataloger = catalogFile ? new Cataloger({ catalogFile: directory, logger }) : null;
+    const cataloger = catalogFile ? new Cataloger({ catalogFile, logger }) : null;
     if (cataloger) {
       await cataloger.initialize();
     }
