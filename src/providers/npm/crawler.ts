@@ -43,9 +43,7 @@ export async function getDependencies(options: GetDependenciesOptions): Promise<
 
   tarballs.add(packageJson.dist.tarball);
 
-  await getSelectedDependencies({ ...options, packageJson });
-
-  return tarballs;
+  return await getPackageJsonDependencies({ ...options, packageJson });
 }
 
 type GetPackageJsonDependenciesOptions =
