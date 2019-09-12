@@ -77,7 +77,7 @@ async function getSelectedDependencies(options: GetPackageJsonDependenciesOption
     await _getDependenciesFrom({
       ...options,
       dependenciesObject: packageJson.dependencies,
-      outputPrefix: 'dependency '.magenta,
+      outputPrefix: 'dependency ',
     });
   }
 
@@ -86,7 +86,7 @@ async function getSelectedDependencies(options: GetPackageJsonDependenciesOption
     await _getDependenciesFrom({
       ...options,
       dependenciesObject: packageJson.devDependencies,
-      outputPrefix: 'devDependency '.magenta,
+      outputPrefix: 'devDependency ',
     });
   }
 
@@ -95,7 +95,7 @@ async function getSelectedDependencies(options: GetPackageJsonDependenciesOption
     await _getDependenciesFrom({
       ...options,
       dependenciesObject: packageJson.peerDependencies,
-      outputPrefix: 'peerDependency '.magenta,
+      outputPrefix: 'peerDependency ',
     });
   }
 }
@@ -111,7 +111,7 @@ async function _retrievePackageVersion(options: RetrievePackageVersionOptions) {
   const { name, version, outputPrefix = '', registry = defaultRegistry, logger } = options;
   const uri = new URL(name.replace('/', '%2F'), registry).href;
 
-  const retrievingMessage = `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`;
+  const retrievingMessage = `retrieving ${outputPrefix.magenta}${name.cyan} ${(version || '').cyan}`;
 
   if (packagesCache.has(name)) {
     logger.info('cache'.yellow, cacheHits, retrievingMessage);
