@@ -6,6 +6,7 @@ import { Logger, LoggerOptions } from '../../core/logger';
 import { fetch } from '../../core/fetcher';
 import NpmPackageProvider from './NpmPackageProvider';
 import { DependenciesOptions } from './npm-options';
+import NpmDependenciesObject from './NpmDependenciesObject';
 
 const provider = new NpmPackageProvider();
 const { defaultRegistry, maxRetries, requestTimeout } = provider;
@@ -142,10 +143,6 @@ type GetDependenciesFromSearchResultsOptions = LoggerOptions & {
   filters?: [(currentPackage: string) => boolean]
 }
 
-type DependenciesObject = {
-  [name: string]: string
-}
-
 export async function getDependenciesFromSearchResults(searchResults: SearchResults, options: GetDependenciesFromSearchResultsOptions): Promise<Set<string>> {
   const {
     registry,
@@ -162,7 +159,7 @@ export async function getDependenciesFromSearchResults(searchResults: SearchResu
   const packages = Object.values(searchResults)
     .filter((currentPackage: any) => compositeFilter(currentPackage));
 
-  const dependenciesObject = packages.reduce<DependenciesObject>((memo: DependenciesObject, current: NamedObject) => {
+  const dependenciesObject = packages.reduce<NpmDependenciesObject>((memo: NpmDependenciesObject, current: NamedObject) => {
     const version = _getMaxSatisfyingVersion(current);
     memo[current.name] = version;
     return memo;
@@ -173,7 +170,7 @@ export async function getDependenciesFromSearchResults(searchResults: SearchResu
   return tarballs;
 }
 
-async function _getDependenciesFrom(dependenciesObject: DependenciesObject, outputPrefix: string, registry = defaultRegistry, logger: Logger) {
+async function _getDependenciesFrom(dependenciesObject: NpmDependenciesObject, outputPrefix: string, registry = defaultRegistry, logger: Logger) {
   const dependencies = Object.keys(dependenciesObject || {});
   await Promise.all(dependencies.map(dependency => getDependencies({
     name: dependency,
