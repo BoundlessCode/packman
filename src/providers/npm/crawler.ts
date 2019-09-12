@@ -23,12 +23,9 @@ type CommonCrawlOptions =
     registry?: string
   }
 
-type GetDependenciesOptions = LoggerOptions & DependenciesOptions & {
-  name: string
-  version?: string
-  outputPrefix?: string
-  registry?: string
-}
+type GetDependenciesOptions =
+  RetrievePackageVersionOptions
+  & DependenciesOptions
 
 export async function getDependencies(options: GetDependenciesOptions): Promise<Set<string>> {
   const packageJson = await _retrievePackageVersion(options);
