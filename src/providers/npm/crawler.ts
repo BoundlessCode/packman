@@ -70,15 +70,21 @@ async function getSelectedDependencies(options: GetPackageJsonDependenciesOption
     logger,
   } = options;
 
+  const { name = '<unknown>' } = packageJson;
+  const messageFormat = `getting ${'%s'.magenta} for ${name.yellow}`;
+
   if (dependencies) {
+    logger.info(messageFormat, 'dependencies');
     await _getDependenciesFrom(packageJson.dependencies, 'dependency '.magenta, registry, logger);
   }
 
   if (devDependencies) {
+    logger.info(messageFormat, 'devDependencies');
     await _getDependenciesFrom(packageJson.devDependencies, 'devDependency '.magenta, registry, logger);
   }
 
   if (peerDependencies) {
+    logger.info(messageFormat, 'peerDependencies');
     await _getDependenciesFrom(packageJson.peerDependencies, 'peerDependency '.magenta, registry, logger);
   }
 }
