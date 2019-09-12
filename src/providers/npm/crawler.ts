@@ -19,6 +19,7 @@ const tarballs = new Set<string>();
 type CommonCrawlOptions =
   LoggerOptions
   & {
+    outputPrefix?: string
     registry?: string
   }
 
@@ -89,12 +90,12 @@ async function getSelectedDependencies(options: GetPackageJsonDependenciesOption
   }
 }
 
-type RetrievePackageVersionOptions = LoggerOptions & {
-  name: string
-  version?: string
-  outputPrefix?: string
-  registry?: string
-}
+type RetrievePackageVersionOptions =
+  CommonCrawlOptions
+  & NamedObject
+  & {
+    version?: string
+  }
 
 async function _retrievePackageVersion(options: RetrievePackageVersionOptions) {
   const { name, version, outputPrefix = '', registry = defaultRegistry, logger } = options;
