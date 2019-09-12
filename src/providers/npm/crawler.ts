@@ -24,11 +24,10 @@ type GetDependenciesOptions = LoggerOptions & DependenciesOptions & {
 }
 
 export async function getDependencies(options: GetDependenciesOptions): Promise<Set<string>> {
-  const { registry, logger } = options;
-
   const packageJson = await _retrievePackageVersion(options);
   if (!packageJson) {
-    logger.error('ERROR'.red, 'failed to retrieve version of package', options.name, options.version, 'from registry', options.registry || '<current>');
+    const { name, version, registry, logger } = options;
+    logger.error('ERROR'.red, 'failed to retrieve version of package', name, version, 'from registry', registry || '<current>');
     return new Set();
   }
 
@@ -38,7 +37,7 @@ export async function getDependencies(options: GetDependenciesOptions): Promise<
 
   tarballs.add(packageJson.dist.tarball);
 
-  await getSelectedDependencies(options, packageJson, registry, logger);
+  await getSelectedDependencies(options, packageJson, options.registry, options.logger);
 
   return tarballs;
 }
