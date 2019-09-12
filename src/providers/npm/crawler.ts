@@ -65,7 +65,6 @@ async function getSelectedDependencies(options: GetPackageJsonDependenciesOption
     peerDependencies = false,
 
     packageJson,
-    registry,
     logger,
   } = options;
 
