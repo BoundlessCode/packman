@@ -126,7 +126,6 @@ type NamedObject = {
 }
 
 type PackageObject = NamedObject & {
-  // name: string
   version: string
   devDependencies: boolean
   peerDependencies: boolean
