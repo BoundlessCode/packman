@@ -44,9 +44,11 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
         await this.publishPackage(packageInfo, options);
       }
       catch (error) {
-        const message: string = error && error.message ? error.message : error;
-        logger.info('an error occurred while publishing'.red, packageInfo.filePath);
-        errors.push(`[${packageInfo.index}] [${'error'.red}] ${packageInfo.packagesPath} ${message}`);
+        const errorMessage: string = (error && error.message ? error.message : error).red;
+        const packageSummary = `[${packageInfo.index}] ${(packageInfo.filePath || '').yellow}`;
+        const message = `${'failed to publish'.red} ${packageSummary} because ${errorMessage}`;
+        logger.info(message);
+        errors.push(`[${'error'.red}] ${message}`);
       }
     }
 
