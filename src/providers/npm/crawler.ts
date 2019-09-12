@@ -48,14 +48,14 @@ export async function getDependencies(options: GetDependenciesOptions): Promise<
   return tarballs;
 }
 
-type PackageJsonDependenciesOptions =
+type GetPackageJsonDependenciesOptions =
   CommonCrawlOptions
   & DependenciesOptions
   & {
     packageJson: NpmPackageManifest
   }
 
-export async function getPackageJsonDependencies(options: PackageJsonDependenciesOptions) {
+export async function getPackageJsonDependencies(options: GetPackageJsonDependenciesOptions) {
   const { packageJson, registry, logger } = options;
 
   await getSelectedDependencies(options, packageJson, registry, logger);
