@@ -7,6 +7,7 @@ import { Logger, LoggerOptions } from '../../core/logger';
 import { fetch } from '../../core/fetcher';
 import NpmPackageProvider from './NpmPackageProvider';
 import { DependenciesOptions } from './npm-options';
+import NpmPackageManifest from './NpmPackageManifest';
 import NpmDependenciesObject from './NpmDependenciesObject';
 
 const provider = new NpmPackageProvider();

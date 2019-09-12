@@ -1,6 +1,7 @@
 import { LoggerOptions } from '../../../core/logger';
 import { fetch } from '../../../core/fetcher';
 import NpmPackageProvider from '../NpmPackageProvider';
+import NpmPackageManifest from '../NpmPackageManifest';
 
 type GeneratePackageJsonOptions =
   LoggerOptions
@@ -13,12 +14,6 @@ type Package = {
   package: {
     name: string
     version: string
-  }
-}
-
-type PackageJson = {
-  dependencies: {
-    [key: string]: string
   }
 }
 
@@ -38,8 +33,10 @@ export async function generatePackageJson(options: GeneratePackageJsonOptions) {
     logger,
   });
 
-  const packageJson = objects.reduce<PackageJson>((prev, curr) => {
-    prev.dependencies[curr.package.name] = curr.package.version;
+  const packageJson = objects.reduce<NpmPackageManifest>((prev, curr) => {
+    if (prev.dependencies) {
+      prev.dependencies[curr.package.name] = curr.package.version;
+    }
     return prev;
   }, { dependencies: {} });
 
