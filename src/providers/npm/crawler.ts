@@ -43,7 +43,7 @@ export async function getDependencies(options: GetDependenciesOptions): Promise<
 
   tarballs.add(packageJson.dist.tarball);
 
-  await getSelectedDependencies(options, packageJson, options.registry, options.logger);
+  await getSelectedDependencies({ ...options, packageJson });
 
   return tarballs;
 }
@@ -56,18 +56,20 @@ type GetPackageJsonDependenciesOptions =
   }
 
 export async function getPackageJsonDependencies(options: GetPackageJsonDependenciesOptions) {
-  const { packageJson, registry, logger } = options;
-
-  await getSelectedDependencies(options, packageJson, registry, logger);
+  await getSelectedDependencies(options);
 
   return tarballs;
 }
 
-async function getSelectedDependencies(options: DependenciesOptions, packageJson: any, registry: string | undefined, logger) {
+async function getSelectedDependencies(options: GetPackageJsonDependenciesOptions) {
   const {
     dependencies = true,
     devDependencies = false,
     peerDependencies = false,
+
+    packageJson,
+    registry,
+    logger,
   } = options;
 
   if (dependencies) {
