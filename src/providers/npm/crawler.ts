@@ -100,15 +100,17 @@ async function _retrievePackageVersion(options: RetrievePackageVersionOptions) {
   const { name, version, outputPrefix = '', registry = defaultRegistry, logger } = options;
   const uri = new URL(name.replace('/', '%2F'), registry).href;
 
+  const retrievingMessage = `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`;
+
   if (packagesCache.has(name)) {
-    logger.info('cache'.yellow, cacheHits, `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`);
+    logger.info('cache'.yellow, cacheHits, retrievingMessage);
     cacheHits++;
     const allPackageVersionsDetails = packagesCache.get(name);
     const maxSatisfyingVersion = _getMaxSatisfyingVersion(allPackageVersionsDetails, version);
     return allPackageVersionsDetails.versions[maxSatisfyingVersion];
   }
 
-  logger.info('registry'.blue, registryHits, `retrieving ${outputPrefix}${name.cyan} ${(version || '').cyan}`);
+  logger.info('registry'.blue, registryHits, retrievingMessage);
   registryHits++;
   const allPackageVersionsDetails = await _retryGetRequest(uri, maxRetries, logger);
   if (allPackageVersionsDetails) {
