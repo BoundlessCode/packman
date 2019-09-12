@@ -2,6 +2,7 @@ import semver from 'semver';
 import util from 'util';
 import { URL } from 'url';
 
+import Predicate from '../../core/Predicate';
 import { Logger, LoggerOptions } from '../../core/logger';
 import { fetch } from '../../core/fetcher';
 import NpmPackageProvider from './NpmPackageProvider';
@@ -150,26 +151,26 @@ export type SearchResults = {
   [name: string]: PackageObject
 }
 
-type GetDependenciesFromSearchResultsOptions = LoggerOptions & {
-  registry: string
-  filters?: [(currentPackage: string) => boolean]
-}
+type GetDependenciesFromSearchResultsOptions =
+  CommonCrawlOptions
+  & DependenciesOptions
+  & {
+    filters?: Iterable<Predicate<PackageObject>>
+  }
 
 export async function getDependenciesFromSearchResults(searchResults: SearchResults, options: GetDependenciesFromSearchResultsOptions): Promise<Set<string>> {
   const {
-    registry,
-    logger,
     filters = [],
   } = options;
 
-  const allFilters = [
-    (currentPackage: any) => currentPackage instanceof Object,
+  const allFilters: Predicate<PackageObject>[] = [
+    currentPackage => currentPackage instanceof Object,
     ...filters,
   ];
-  const compositeFilter = currentPackage => allFilters.every(filter => filter(currentPackage));
+  const compositeFilter: Predicate<PackageObject> = currentPackage => allFilters.every(filter => filter(currentPackage));
 
   const packages = Object.values(searchResults)
-    .filter((currentPackage: any) => compositeFilter(currentPackage));
+    .filter(currentPackage => compositeFilter(currentPackage));
 
   const dependenciesObject = packages.reduce<NpmDependenciesObject>((memo: NpmDependenciesObject, current: NamedObject) => {
     const version = _getMaxSatisfyingVersion(current);
