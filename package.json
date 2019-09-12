@@ -17,7 +17,7 @@
     "test": "mocha",
     "test:watch": "npm run test -- --watch",
     "refresh": "npm run clean && rimraf ./node_modules ./package-lock.json && npm install",
-    "prepublishOnly": "npm run clean && npm run test && npm run build"
+    "prepublishOnly": "npm run clean && npm run test && npm run build && git push && git push --tags"
   },
   "keywords": [
     "tgz",
