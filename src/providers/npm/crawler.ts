@@ -64,7 +64,11 @@ export async function getPackageJsonDependencies(options: GetPackageJsonDependen
 }
 
 async function getSelectedDependencies(options: DependenciesOptions, packageJson: any, registry: string | undefined, logger) {
-  const { dependencies, devDependencies, peerDependencies } = determineDependencies(options);
+  const {
+    dependencies = true,
+    devDependencies = false,
+    peerDependencies = false,
+  } = options;
 
   if (dependencies) {
     await _getDependenciesFrom(packageJson.dependencies, 'dependency '.magenta, registry, logger);
@@ -77,15 +81,6 @@ async function getSelectedDependencies(options: DependenciesOptions, packageJson
   if (peerDependencies) {
     await _getDependenciesFrom(packageJson.peerDependencies, 'peerDependency '.magenta, registry, logger);
   }
-}
-
-function determineDependencies(options: DependenciesOptions): DependenciesOptions {
-  const {
-    dependencies = true,
-    devDependencies = false,
-    peerDependencies = false,
-  } = options;
-  return { dependencies, devDependencies, peerDependencies };
 }
 
 type RetrievePackageVersionOptions = LoggerOptions & {
