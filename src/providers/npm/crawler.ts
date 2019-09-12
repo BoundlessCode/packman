@@ -74,17 +74,29 @@ async function getSelectedDependencies(options: GetPackageJsonDependenciesOption
 
   if (dependencies) {
     logger.info(messageFormat, 'dependencies');
-    await _getDependenciesFrom(packageJson.dependencies, 'dependency '.magenta, registry, logger);
+    await _getDependenciesFrom({
+      ...options,
+      dependenciesObject: packageJson.dependencies,
+      outputPrefix: 'dependency '.magenta,
+    });
   }
 
   if (devDependencies) {
     logger.info(messageFormat, 'devDependencies');
-    await _getDependenciesFrom(packageJson.devDependencies, 'devDependency '.magenta, registry, logger);
+    await _getDependenciesFrom({
+      ...options,
+      dependenciesObject: packageJson.devDependencies,
+      outputPrefix: 'devDependency '.magenta,
+    });
   }
 
   if (peerDependencies) {
     logger.info(messageFormat, 'peerDependencies');
-    await _getDependenciesFrom(packageJson.peerDependencies, 'peerDependency '.magenta, registry, logger);
+    await _getDependenciesFrom({
+      ...options,
+      dependenciesObject: packageJson.peerDependencies,
+      outputPrefix: 'peerDependency '.magenta,
+    });
   }
 }
 
@@ -165,19 +177,28 @@ export async function getDependenciesFromSearchResults(searchResults: SearchResu
     return memo;
   }, {});
 
-  await _getDependenciesFrom(dependenciesObject, '', registry, logger);
+  await _getDependenciesFrom({ ...options, dependenciesObject });
 
   return tarballs;
 }
 
-async function _getDependenciesFrom(dependenciesObject: NpmDependenciesObject, outputPrefix: string, registry = defaultRegistry, logger: Logger) {
-  const dependencies = Object.keys(dependenciesObject || {});
+type GetDependenciesFromOptions =
+  CommonCrawlOptions
+  & {
+    dependenciesObject?: NpmDependenciesObject
+  }
+
+async function _getDependenciesFrom(options: GetDependenciesFromOptions) {
+  const {
+    dependenciesObject = {},
+    registry = defaultRegistry,
+  } = options;
+  const dependencies = Object.keys(dependenciesObject);
   await Promise.all(dependencies.map(dependency => getDependencies({
+    ...options,
     name: dependency,
     version: dependenciesObject[dependency],
-    outputPrefix,
     registry,
-    logger,
   })));
 }
 
