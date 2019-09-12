@@ -16,6 +16,12 @@ let registryHits = 1;
 const packagesCache = new Map();
 const tarballs = new Set<string>();
 
+type CommonCrawlOptions =
+  LoggerOptions
+  & {
+    registry?: string
+  }
+
 type GetDependenciesOptions = LoggerOptions & DependenciesOptions & {
   name: string
   version?: string
@@ -42,10 +48,12 @@ export async function getDependencies(options: GetDependenciesOptions): Promise<
   return tarballs;
 }
 
-type PackageJsonDependenciesOptions = LoggerOptions & DependenciesOptions & {
-  packageJson?: any
-  registry?: string
-}
+type PackageJsonDependenciesOptions =
+  CommonCrawlOptions
+  & DependenciesOptions
+  & {
+    packageJson: NpmPackageManifest
+  }
 
 export async function getPackageJsonDependencies(options: PackageJsonDependenciesOptions) {
   const { packageJson, registry, logger } = options;
