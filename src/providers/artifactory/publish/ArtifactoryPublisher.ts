@@ -82,7 +82,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, architecture } = packageInfo;
-    const { api, logger } = options;
+    const { api, lenientSsl, logger } = options;
     
     if(!filePath) {
       throw new Error(`filePath is missing, cannot publish package`);
@@ -104,6 +104,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
         file: createReadStream(filePath),
       },
       contentType: 'multipart/form-data',
+      lenientSsl,
       logger,
     });
   }

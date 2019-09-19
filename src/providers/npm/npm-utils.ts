@@ -6,6 +6,7 @@ import { LoggerOptions } from '../../core/logger';
 import { execute } from '../../core/shell';
 import PackageInfo from '../../core/PackageInfo';
 import { fetch } from '../../core/fetcher';
+import { SslOptions } from '../../core/commandOptions';
 import NpmPackageInfo from './NpmPackageInfo';
 
 export const TARBALL_EXTENSION = 'tgz';
@@ -43,8 +44,8 @@ export function getAllEndpointUrl(registry: string, { logger }) {
 
 type PackageVersionExistsOptions =
     LoggerOptions
+    & SslOptions
     & {
-        lenientSsl?: boolean
     }
 
 export type PackageResponse = {
@@ -63,7 +64,7 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
         const { body: { version, versions } } = await fetch<PackageResponse>({
             uri,
             responseType: 'json',
-            rejectUnauthorized: !lenientSsl,
+            lenientSsl,
             logger,
         });
         return !!packageVersion && (version === packageVersion || !!versions[packageVersion]);

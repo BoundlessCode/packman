@@ -34,7 +34,7 @@ export default class NexusPublisher extends Publisher<NexusPublisherOptions, Nex
   }
 
   async publishPackage(packageInfo: NexusPackageInfo, options: NexusPublisherOptions) {
-    const { uploadComponentUrl, logger } = options;
+    const { uploadComponentUrl, lenientSsl, logger } = options;
     const { packagesPath } = packageInfo;
 
     if(!packagesPath) {
@@ -57,6 +57,7 @@ export default class NexusPublisher extends Publisher<NexusPublisherOptions, Nex
         'npm.asset': createReadStream(packagesPath),
       },
       responseMode: 'full-response',
+      lenientSsl,
       logger,
     });
 

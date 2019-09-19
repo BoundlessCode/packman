@@ -3,15 +3,17 @@ import { URL } from 'url';
 import { LoggerOptions } from '../../core/logger';
 import { fetch } from '../../core/fetcher';
 import Cataloger from '../../core/catalog/Cataloger';
+import { SslOptions } from '../../core/commandOptions';
 
 export type FetchNexusCatalogOptions =
   LoggerOptions
+  & SslOptions
   & {
     repository: string
     endpoint: string
   }
 
-export async function fetchNexusCatalog ({ repository, logger, endpoint }: FetchNexusCatalogOptions) {
+export async function fetchNexusCatalog({ repository, logger, endpoint, lenientSsl }: FetchNexusCatalogOptions) {
   const cataloger = new Cataloger({ logger, logActionsAsInfo: true });
   cataloger.initialize();
 
@@ -32,7 +34,12 @@ export async function fetchNexusCatalog ({ repository, logger, endpoint }: Fetch
     page++;
     logger.info(`Downloading page ${page} from ${componentsUrl}`);
 
-    const { body: { items, continuationToken } } = await fetch({ uri: componentsUrl, responseType: 'json', logger });
+    const { body: { items, continuationToken } } = await fetch({
+      uri: componentsUrl,
+      responseType: 'json',
+      lenientSsl,
+      logger,
+    });
     logger.debug('items in page', items.length);
 
     for (const { group, name, version } of items) {

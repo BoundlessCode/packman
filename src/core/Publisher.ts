@@ -2,10 +2,14 @@ import { LoggerOptions } from './logger';
 import { collectFilePaths, CollectFileOptions } from './collector';
 import Counter from './counter';
 import PackageInfo from './PackageInfo';
+import { SslOptions } from './commandOptions';
 
-export type PublisherOptions = LoggerOptions & {
-  alternatePublish?: (options: any) => Promise<any>
-}
+export type PublisherOptions =
+  LoggerOptions
+  & SslOptions
+  & {
+    alternatePublish?: (options: any) => Promise<any>
+  }
 
 export type GetPackageFileInfoOptions = {
   filePath: string

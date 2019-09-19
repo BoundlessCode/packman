@@ -7,6 +7,7 @@ import { isAbsolute, join } from 'path';
 
 import { getBasicAuthHeader } from './auth';
 import { LoggerOptions } from './logger';
+import { SslOptions } from './commandOptions';
 
 export type URI = string | URL;
 
@@ -14,18 +15,20 @@ interface Headers {
   [key: string]: any;
 }
 
-export type FetchOptions = LoggerOptions & {
-  method?: 'GET' | 'POST' | 'PUT'
-  uri: URI
-  qs?: any
-  formData?: { [key: string]: any };
-  contentType?: string
-  responseType?: 'json' | 'text' | 'stream'
-  useBasicAuthHeader?: boolean
-  rejectUnauthorized?: boolean
-  timeout?: number
-  responseMode?: 'body' | 'full-response'
-}
+export type FetchOptions =
+  LoggerOptions
+  & SslOptions
+  & {
+    method?: 'GET' | 'POST' | 'PUT'
+    uri: URI
+    qs?: any
+    formData?: { [key: string]: any };
+    contentType?: string
+    responseType?: 'json' | 'text' | 'stream'
+    useBasicAuthHeader?: boolean
+    timeout?: number
+    responseMode?: 'body' | 'full-response'
+  }
 
 export type BasicResponse = {
   statusCode: number
@@ -77,7 +80,8 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     timeout,
   };
 
-  const { rejectUnauthorized } = options; // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
+  const { lenientSsl } = options; // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
+  const rejectUnauthorized = lenientSsl === undefined ? undefined : !lenientSsl;
   const agentOptions: any = { rejectUnauthorized };
   const config =
     rejectUnauthorized === undefined
