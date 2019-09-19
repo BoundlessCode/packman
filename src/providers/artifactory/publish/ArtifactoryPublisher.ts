@@ -30,7 +30,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     const rootPath = normalizeRootedDirectory(packagesPath, { logger });
     logger.info(`root path: ${rootPath.green}`);
 
-    const api = new URL(`api/${packageType}/${repo}`, server);
+    const api = new URL(`api/${packageType}/${repo}/`, server.endsWith('/') ? server : `${server}/`);
     logger.info(`api: ${api.href.green}`);
 
     return {
@@ -94,8 +94,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
     // const registry = packageInfo.registry || options.registry;
     // logger.info(`registry: ${registry.green}`);
-
-    const publishUrl = new URL(architecture, api);
+    const publishUrl = new URL(`${architecture}/`, api);
     // logger.info(`publishing... ${publishUrl.href} ${filePath}`);
     await fetch({
       method: 'PUT',
