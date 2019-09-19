@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 
 import Command from '../../../core/Command';
-import { GlobalOptions, globalOptions, directoryOption } from '../../../core/commandOptions';
+import { GlobalOptions, globalOptions, DirectoryOption, directoryOption } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageLockCommand from '../download/NpmDownloadPackageLockCommand';
 import NpmPublishTarballsCommand from '../publish/NpmPublishTarballsCommand';
-import { NpmDirectoryOption, NpmTargetRegistryOption, targetRegistryOption } from '../npm-options';
+import { NpmTargetRegistryOption, targetRegistryOption } from '../npm-options';
 
 export type NpmCopyPackageLockCommandOptions =
-  NpmDirectoryOption
+  DirectoryOption
   & NpmTargetRegistryOption
   & GlobalOptions
   & {

@@ -1,12 +1,12 @@
 import Command from '../../../core/Command';
-import { GlobalOptions, globalOptions, directoryOption, forceOption } from '../../../core/commandOptions';
+import { GlobalOptions, globalOptions, DirectoryOption, directoryOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
 import NpmPackageManifest from '../NpmPackageManifest';
-import { NpmDirectoryOption, NpmForceOption } from '../npm-options';
+import { NpmForceOption } from '../npm-options';
 
 export type NpmDownloadPackageLockCommandOptions =
-  NpmDirectoryOption
+  DirectoryOption
   & NpmForceOption
   & GlobalOptions
   & {

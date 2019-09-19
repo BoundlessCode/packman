@@ -17,6 +17,10 @@ export type SslOptions = {
     lenientSsl?: boolean
 }
 
+export type DirectoryOption = {
+    directory: string
+}
+
 export type GlobalOptions =
     LoggerOptions
     & SslOptions
