@@ -13,10 +13,16 @@ export type CatalogFileOption = {
     catalogFile?: string
 }
 
-export type GlobalOptions = LoggerOptions & {
+export type SslOptions = {
     lenientSsl?: boolean
-    [name: string]: any
 }
+
+export type GlobalOptions =
+    LoggerOptions
+    & SslOptions
+    & {
+        [name: string]: any
+    }
 
 export const directoryOption = {
     flags: '--directory [directory]',
