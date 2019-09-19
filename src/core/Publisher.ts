@@ -50,7 +50,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
       catch (error) {
         const errorMessage: string = (error && error.message ? error.message : error).red;
         const packageSummary = `[${packageInfo.index}] ${(packageInfo.filePath || '').yellow}`;
-        const message = `${'failed to publish'.red} ${packageSummary} because ${errorMessage}`;
+        const message = `${'failed to publish'.red} ${packageSummary} because '${errorMessage}'`;
         logger.info(message);
         errors.push(`[${'error'.red}] ${message}`);
       }

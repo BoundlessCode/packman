@@ -95,7 +95,8 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     // const registry = packageInfo.registry || options.registry;
     // logger.info(`registry: ${registry.green}`);
     const publishUrl = new URL(`${architecture}/`, api);
-    // logger.info(`publishing... ${publishUrl.href} ${filePath}`);
+    logger.info(`publishing ${filePath} to ${publishUrl.href}`);
+
     await fetch({
       method: 'PUT',
       uri: publishUrl,
