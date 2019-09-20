@@ -1,24 +1,27 @@
 import chokidar from 'chokidar';
 
 import { WatchOptions } from './watcher-options';
+import { EventEmitter } from 'events';
 
 export default class Watcher {
-  watch(options: WatchOptions): Promise<boolean> {
+  watch(options: WatchOptions): EventEmitter {
     const { directory, poll = true, logger } = options;
 
     const watcher = chokidar.watch(directory, {
       usePolling: poll,
     });
 
-    return new Promise((resolve, reject) => {
-      watcher
-        .on('add', (path) => {
-          logger.info('add', path);
-        })
-        .on('error', (error) => {
-          logger.error(error);
-          reject(error);
-        });
-    })
+    const emitter = new EventEmitter();
+
+    watcher
+      .on('add', (path) => {
+        logger.info('add', path);
+        emitter.emit('file', path);
+      })
+      .on('error', (error) => {
+        logger.error(error);
+      });
+
+    return emitter;
   }
 }

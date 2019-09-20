@@ -2,6 +2,7 @@ import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import Watcher from '../../../core/watcher/Watcher';
 import { WatchOptions, watchOptions } from "../../../core/watcher/watcher-options";
+import Bundler from '../../../core/Bundler';
 
 export type WatchCommandOptions =
   WatchOptions
@@ -29,6 +30,12 @@ export default class WatchBundlesPublishCommand implements Command {
 
     const watcher = new Watcher();
 
-    return await watcher.watch(options);
+    const bundler = new Bundler();
+
+    watcher
+      .watch(options)
+      .on('file', (file) => {
+        logger.info('file', file);
+      });
   }
 }
