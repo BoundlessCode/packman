@@ -4,7 +4,9 @@ import path from 'path';
 import extractZip from 'extract-zip';
 import { promisify } from 'util';
 
-import { LoggerOptions } from '../core/logger';
+import { LoggerOptions, Logger } from '../core/logger';
+import { DirectoryOption } from './commandOptions';
+import { EventEmitter } from 'events';
 
 type BundleResult = {
   success: boolean
@@ -16,8 +18,26 @@ type PrepareContextOptions = LoggerOptions & {
   bundleName?: boolean | string
 }
 
+type BundleFileName = {
+  bundleFileName: string
+}
+
+type CommonContext =
+  BundleFileName
+  & DirectoryOption
+  & LoggerOptions
+
+type BundleContext =
+  CommonContext
+  & {
+    bundleName: string;
+  }
+
+type ExtractContext =
+  CommonContext
+
 export default class Bundler {
-  prepareContext(options: PrepareContextOptions) {
+  prepareContext(options: PrepareContextOptions): BundleContext {
     const { directory, bundleName } = options;
 
     const logger = options.logger.child({ area: 'bundler' });
@@ -51,7 +71,7 @@ export default class Bundler {
     };
   }
 
-  async bundle(context): Promise<BundleResult> {
+  async bundle(context: BundleContext): Promise<BundleResult> {
     const { bundleFileName, bundleName, directory, logger } = context;
 
     if (fs.existsSync(bundleFileName)) {
@@ -68,7 +88,7 @@ export default class Bundler {
     return result;
   }
 
-  async extract(context) {
+  async extract(context: ExtractContext) {
     const { bundleFileName, directory, logger } = context;
 
     if (!fs.existsSync(bundleFileName)) {
@@ -99,7 +119,7 @@ export default class Bundler {
   }
 }
 
-function createArchive(output, logger, resolve, reject) {
+function createArchive(output: EventEmitter, logger: Logger, resolve: ({ success: boolean, message: string }) => any, reject: (error: Error) => any) {
   const archive = archiver('zip', {
     zlib: { level: 9 } // Sets the compression level.
   });
@@ -134,7 +154,7 @@ function createArchive(output, logger, resolve, reject) {
   });
 
   // good practice to catch this error explicitly
-  archive.on('error', function (err) {
+  archive.on('error', function (err: Error) {
     logger.debug('archiver error', err);
     reject(err);
     // throw err;
@@ -143,7 +163,7 @@ function createArchive(output, logger, resolve, reject) {
   return archive;
 }
 
-function writeArchive(output, logger, directory, bundleName): Promise<BundleResult> {
+function writeArchive(output: EventEmitter, logger: Logger, directory: string, bundleName: string): Promise<BundleResult> {
   return new Promise((resolve, reject) => {
 
     const archive = createArchive(output, logger, resolve, reject);
