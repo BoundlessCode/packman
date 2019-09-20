@@ -4,7 +4,7 @@ import path from 'path';
 import extractZip from 'extract-zip';
 import { promisify } from 'util';
 
-import { LoggerOptions, Logger } from '../core/logger';
+import { LoggerOptions } from '../core/logger';
 import { DirectoryOption } from './commandOptions';
 import { EventEmitter } from 'events';
 
@@ -13,28 +13,50 @@ type BundleResult = {
   message?: string
 }
 
-type PrepareContextOptions = LoggerOptions & {
-  directory?: string
-  bundleName?: boolean | string
-}
+type PrepareContextOptions =
+  LoggerOptions
+  & {
+    directory?: string
+    bundleName?: boolean | string
+  }
 
 type BundleFileName = {
   bundleFileName: string
 }
 
 type CommonContext =
-  BundleFileName
+  LoggerOptions
+  & BundleFileName
   & DirectoryOption
-  & LoggerOptions
+
+type BundleName = {
+  bundleName: string
+}
 
 type BundleContext =
   CommonContext
-  & {
-    bundleName: string;
-  }
+  & BundleName
 
 type ExtractContext =
   CommonContext
+
+type ArchiveOutput = {
+  output: EventEmitter
+}
+
+type CreateArchiveOptions =
+  LoggerOptions
+  & ArchiveOutput
+  & {
+    resolve: ({ success: boolean, message: string }) => any
+    reject: (error: Error) => any
+  }
+
+type WriteArchiveOptions =
+  LoggerOptions
+  & ArchiveOutput
+  & DirectoryOption
+  & BundleName
 
 export default class Bundler {
   prepareContext(options: PrepareContextOptions): BundleContext {
@@ -84,7 +106,7 @@ export default class Bundler {
     // create a file to stream archive data to.
     const output = fs.createWriteStream(bundleFileName, { flags: 'wx' });
 
-    const result = await writeArchive(output, logger, directory, bundleName);
+    const result = await writeArchive({ output, logger, directory, bundleName });
     return result;
   }
 
@@ -119,7 +141,7 @@ export default class Bundler {
   }
 }
 
-function createArchive(output: EventEmitter, logger: Logger, resolve: ({ success: boolean, message: string }) => any, reject: (error: Error) => any) {
+function createArchive({ output, logger, resolve, reject }: CreateArchiveOptions) {
   const archive = archiver('zip', {
     zlib: { level: 9 } // Sets the compression level.
   });
@@ -163,10 +185,10 @@ function createArchive(output: EventEmitter, logger: Logger, resolve: ({ success
   return archive;
 }
 
-function writeArchive(output: EventEmitter, logger: Logger, directory: string, bundleName: string): Promise<BundleResult> {
+function writeArchive({ output, logger, directory, bundleName }: WriteArchiveOptions): Promise<BundleResult> {
   return new Promise((resolve, reject) => {
 
-    const archive = createArchive(output, logger, resolve, reject);
+    const archive = createArchive({ output, logger, resolve, reject });
 
     // pipe archive data to the file
     archive.pipe(output);
