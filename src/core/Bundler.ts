@@ -65,8 +65,8 @@ export default class Bundler {
 
     return {
       bundleFileName,
-      bundleName,
-      directory,
+      bundleName: targetBundleName,
+      directory: targetDirectory,
       logger,
     };
   }
