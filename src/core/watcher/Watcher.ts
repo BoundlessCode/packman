@@ -1,7 +1,7 @@
+import { EventEmitter } from 'events';
 import chokidar from 'chokidar';
 
 import { WatchOptions } from './watcher-options';
-import { EventEmitter } from 'events';
 
 export default class Watcher {
   watch(options: WatchOptions): EventEmitter {
