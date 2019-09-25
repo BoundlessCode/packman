@@ -15,16 +15,16 @@ export async function getCurrentRegistry({ logger }: LoggerOptions) {
     return await execute('npm get registry', { logger });
 }
 
-export function getScopedPackageName({ packageName, packageScope }: PackageInfo) {
+export function getScopedPackageName({ packageName, packageScope }: NpmPackageInfo) {
     return packageScope ? `${packageScope}/${packageName}` : packageName;
 }
 
-export function getVersionedPackageName({ packageName, packageScope, packageVersion }: PackageInfo) {
+export function getVersionedPackageName({ packageName, packageScope, packageVersion }: NpmPackageInfo) {
     const scopedName = getScopedPackageName({ packageName, packageScope })
     return packageVersion ? `${scopedName}/${packageVersion}` : scopedName;
 }
 
-export function getPackageUrl(packageInfo: PackageInfo) {
+export function getPackageUrl(packageInfo: NpmPackageInfo) {
     const fullName = getVersionedPackageName(packageInfo);
     return new URL(fullName, packageInfo.registry);
 }
