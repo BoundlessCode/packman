@@ -11,9 +11,7 @@ import { SslOptions } from './commandOptions';
 
 export type URI = string | URL;
 
-interface Headers {
-  [key: string]: any;
-}
+export type Headers = Map<string, string>;
 
 export type FetchOptions =
   LoggerOptions
@@ -28,6 +26,7 @@ export type FetchOptions =
     useBasicAuthHeader?: boolean
     timeout?: number
     responseMode?: 'body' | 'full-response'
+    headers?: Headers
   }
 
 export type BasicResponse = {
@@ -109,7 +108,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
 }
 
 async function getHeaders(options: FetchOptions): Promise<Headers> {
-  const headers = new Map<string, string>();
+  const headers = options.headers || new Map<string, string>();
 
   if (options.contentType) {
     headers.set('content-type', options.contentType);
