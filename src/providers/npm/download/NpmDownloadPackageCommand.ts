@@ -1,5 +1,5 @@
 import Command from '../../../core/Command';
-import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
+import { GlobalOptions, globalOptions, BundleNameOption, bundleOption } from '../../../core/commandOptions';
 import BundleZipCreateCommand from '../../bundle/zip/BundleZipCreateCommand';
 import { NpmDownloadOptions, npmDownloadOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { getDependencies } from '../crawler';
@@ -7,6 +7,7 @@ import { downloadFromIterable } from './downloader';
 
 export type NpmDownloadPackageCommandOptions =
   NpmDownloadOptions
+  & BundleNameOption
   & GlobalOptions
   & DependenciesOptions
   & {
@@ -23,7 +24,7 @@ export default class NpmDownloadPackageCommand implements Command {
       description: 'download tarballs based on a package and a version',
       options: [
         ...npmDownloadOptions,
-        '--bundle [bundleName]',
+        bundleOption,
         ...dependenciesOptions,
         ...globalOptions,
       ],

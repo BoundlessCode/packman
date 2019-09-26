@@ -13,6 +13,10 @@ export type CatalogFileOption = {
     catalogFile?: string
 }
 
+export type BundleNameOption = {
+    bundleName?: string
+}
+
 export type SslOptions = {
     lenientSsl?: boolean
 }
@@ -48,6 +52,7 @@ export const peerDependenciesOption = {
 export const registryOption = '--registry [registry]';
 export const outputFileOption = '--outputFile [outputFile]';
 export const catalogOption = '--catalog [catalogFile]';
+export const bundleOption = '--bundle [bundleName]';
 export const forceOption = '--force';
 export const lenientSslOption = '--lenient-ssl';
 export const verboseOption = '-v, --verbose';
