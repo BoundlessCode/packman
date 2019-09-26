@@ -65,6 +65,9 @@
     "type": "git",
     "url": "https://github.com/BoundlessCode/packman.git"
   },
+  "engines": {
+    "node": ">=12.4"
+  },
   "devDependencies": {
     "@types/glob": "^7.1.1",
     "@types/mkdirp": "^0.5.2",

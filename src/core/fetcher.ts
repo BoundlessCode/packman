@@ -69,11 +69,13 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
 
   const resolveWithFullResponse = options.responseMode === 'full-response';
 
+  const headers = await getHeaders(options);
+
   const requestOptions: AxiosRequestConfig = {
     url: uri,
     method,
     params: qs,
-    headers: await getHeaders(options),
+    headers: Object.fromEntries(headers),
     data: options.formData,
     responseType,
     timeout,
