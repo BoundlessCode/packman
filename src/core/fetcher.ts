@@ -113,11 +113,11 @@ async function getHeaders(options: FetchOptions): Promise<Headers> {
   const headers = options.headers || new Map<string, string>();
 
   if (options.contentType) {
-    headers.set('content-type', options.contentType);
+    headers.set('Content-Type', options.contentType);
   }
 
   if (options.useBasicAuthHeader) {
-    headers.set('authorization', await getBasicAuthHeader());
+    headers.set('Authorization', await getBasicAuthHeader());
   }
 
   return headers;
