@@ -2,7 +2,7 @@ import path from 'path';
 import { createReadStream } from 'fs';
 import { URL } from 'url';
 
-import { fetch } from '../../../core/fetcher';
+import { fetch, Headers } from '../../../core/fetcher';
 import { normalizeRootedDirectory } from '../../../core/shell';
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
 import ArtifactoryPackageInfo from '../ArtifactoryPackageInfo';
@@ -16,6 +16,7 @@ type ArtifactoryPublisherOptions =
     server: string
     repo: string
     api?: string
+    apiKey?: string
   }
 
 export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisherOptions, ArtifactoryPackageInfo> {
@@ -81,7 +82,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, architecture } = packageInfo;
-    const { api, lenientSsl, logger } = options;
+    const { api, apiKey, lenientSsl, logger } = options;
     
     if(!filePath) {
       throw new Error(`filePath is missing, cannot publish package`);
@@ -96,6 +97,12 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     const publishUrl = new URL(`${architecture}/`, api);
     logger.info(`publishing ${filePath} to ${publishUrl.href}`);
 
+    let headers: Headers | undefined = undefined;
+    if(apiKey) {
+      headers = new Map<string, any>();
+      headers.set('X-JFrog-Art-Api', apiKey);
+    }
+
     await fetch({
       method: 'PUT',
       uri: publishUrl,
@@ -104,6 +111,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
       },
       contentType: 'multipart/form-data',
       lenientSsl,
+      headers,
       logger,
     });
   }

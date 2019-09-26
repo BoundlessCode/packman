@@ -9,6 +9,7 @@ export type ArtifactoryPublishPackagesCommandOptions =
     server: string
     repo: string
     packageType: string
+    apiKey?: string
   }
 
 export default class ArtifactoryPublishPackagesCommand implements Command {
@@ -19,6 +20,10 @@ export default class ArtifactoryPublishPackagesCommand implements Command {
       description: 'use the artifactory api to publish packages at the specified path to the registry',
       options: [
         // registryOption,
+        {
+          flags: '--api-key <apiKey>',
+          description: 'your API Key, as specified on your user profile page in Artifactory',
+        },
         ...globalOptions,
       ],
     };
