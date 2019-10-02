@@ -58,6 +58,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
         filePath,
         packageName,
         architecture,
+        fileName,
       };
     }
   }
@@ -81,7 +82,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
   }
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
-    const { filePath, architecture } = packageInfo;
+    const { filePath, fileName, architecture } = packageInfo;
     const { api, apiKey, lenientSsl, logger } = options;
     
     if(!filePath) {
@@ -94,7 +95,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
     // const registry = packageInfo.registry || options.registry;
     // logger.info(`registry: ${registry.green}`);
-    const publishUrl = new URL(`${architecture}/`, api);
+    const publishUrl = new URL(`${architecture}/${fileName}`, api);
     logger.info(`publishing ${filePath} to ${publishUrl.href}`);
 
     let headers: Headers | undefined = undefined;
