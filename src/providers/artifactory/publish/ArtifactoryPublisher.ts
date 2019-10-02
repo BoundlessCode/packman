@@ -102,7 +102,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
     let headers: Headers | undefined = undefined;
     if(apiKey) {
-      headers = new Map<string, any>();
+      headers = headers || new Map<string, any>();
       headers.set('X-JFrog-Art-Api', apiKey);
     }
 
