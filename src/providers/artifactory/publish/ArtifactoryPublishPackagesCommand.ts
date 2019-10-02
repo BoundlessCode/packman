@@ -10,6 +10,7 @@ export type ArtifactoryPublishPackagesCommandOptions =
     repo: string
     packageType: string
     apiKey?: string
+    byChecksum?: boolean
   }
 
 export default class ArtifactoryPublishPackagesCommand implements Command {
@@ -23,6 +24,10 @@ export default class ArtifactoryPublishPackagesCommand implements Command {
         {
           flags: '--api-key <apiKey>',
           description: 'your API Key, as specified on your user profile page in Artifactory',
+        },
+        {
+          flags: '--by-checksum',
+          description: 'calculate the sha256, sha1, and md5 checksums and use them to deploy to Artifactory'
         },
         ...globalOptions,
       ],

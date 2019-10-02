@@ -2,6 +2,7 @@ import path from 'path';
 import { createReadStream } from 'fs';
 import { URL } from 'url';
 
+import calculateChecksums from '../../../core/crypto/calculateChecksums';
 import { fetch, Headers } from '../../../core/fetcher';
 import { normalizeRootedDirectory } from '../../../core/shell';
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
@@ -17,6 +18,7 @@ type ArtifactoryPublisherOptions =
     repo: string
     api?: string
     apiKey?: string
+    byChecksum?: boolean
   }
 
 export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisherOptions, ArtifactoryPackageInfo> {
@@ -83,8 +85,8 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, fileName, architecture } = packageInfo;
-    const { api, apiKey, lenientSsl, logger } = options;
-    
+    const { api, apiKey, byChecksum, lenientSsl, logger } = options;
+
     if(!filePath) {
       throw new Error(`filePath is missing, cannot publish package`);
     }
@@ -102,6 +104,15 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     if(apiKey) {
       headers = new Map<string, any>();
       headers.set('X-JFrog-Art-Api', apiKey);
+    }
+
+    if(byChecksum) {
+      headers = headers || new Map<string, any>();
+      const checksums = await calculateChecksums(filePath, ['sha256', 'sha1', 'md5']);
+      headers.set('X-Checksum-Deploy', 'true');
+      headers.set('X-Checksum-Sha1', checksums.sha1 as string);
+      headers.set('X-Checksum-Sha256', checksums.sha256 as string);
+      headers.set('X-Checksum', checksums.md5 as string);
     }
 
     await fetch({

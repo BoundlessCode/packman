@@ -764,6 +764,7 @@
                 "https://artifactory-host/artifactory/",
                 "repo-name",
                 "conda",
+                "--by-checksum",
                 "--verbose",
             ],
             "outputCapture": "std",
