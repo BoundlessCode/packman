@@ -1,5 +1,5 @@
 import path from 'path';
-import { createReadStream } from 'fs';
+import { createReadStream } from 'graceful-fs';
 import { URL } from 'url';
 
 import calculateChecksums from '../../../core/crypto/calculateChecksums';
