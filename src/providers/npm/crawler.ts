@@ -5,6 +5,7 @@ import { URL } from 'url';
 import Predicate from '../../core/Predicate';
 import { Logger, LoggerOptions } from '../../core/logger';
 import { fetch } from '../../core/fetcher';
+import { TimeoutOption } from '../../core/commandOptions';
 import NpmPackageProvider from './NpmPackageProvider';
 import { DependenciesOptions } from './npm-options';
 import NpmPackageManifest from './NpmPackageManifest';
@@ -21,6 +22,7 @@ const tarballs = new Set<string>();
 
 type CommonCrawlOptions =
   LoggerOptions
+  & TimeoutOption
   & {
     outputPrefix?: string
     registry?: string
@@ -109,7 +111,7 @@ type RetrievePackageVersionOptions =
   }
 
 async function _retrievePackageVersion(options: RetrievePackageVersionOptions) {
-  const { name, version, outputPrefix = '', registry = defaultRegistry, logger } = options;
+  const { name, version, outputPrefix = '', registry = defaultRegistry, logger, timeout } = options;
   const uri = new URL(name.replace('/', '%2F'), registry).href;
 
   const formattedOutputPrefix = outputPrefix.length > 0 ? outputPrefix.magenta + ' ' : '';
@@ -125,7 +127,7 @@ async function _retrievePackageVersion(options: RetrievePackageVersionOptions) {
 
   logger.info('registry'.blue, registryHits, retrievingMessage);
   registryHits++;
-  const allPackageVersionsDetails = await _retryGetRequest(uri, maxRetries, logger);
+  const allPackageVersionsDetails = await _retryGetRequest(uri, maxRetries, logger, timeout);
   if (allPackageVersionsDetails) {
     packagesCache.set(name, allPackageVersionsDetails);
     const maxSatisfyingVersion = _getMaxSatisfyingVersion(allPackageVersionsDetails, version);
@@ -212,12 +214,12 @@ function _getMaxSatisfyingVersion(allPackageVersionsDetails: any, version?: stri
   return semver.maxSatisfying(versions, version);
 }
 
-async function _retryGetRequest(uri: string, count: number, logger: Logger): Promise<any> {
+async function _retryGetRequest(uri: string, count: number, logger: Logger, timeout: number = requestTimeout): Promise<any> {
   try {
     const { body } = await fetch<any>({
       uri,
       responseType: 'json',
-      timeout: requestTimeout,
+      timeout,
       logger,
     });
     if (count < maxRetries) {
@@ -228,7 +230,7 @@ async function _retryGetRequest(uri: string, count: number, logger: Logger): Pro
     const message = (error.cause && error.cause.code) || error.message;
     logger.error(`download failure: ${message}`.red, uri, count);
     if (count > 0) {
-      return _retryGetRequest(uri, count - 1, logger);
+      return _retryGetRequest(uri, count - 1, logger, timeout);
     }
     if (error.response && error.response.statusCode === 404) {
       return null;

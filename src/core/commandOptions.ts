@@ -13,6 +13,10 @@ export type CatalogFileOption = {
     catalogFile?: string
 }
 
+export type TimeoutOption = {
+    timeout?: number
+}
+
 export type SslOptions = {
     lenientSsl?: boolean
 }
@@ -23,6 +27,7 @@ export type DirectoryOption = {
 
 export type GlobalOptions =
     LoggerOptions
+    & TimeoutOption
     & SslOptions
     & {
         [name: string]: any
@@ -49,10 +54,12 @@ export const registryOption = '--registry [registry]';
 export const outputFileOption = '--outputFile [outputFile]';
 export const catalogOption = '--catalog [catalogFile]';
 export const forceOption = '--force';
+export const timeoutOption = '--timeout';
 export const lenientSslOption = '--lenient-ssl';
 export const verboseOption = '-v, --verbose';
 
 export const globalOptions = [
+    timeoutOption,
     lenientSslOption,
     verboseOption,
 ] as CommandOption[];

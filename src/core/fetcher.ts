@@ -57,6 +57,8 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     logger,
   } = options;
 
+  logger.debug(`fetch timeout: ${timeout}`);
+
   const uri = normalizeUrl(options.uri);
 
   const json = responseType === 'json' || uri.endsWith('json');
