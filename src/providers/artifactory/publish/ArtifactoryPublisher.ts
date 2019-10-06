@@ -115,12 +115,11 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
       headers.set('X-Checksum', checksums.md5 as string);
     }
 
+    const file = createReadStream(filePath);
     await fetch({
       method: 'PUT',
       uri: publishUrl,
-      formData: {
-        file: createReadStream(filePath),
-      },
+      formData: { file },
       contentType: 'multipart/form-data',
       lenientSsl,
       headers,
