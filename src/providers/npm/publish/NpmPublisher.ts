@@ -84,6 +84,6 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
   async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
     const target = registry || this.options.registry;
     const { logger } = this.options;
-    await execute(`npm publish ${filePath} --quiet --registry ${target}`, { stdio: [0, 1, 2], logger });
+    await execute(`npm publish "${filePath}" --quiet --registry ${target}`, { stdio: [0, 1, 2], logger });
   }
 }
