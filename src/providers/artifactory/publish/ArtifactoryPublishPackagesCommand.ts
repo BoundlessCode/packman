@@ -11,6 +11,7 @@ export type ArtifactoryPublishPackagesCommandOptions =
     packageType: string
     apiKey?: string
     byChecksum?: boolean
+    force?: boolean
   }
 
 export default class ArtifactoryPublishPackagesCommand implements Command {
@@ -28,6 +29,10 @@ export default class ArtifactoryPublishPackagesCommand implements Command {
         {
           flags: '--by-checksum',
           description: 'calculate the sha256, sha1, and md5 checksums and use them to deploy to Artifactory'
+        },
+        {
+          flags: '--force',
+          description: 'publish packages even if they have already been published'
         },
         ...globalOptions,
       ],

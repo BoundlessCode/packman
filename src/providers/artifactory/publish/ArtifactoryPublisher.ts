@@ -22,6 +22,7 @@ type ArtifactoryPublisherOptions =
     api?: string
     apiKey?: string
     byChecksum?: boolean
+    force?: boolean
   }
 
 export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisherOptions, ArtifactoryPackageInfo> {
@@ -107,7 +108,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, fileName, architecture } = packageInfo;
-    const { api, apiKey, byChecksum, lenientSsl, timeout, logger } = options;
+    const { api, apiKey, byChecksum, force, lenientSsl, timeout, logger } = options;
 
     if(!filePath) {
       throw new Error(`filePath is missing, cannot publish package`);
@@ -124,7 +125,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     const publishUrl = new URL(packageName, api);
     logger.info(`publishing ${filePath} to ${publishUrl.href}`);
 
-    if (await this.packageVersionExists({ packageName, uri: publishUrl }, options)) {
+    if (!force && await this.packageVersionExists({ packageName, uri: publishUrl }, options)) {
       logger.info('[exists]'.yellow, `${packageName} at ${publishUrl}`);
       return;
     }
