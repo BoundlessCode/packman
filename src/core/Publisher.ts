@@ -11,6 +11,12 @@ export type PublisherOptions =
     alternatePublish?: (options: any) => Promise<any>
   }
 
+export type PackageVersionExistsOptions =
+  LoggerOptions
+  & SslOptions
+  & {
+  }
+
 export type GetPackageFileInfoOptions = {
   filePath: string
   extension: string

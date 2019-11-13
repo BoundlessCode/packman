@@ -6,7 +6,7 @@ import { LoggerOptions } from '../../core/logger';
 import { execute } from '../../core/shell';
 import PackageInfo from '../../core/PackageInfo';
 import { fetch } from '../../core/fetcher';
-import { SslOptions } from '../../core/commandOptions';
+import { PackageVersionExistsOptions } from '../../core/Publisher';
 import NpmPackageInfo from './NpmPackageInfo';
 
 export const TARBALL_EXTENSION = 'tgz';
@@ -41,12 +41,6 @@ export function getAllEndpointUrl(registry: string, { logger }) {
     logger.debug(`all endpoint located at ${url}`);
     return url;
 }
-
-type PackageVersionExistsOptions =
-    LoggerOptions
-    & SslOptions
-    & {
-    }
 
 export type PackageResponse = {
     version: string
