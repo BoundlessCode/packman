@@ -42,6 +42,7 @@ export type StreamResponse = BasicResponse & {
 
 interface FetchResponse<T> {
   body: T
+  success: boolean
 }
 
 export const DEFAULT_TIMEOUT = 30000;
@@ -66,7 +67,10 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
   if (existsSync(uri)) {
     logger.debug('fetching local file'.yellow, uri.yellow);
     const content = json ? require(uri) : readFileSync(uri).toString();
-    return { body: content as TResponse };
+    return {
+      body: content as TResponse,
+      success: true,
+    };
   }
 
   const resolveWithFullResponse = options.responseMode === 'full-response';
@@ -104,7 +108,10 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     const response = await instance.request<TResponse>(requestOptions);
     activeRequests--;
     logger.debug(`fetched [${activeRequests}]:`.green, summary);
-    return { body: (resolveWithFullResponse ? response : response.data) as TResponse };
+    return {
+      body: (resolveWithFullResponse ? response : response.data) as TResponse,
+      success: response.status >= 200 && response.status < 300,
+    };
   } catch (error) {
     activeRequests--;
     logger.error(`failed to fetch [${activeRequests}]:`.red, summary, 'message' in error ? error.message.red : error);
