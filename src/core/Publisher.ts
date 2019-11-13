@@ -2,7 +2,7 @@ import { LoggerOptions } from './logger';
 import { collectFilePaths, CollectFileOptions } from './collector';
 import Counter from './counter';
 import PackageInfo from './PackageInfo';
-import { SslOptions } from './commandOptions';
+import { SslOptions, TimeoutOption } from './commandOptions';
 
 export type PublisherOptions =
   LoggerOptions
@@ -14,6 +14,7 @@ export type PublisherOptions =
 export type PackageVersionExistsOptions =
   LoggerOptions
   & SslOptions
+  & TimeoutOption
   & {
   }
 

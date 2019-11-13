@@ -50,7 +50,7 @@ export type PackageResponse = {
     }
 }
 
-export async function packageVersionExists(packageInfo: PackageInfo, { lenientSsl = false, logger }: PackageVersionExistsOptions): Promise<boolean> {
+export async function packageVersionExists(packageInfo: PackageInfo, { timeout, lenientSsl = false, logger }: PackageVersionExistsOptions): Promise<boolean> {
     const { packageName, packageVersion = '' } = packageInfo;
     const uri = getPackageUrl(packageInfo);
     try {
@@ -59,6 +59,7 @@ export async function packageVersionExists(packageInfo: PackageInfo, { lenientSs
             uri,
             responseType: 'json',
             lenientSsl,
+            timeout,
             logger,
         });
         return !!packageVersion && (version === packageVersion || !!versions[packageVersion]);
