@@ -1,6 +1,7 @@
 import path from 'path';
-import { createReadStream } from 'graceful-fs';
 import { URL } from 'url';
+import FormData from 'form-data';
+import { createReadStream } from 'graceful-fs';
 
 import calculateChecksums from '../../../core/crypto/calculateChecksums';
 import { fetch, Headers } from '../../../core/fetcher';
@@ -116,10 +117,13 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     }
 
     const file = createReadStream(filePath);
+    const formData = new FormData();
+    formData.append('file', file);
+
     await fetch({
       method: 'PUT',
       uri: publishUrl,
-      formData: { file },
+      formData,
       contentType: 'multipart/form-data',
       lenientSsl,
       headers,
