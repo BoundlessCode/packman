@@ -75,6 +75,6 @@ export default class PypiPublisher extends Publisher<PypiPublisherOptions, PypiP
   async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
     const target = registry || this.options.registry;
     const { logger } = this.options;
-    await execute(`twine upload --repository-url ${target} --skip-existing ${filePath}`, { stdio: [0, 1, 2], logger });
+    await execute(`twine upload --repository-url ${target} --skip-existing "${filePath}"`, { stdio: [0, 1, 2], logger });
   }
 }
