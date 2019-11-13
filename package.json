@@ -6,7 +6,7 @@
     "Noam Kfir <noam@boundlesscode.com>",
     "Meir017"
   ],
-  "version": "0.17.5",
+  "version": "0.17.6",
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/cli",
     "create": "npm run build && npm run test",
