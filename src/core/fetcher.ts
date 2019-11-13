@@ -81,6 +81,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     data: options.formData,
     responseType,
     timeout,
+    maxContentLength: Infinity,
   };
 
   const { lenientSsl } = options; // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
