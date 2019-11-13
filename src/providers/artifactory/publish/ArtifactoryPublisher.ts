@@ -5,9 +5,9 @@ import { createReadStream } from 'graceful-fs';
 
 import { TimeoutOption } from '../../../core/commandOptions';
 import calculateChecksums from '../../../core/crypto/calculateChecksums';
-import { fetch, Headers } from '../../../core/fetcher';
+import { fetch, Headers, URI } from '../../../core/fetcher';
 import { normalizeRootedDirectory } from '../../../core/shell';
-import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
+import Publisher, { PublisherOptions, GetPackageFileInfoOptions, PackageVersionExistsOptions } from '../../../core/Publisher';
 import ArtifactoryPackageInfo from '../ArtifactoryPackageInfo';
 
 const PACKAGE_EXTENSION = 'tar.bz2';
@@ -76,15 +76,34 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     const debugMessageFormat = `${baseMessageFormat} ${directoryPath} ...`;
     const infoMessageFormat = `${baseMessageFormat} ${packageName} ${architecture}`;
 
-    // if (await packageVersionExists(packageInfo, { lenientSsl, logger })) {
-    //   logger.info(infoMessageFormat, 'exists'.yellow);
-    //   return;
-    // }
-
     logger.info(debugMessageFormat, 'publishing'.cyan);
     await this.executePublishCommand(packageInfo, options);
     logger.info(infoMessageFormat, 'published'.green);
   }
+
+  async packageVersionExists({ packageName, uri }: { packageName: string, uri: URI }, { timeout, lenientSsl = false, logger }: PackageVersionExistsOptions): Promise<boolean> {
+    try {
+        logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
+        const response = await fetch({
+            uri,
+            responseType: 'json',
+            lenientSsl,
+            timeout,
+            logger,
+        });
+
+        return response.success;
+    }
+    catch (error) {
+        const statusCode = error.statusCode || (error.response && error.response.status);
+        if (statusCode === 404) {
+            logger.debug(`the package ${packageName} could not be found at ${uri}`.yellow);
+            return false;
+        }
+        logger.debug('package version exists error', { uri, error });
+        throw error;
+    }
+}
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, fileName, architecture } = packageInfo;
@@ -98,10 +117,17 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
       throw new Error(`architecture is missing, cannot publish package`);
     }
 
+    const packageName = `${architecture}/${fileName}`;
+
     // const registry = packageInfo.registry || options.registry;
     // logger.info(`registry: ${registry.green}`);
-    const publishUrl = new URL(`${architecture}/${fileName}`, api);
+    const publishUrl = new URL(packageName, api);
     logger.info(`publishing ${filePath} to ${publishUrl.href}`);
+
+    if (await this.packageVersionExists({ packageName, uri: publishUrl }, options)) {
+      logger.info('[exists]'.yellow, `${packageName} at ${publishUrl}`);
+      return;
+    }
 
     let headers: Headers | undefined = undefined;
     if(apiKey) {
