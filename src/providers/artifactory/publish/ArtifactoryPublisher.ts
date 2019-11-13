@@ -3,6 +3,7 @@ import { URL } from 'url';
 import FormData from 'form-data';
 import { createReadStream } from 'graceful-fs';
 
+import { TimeoutOption } from '../../../core/commandOptions';
 import calculateChecksums from '../../../core/crypto/calculateChecksums';
 import { fetch, Headers } from '../../../core/fetcher';
 import { normalizeRootedDirectory } from '../../../core/shell';
@@ -13,6 +14,7 @@ const PACKAGE_EXTENSION = 'tar.bz2';
 
 type ArtifactoryPublisherOptions =
   PublisherOptions
+  & TimeoutOption
   & {
     packagesPath: string
     server: string
@@ -86,7 +88,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, fileName, architecture } = packageInfo;
-    const { api, apiKey, byChecksum, lenientSsl, logger } = options;
+    const { api, apiKey, byChecksum, lenientSsl, timeout, logger } = options;
 
     if(!filePath) {
       throw new Error(`filePath is missing, cannot publish package`);
@@ -127,6 +129,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
       contentType: 'multipart/form-data',
       lenientSsl,
       headers,
+      timeout,
       logger,
     });
   }
