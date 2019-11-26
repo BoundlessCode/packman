@@ -17,7 +17,7 @@ export type FetchOptions =
   LoggerOptions
   & SslOptions
   & {
-    method?: 'GET' | 'POST' | 'PUT'
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
     uri: URI
     qs?: any
     formData?: { [key: string]: any };
