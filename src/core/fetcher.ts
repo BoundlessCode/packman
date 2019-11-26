@@ -21,6 +21,7 @@ export type FetchOptions =
     uri: URI
     qs?: any
     formData?: { [key: string]: any }
+    data?: any
     contentType?: string
     responseType?: 'json' | 'text' | 'stream'
     useBasicAuthHeader?: boolean
@@ -82,7 +83,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     method,
     params: qs,
     headers: Object.fromEntries(headers),
-    data: options.formData,
+    data: options.formData || options.data,
     responseType,
     timeout,
     maxContentLength: Infinity,
