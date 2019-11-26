@@ -20,7 +20,7 @@ export type FetchOptions =
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
     uri: URI
     qs?: any
-    formData?: { [key: string]: any };
+    formData?: { [key: string]: any }
     contentType?: string
     responseType?: 'json' | 'text' | 'stream'
     useBasicAuthHeader?: boolean
