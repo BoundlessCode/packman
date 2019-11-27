@@ -45,6 +45,7 @@
     "glob": "^7.1.4",
     "graceful-fs": "^4.2.2",
     "mkdirp": "^0.5.1",
+    "object.fromentries": "^2.0.1",
     "password-prompt": "^1.1.2",
     "pino": "^5.13.1",
     "replace-in-file": "^4.1.3",

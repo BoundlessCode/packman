@@ -5,6 +5,8 @@ import { URL } from 'url';
 import { WriteStream, existsSync, readFileSync } from 'fs';
 import { isAbsolute, join } from 'path';
 
+import { fromEntries } from '../shims';
+
 import { getBasicAuthHeader } from './auth';
 import { LoggerOptions } from './logger';
 import { SslOptions } from './commandOptions';
@@ -81,7 +83,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     url: uri,
     method,
     params: qs,
-    headers: Object.fromEntries(headers),
+    headers: fromEntries(headers),
     data: options.formData,
     responseType,
     timeout,
