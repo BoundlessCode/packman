@@ -19,10 +19,11 @@ export type FetchOptions =
   LoggerOptions
   & SslOptions
   & {
-    method?: 'GET' | 'POST' | 'PUT'
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
     uri: URI
     qs?: any
-    formData?: { [key: string]: any };
+    formData?: { [key: string]: any }
+    data?: any
     contentType?: string
     responseType?: 'json' | 'text' | 'stream'
     useBasicAuthHeader?: boolean
@@ -84,7 +85,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     method,
     params: qs,
     headers: fromEntries(headers),
-    data: options.formData,
+    data: options.formData || options.data,
     responseType,
     timeout,
     maxContentLength: Infinity,
