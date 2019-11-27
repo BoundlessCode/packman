@@ -1,5 +1,12 @@
-import { Headers, fetch } from '../../core/fetcher';
 import { URL } from 'url';
+
+import { Headers, fetch } from '../../core/fetcher';
+
+export type AqlArtifact = any
+
+export type AqlResponse = {
+  results: AqlArtifact[]
+}
 
 function createArtifactoryHeaders(apiKey: any) {
   let headers: Headers | undefined = undefined;
@@ -10,7 +17,7 @@ function createArtifactoryHeaders(apiKey: any) {
   return headers;
 }
 
-export async function runQuery(query: string, options) {
+export async function runQuery(query: string, options): Promise<AqlResponse> {
   // const { filePath, fileName, architecture } = packageInfo;
   const { api, apiKey, byChecksum, force, lenientSsl, timeout, logger } = options;
   // if(!filePath) {
@@ -43,7 +50,7 @@ export async function runQuery(query: string, options) {
 
   logger.debug(`Running AQL query on ${uri.href.yellow}: ${query}`);
 
-  const response = await fetch({
+  const response = await fetch<AqlResponse>({
     method: 'POST',
     uri,
     contentType: 'text/plain',
@@ -57,7 +64,7 @@ export async function runQuery(query: string, options) {
 
   logger.debug('AQL query result:', response);
 
-  return response;
+  return response.body;
 }
 
 export async function deleteArtifact(artifact, options) {
