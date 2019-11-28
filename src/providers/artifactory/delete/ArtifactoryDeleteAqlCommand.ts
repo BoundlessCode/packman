@@ -64,5 +64,3 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
     }
   }
 }
-
-type AqlQuery = string;
