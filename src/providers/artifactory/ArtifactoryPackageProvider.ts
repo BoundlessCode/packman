@@ -20,6 +20,15 @@ export default class ArtifactoryPackageProvider extends PackageProvider {
             dir: 'publish',
           },
         },
+        {
+          name: 'delete',
+          description: 'Delete packages',
+          alias: 'd',
+          loadChildren: {
+            base: __dirname,
+            dir: 'delete',
+          },
+        },
       ],
     };
   }

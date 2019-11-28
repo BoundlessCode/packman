@@ -17,12 +17,12 @@ export type ArtifactoryDeleteAqlCommandOptions =
     aqlFile?: string
   }
 
-export default class ArtifactoryPublishPackagesCommand implements Command {
+export default class ArtifactoryDeleteAqlCommand implements Command {
   get definition() {
     return {
-      name: 'packages',
+      name: 'aql',
       flags: '<server> <aql>',
-      description: 'execute the aql query (string or file name) and attempt to delete the packages listed in the results',
+      description: 'execute the specified aql query and delete the matching packages',
       options: [
         // registryOption,
         {
