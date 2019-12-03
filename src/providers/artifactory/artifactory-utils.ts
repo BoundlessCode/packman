@@ -19,7 +19,7 @@ function createArtifactoryHeaders(apiKey: any) {
 
 export async function runQuery(query: string, options): Promise<AqlResponse> {
   // const { filePath, fileName, architecture } = packageInfo;
-  const { server, apiKey, byChecksum, force, lenientSsl, timeout, logger } = options;
+  const { server, apiKey, lenientSsl, proxy, timeout, logger } = options;
   // if(!filePath) {
   //   throw new Error(`filePath is missing, cannot publish package`);
   // }
