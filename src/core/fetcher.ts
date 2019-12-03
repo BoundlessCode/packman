@@ -44,6 +44,13 @@ export type StreamResponse = BasicResponse & {
   }
 }
 
+type Agents = {
+  agents?: {
+    httpAgent?: http.Agent,
+    httpsAgent?: https.Agent,
+  }
+}
+
 interface FetchResponse<T> {
   body: T
   success: boolean
@@ -87,7 +94,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     logger.info('Using the proxy settings:', axiosProxy);
   }
 
-  const requestOptions: AxiosRequestConfig = {
+  const requestOptions: AxiosRequestConfig & Agents = {
     url: uri,
     method,
     params: qs,
