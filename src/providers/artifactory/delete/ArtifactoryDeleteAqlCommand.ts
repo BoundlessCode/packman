@@ -42,7 +42,9 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
         ? readFileSync(aql, 'utf8')
         : aql;
 
+    logger.info(`Querying Artifactory for ${aql}`);
     const { results } = await runQuery(query, options);
+    logger.info(results);
 
     for (const item of results) {
       logger.info('Deleting', item);
