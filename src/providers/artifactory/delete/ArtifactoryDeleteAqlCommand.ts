@@ -3,18 +3,16 @@ import isValidPath from 'is-valid-path';
 
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, ForceOption, forceOption } from '../../../core/commandOptions';
-import { runQuery, deleteArtifact } from '../artifactory-utils';
+import { runQuery, deleteArtifact, ArtifactoryOptions, artifactoryOptions } from '../artifactory-utils';
 
 export type ArtifactoryDeleteAqlCommandOptions =
   GlobalOptions
   & ForceOption
+  & ArtifactoryOptions
   & {
-    // server: string
     // repo: string
     // packageType: string
-    apiKey?: string
     // byChecksum?: boolean
-    force?: boolean
     aql: string
   }
 
@@ -26,10 +24,7 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
       description: 'execute the specified aql query and delete the matching packages',
       options: [
         // registryOption,
-        {
-          flags: '--api-key <apiKey>',
-          description: 'your API Key, as specified on your user profile page in Artifactory',
-        },
+        ...artifactoryOptions,
         forceOption,
         ...globalOptions,
       ],
@@ -38,6 +33,8 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
 
   async execute(options: ArtifactoryDeleteAqlCommandOptions) {
     const { aql, force, logger } = options;
+
+    logger.info(options);
 
     const query =
       isValidPath(aql)

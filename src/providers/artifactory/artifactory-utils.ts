@@ -1,12 +1,27 @@
 import { URL } from 'url';
 
 import { Headers, fetch } from '../../core/fetcher';
+import { GlobalOptions, CommandOption } from '../../core/commandOptions';
 
 export type AqlArtifact = any
 
 export type AqlResponse = {
   results: AqlArtifact[]
 }
+
+export type ArtifactoryOptions = {
+  server: string
+  apiKey?: string
+}
+
+export const apiKeyOption ={
+  flags: '--api-key <apiKey>',
+  description: 'your API Key, as specified on your user profile page in Artifactory',
+};
+
+export const artifactoryOptions = [
+  apiKeyOption
+] as CommandOption[];
 
 function createArtifactoryHeaders(apiKey: any) {
   let headers: Headers | undefined = undefined;
@@ -17,7 +32,13 @@ function createArtifactoryHeaders(apiKey: any) {
   return headers;
 }
 
-export async function runQuery(query: string, options): Promise<AqlResponse> {
+export type AqlQueryOptions =
+  GlobalOptions
+  & ArtifactoryOptions
+  & {
+  }
+
+export async function runQuery(query: string, options: AqlQueryOptions): Promise<AqlResponse> {
   // const { filePath, fileName, architecture } = packageInfo;
   const { server, apiKey, lenientSsl, proxy, timeout, logger } = options;
   // if(!filePath) {
