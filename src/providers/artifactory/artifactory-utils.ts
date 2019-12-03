@@ -82,6 +82,7 @@ export async function runQuery(query: string, options: AqlQueryOptions): Promise
     lenientSsl,
     headers,
     data: trimmedQuery,
+    proxy,
     timeout,
     logger,
   });

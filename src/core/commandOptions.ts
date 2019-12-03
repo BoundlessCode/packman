@@ -21,6 +21,10 @@ export type SslOptions = {
     lenientSsl?: boolean
 }
 
+export type ProxyOption = {
+    proxy?: string
+}
+
 export type ForceOption = {
     force?: boolean
 }
@@ -33,6 +37,7 @@ export type GlobalOptions =
     LoggerOptions
     & TimeoutOption
     & SslOptions
+    & ProxyOption
     & {
         [name: string]: any
     }
@@ -61,9 +66,13 @@ export const forceOption = '--force';
 export const timeoutOption = '--timeout';
 export const lenientSslOption = '--lenient-ssl';
 export const verboseOption = '-v, --verbose';
-
+export const proxyOption = {
+    flags: '--proxy <proxy>',
+    description: 'Specify the proxy in the host:port format',
+}
 export const globalOptions = [
     timeoutOption,
     lenientSslOption,
+    proxyOption,
     verboseOption,
 ] as CommandOption[];

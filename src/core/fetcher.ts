@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, Method } from 'axios';
+import axios, { AxiosRequestConfig, Method, AxiosProxyConfig } from 'axios';
 import http from 'http';
 import https from 'https';
 import { URL } from 'url';
@@ -9,7 +9,7 @@ import { fromEntries } from '../shims';
 
 import { getBasicAuthHeader } from './auth';
 import { LoggerOptions } from './logger';
-import { SslOptions } from './commandOptions';
+import { SslOptions, ProxyOption } from './commandOptions';
 
 export type URI = string | URL;
 
@@ -18,6 +18,7 @@ export type Headers = Map<string, string>;
 export type FetchOptions =
   LoggerOptions
   & SslOptions
+  & ProxyOption
   & {
     method?: Method
     uri: URI
@@ -58,6 +59,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     qs,
     timeout = DEFAULT_TIMEOUT,
     responseType = 'json',
+    proxy,
     logger,
   } = options;
 
@@ -80,6 +82,11 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
 
   const headers = await getHeaders(options);
 
+  const axiosProxy = getAxiosProxy(proxy);
+  if(axiosProxy) {
+    logger.info('Using the proxy settings:', axiosProxy);
+  }
+
   const requestOptions: AxiosRequestConfig = {
     url: uri,
     method,
@@ -89,6 +96,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     responseType,
     timeout,
     maxContentLength: Infinity,
+    proxy: axiosProxy,
   };
 
   const { lenientSsl } = options; // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
@@ -153,4 +161,16 @@ function normalizeUrl(uri: URI): string {
     url = join(process.cwd(), uri);
   }
   return url;
+}
+
+function getAxiosProxy(proxy?: string): AxiosProxyConfig | undefined {
+  if(proxy === undefined) {
+    return undefined;
+  }
+
+  const [host, port] = proxy.split(':');
+  return {
+    host: host || '127.0.0.1',
+    port: Number(port) || 80,
+  };
 }
