@@ -83,7 +83,20 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
 
   async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
     const target = registry || this.options.registry;
-    const { logger } = this.options;
-    await execute(`npm publish "${filePath}" --quiet --registry ${target}`, { stdio: [0, 1, 2], logger });
+    const { logger, lenientSsl } = this.options;
+
+    const clauses: string[] = [];
+
+    clauses.push('--quiet');
+
+    if(target) {
+      clauses.push(`--registry ${target}`);
+    }
+
+    if(lenientSsl !== undefined) {
+      clauses.push(`--strict-ssl${ lenientSsl === false ? ' false' : ''}`);
+    }
+
+    await execute(`npm publish "${filePath}" ${clauses.join(' ')}`, { stdio: [0, 1, 2], logger });
   }
 }
