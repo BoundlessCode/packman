@@ -88,6 +88,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
   const resolveWithFullResponse = options.responseMode === 'full-response';
 
   const headers = await getHeaders(options);
+  headers.forEach((value, key) => logger.debug(`HEADER: ${key}: ${value}`));
 
   const axiosProxy = getAxiosProxy(proxy);
   if(axiosProxy) {
@@ -124,6 +125,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
   try {
     activeRequests++;
     logger.debug(`fetching [${activeRequests}]:`.yellow, summary, options);
+    logger.debug(requestOptions);
     const response = await instance.request<TResponse>(requestOptions);
     activeRequests--;
     logger.debug(`fetched [${activeRequests}]:`.green, summary);
