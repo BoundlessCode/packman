@@ -50,7 +50,8 @@ export async function runQuery(query: string, options): Promise<AqlResponse> {
   //   ]
   // })`
 
-  logger.debug(`Running AQL query on ${uri.href.yellow}: ${query}`);
+  const trimmedQuery = query.replace(/[\r\n]/g, ' ');
+  logger.debug(`Running AQL query on ${uri.href.yellow}: ${trimmedQuery}`);
 
   const response = await fetch<AqlResponse>({
     method: 'post',
@@ -59,7 +60,7 @@ export async function runQuery(query: string, options): Promise<AqlResponse> {
     responseType: 'json',
     lenientSsl,
     headers,
-    data: query,
+    data: trimmedQuery,
     timeout,
     logger,
   });
