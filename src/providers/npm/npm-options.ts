@@ -1,4 +1,4 @@
-import { registryOption, DirectoryOption, directoryOption, forceOption, dependenciesOption, devDependenciesOption, peerDependenciesOption, CommandOption } from '../../core/commandOptions';
+import { registryOption, DirectoryOption, directoryOption, forceOption, dependenciesOption, devDependenciesOption, peerDependenciesOption, CommandOption, ForceOption } from '../../core/commandOptions';
 
 export type DependenciesOptions = {
     dependencies?: boolean
@@ -10,14 +10,10 @@ export type NpmRegistryOption = {
     registry?: string
 }
 
-export type NpmForceOption = {
-    force?: boolean
-}
-
 export type NpmDownloadOptions =
     NpmRegistryOption
     & DirectoryOption
-    & NpmForceOption
+    & ForceOption
     & {
     }
 

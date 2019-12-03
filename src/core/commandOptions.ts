@@ -21,6 +21,10 @@ export type SslOptions = {
     lenientSsl?: boolean
 }
 
+export type ForceOption = {
+    force?: boolean
+}
+
 export type DirectoryOption = {
     directory: string
 }

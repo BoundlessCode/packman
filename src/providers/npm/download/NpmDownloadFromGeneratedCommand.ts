@@ -1,13 +1,12 @@
 import Command from '../../../core/Command';
-import { GlobalOptions, globalOptions, DirectoryOption, directoryOption, forceOption } from '../../../core/commandOptions';
+import { GlobalOptions, globalOptions, DirectoryOption, directoryOption, ForceOption, forceOption } from '../../../core/commandOptions';
 import { fetch } from '../../../core/fetcher';
-import { NpmForceOption } from '../npm-options';
 import { downloadFromIterable } from './downloader';
 import { endOfLine } from './generator';
 
 export type NpmDownloadFromGeneratedCommandOptions =
   DirectoryOption
-  & NpmForceOption
+  & ForceOption
   & GlobalOptions
   & {
     uri: string
