@@ -44,6 +44,7 @@
     "extract-zip": "^1.6.7",
     "glob": "^7.1.4",
     "graceful-fs": "^4.2.2",
+    "is-valid-path": "^0.1.1",
     "mkdirp": "^0.5.1",
     "object.fromentries": "^2.0.1",
     "password-prompt": "^1.1.2",

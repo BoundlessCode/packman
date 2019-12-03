@@ -1,4 +1,5 @@
 import { readFileSync } from 'graceful-fs';
+import isValidPath from 'is-valid-path';
 
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
@@ -13,8 +14,7 @@ export type ArtifactoryDeleteAqlCommandOptions =
     apiKey?: string
     // byChecksum?: boolean
     // force?: boolean
-    aql?: string
-    aqlFile?: string
+    aql: string
   }
 
 export default class ArtifactoryDeleteAqlCommand implements Command {
@@ -29,31 +29,18 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
           flags: '--api-key <apiKey>',
           description: 'your API Key, as specified on your user profile page in Artifactory',
         },
-        {
-          flags: '--aql <query>',
-          description: 'an AQL query (such as: \'items.find({ "repo": "npm" }).include("repo", "name"))\'',
-        },
-        {
-          flags: '--aql-file <path>',
-          description: 'the path of a file containing an AQL query',
-        },
         ...globalOptions,
       ],
     };
   }
 
   async execute(options: ArtifactoryDeleteAqlCommandOptions) {
-    const { aql, aqlFile, logger } = options;
-
-    if (!!aql === !!aqlFile) {
-      logger.error('One of these arguments must be specified: aql, aql-file');
-      return;
-    }
+    const { aql, logger } = options;
 
     const query =
-      aqlFile
-        ? readFileSync(aqlFile, 'utf8') as string
-        : aql as string;
+      isValidPath(aql)
+        ? readFileSync(aql, 'utf8')
+        : aql;
 
     const { results } = await runQuery(query, options);
 
