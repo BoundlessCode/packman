@@ -19,7 +19,7 @@ function createArtifactoryHeaders(apiKey: any) {
 
 export async function runQuery(query: string, options): Promise<AqlResponse> {
   // const { filePath, fileName, architecture } = packageInfo;
-  const { api, apiKey, byChecksum, force, lenientSsl, timeout, logger } = options;
+  const { server, apiKey, byChecksum, force, lenientSsl, timeout, logger } = options;
   // if(!filePath) {
   //   throw new Error(`filePath is missing, cannot publish package`);
   // }
@@ -30,7 +30,9 @@ export async function runQuery(query: string, options): Promise<AqlResponse> {
   // const registry = packageInfo.registry || options.registry;
   // logger.info(`registry: ${registry.green}`);
   // const publishUrl = new URL(packageName, api);
-  const uri = new URL('/search/aql', api);
+
+  const normalizedServer = server.endsWith('/') ? server : server + '/';
+  const uri = new URL('api/search/aql', normalizedServer);
   // logger.info(`publishing ${filePath} to ${publishUrl.href}`);
   // if (!force && await this.packageVersionExists({ packageName, uri: publishUrl }, options)) {
   //   logger.info('[exists]'.yellow, `${packageName} at ${publishUrl}`);
