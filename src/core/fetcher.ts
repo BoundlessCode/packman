@@ -108,15 +108,16 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
 
   const { lenientSsl } = options; // https://stackoverflow.com/questions/20082893/unable-to-verify-leaf-signature
   const rejectUnauthorized = lenientSsl === undefined ? undefined : !lenientSsl;
-  const agentOptions: any = { rejectUnauthorized };
-  const config =
+  const agentOptions: any = { rejectUnauthorized, keepAlive: true };
+  const agents =
     rejectUnauthorized === undefined
       ? undefined
       : {
         httpAgent: new http.Agent(agentOptions),
         httpsAgent: new https.Agent(agentOptions),
       };
-  const instance = axios.create(config);
+  requestOptions.agents = agents;
+  const instance = axios.create(agents);
 
   const summary = `${method} ${uri}${qs || ''} [type:${responseType}] [timeout:${timeout}]`.yellow;
 
