@@ -50,7 +50,7 @@ export default class NexusPublisher extends Publisher<NexusPublisherOptions, Nex
     const { body: { statusCode } } = await fetch<PublishResponse>({
       uri: uploadComponentUrl,
       qs: { repository: 'npm' },
-      method: 'POST',
+      method: 'post',
       useBasicAuthHeader: true,
       contentType: 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
       formData: {

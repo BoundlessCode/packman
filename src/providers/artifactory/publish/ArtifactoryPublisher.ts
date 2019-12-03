@@ -150,7 +150,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     formData.append('file', file);
 
     await fetch({
-      method: 'PUT',
+      method: 'put',
       uri: publishUrl,
       formData,
       contentType: 'multipart/form-data',

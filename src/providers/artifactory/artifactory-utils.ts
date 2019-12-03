@@ -51,7 +51,7 @@ export async function runQuery(query: string, options): Promise<AqlResponse> {
   logger.debug(`Running AQL query on ${uri.href.yellow}: ${query}`);
 
   const response = await fetch<AqlResponse>({
-    method: 'POST',
+    method: 'post',
     uri,
     contentType: 'text/plain',
     responseType: 'json',
@@ -98,7 +98,7 @@ export async function deleteArtifact(artifact, options) {
   const headers = createArtifactoryHeaders(apiKey);
 
   await fetch({
-    method: 'DELETE',
+    method: 'delete',
     uri,
     contentType: 'text/plain',
     responseType: 'json',

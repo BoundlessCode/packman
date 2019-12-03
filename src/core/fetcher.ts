@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, Method } from 'axios';
 import http from 'http';
 import https from 'https';
 import { URL } from 'url';
@@ -19,7 +19,7 @@ export type FetchOptions =
   LoggerOptions
   & SslOptions
   & {
-    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
+    method?: Method
     uri: URI
     qs?: any
     formData?: { [key: string]: any }
@@ -54,7 +54,7 @@ let activeRequests = 0;
 
 export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResponse<TResponse>> {
   const {
-    method = 'GET',
+    method = 'get',
     qs,
     timeout = DEFAULT_TIMEOUT,
     responseType = 'json',
