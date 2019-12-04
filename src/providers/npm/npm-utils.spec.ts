@@ -87,6 +87,23 @@ describe('npm-utils', function () {
 
             expect(packageInfo).to.be.undefined;
         });
+
+        it('extract unscoped package name from file name', function () {
+            const name = 'simple';
+            const version = '1.2.3';
+            const options = {
+                ...baseOptions,
+                filePath: `/path/to/${name}-${version}${extension}`,
+            };
+
+            const packageInfo = getPackageFileInfo(options);
+
+            expect(packageInfo).to.include({
+                packageName: name,
+                packageVersion: version,
+                packageScope: undefined,
+            });
+        });
     });
 
 });

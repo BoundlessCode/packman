@@ -87,18 +87,33 @@ export function getPackageFileInfo({ filePath, extension }: GetPackageFileInfoOp
         const directoryPath = fileInfo.dir;
         const directoryParts = directoryPath.split(path.posix.sep);
 
-        const packageName = directoryParts.pop();
+        const parentDirectory = directoryParts.pop() || '';
+        const grandparentDirectory = directoryParts.pop() || '';
 
-        if (!packageName) {
-            throw new Error(`could not extract package name from directoryPath ${directoryPath}`);
-        }
-
-        const potentialScope = directoryParts.pop() || '';
-        const packageScope = potentialScope.startsWith('@') ? potentialScope : undefined;
+        const packageScope =
+            parentDirectory.startsWith('@')
+            ? parentDirectory
+            : (
+                grandparentDirectory.startsWith('@') ? grandparentDirectory : undefined
+            );
 
         const fileName = fileInfo.name;
-        const versionMatch = fileName.match(/-(\d+\.\d+\.\d+.*)/);
-        const packageVersion = versionMatch && versionMatch[1] || '';
+
+        // The pattern is loosely based on the recommended semver version matching pattern
+        // but gets rid of the unnecessary capture groups for the different parts of a version strings
+        // and captures the scope and package name at the beginning of the string.
+        //
+        // The scope is optional so this pattern ensures that the result array always has the same number
+        // of items, with or without scope.
+        //
+        // Finally, the fileName does not currently support scope, so it's currently only captured in
+        // preparation for future changes.
+        //
+        // See https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+        // and https://regex101.com/r/EanOyJ/1
+        const pattern = /(?:\@(.*)\/|)(.*)\-((?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)/g;
+        const matches = pattern.exec(fileName);
+        const [, /* scope */, packageName, packageVersion] = matches;
 
         return {
             directoryPath,
