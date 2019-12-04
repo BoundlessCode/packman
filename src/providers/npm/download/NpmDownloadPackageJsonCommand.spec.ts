@@ -9,7 +9,7 @@ import {
 
 import NpmDownloadPackageJsonCommand from './NpmDownloadPackageJsonCommand';
 
-describe('the (package.json) command', function () {
+xdescribe('the (package.json) command', function () {
     this.timeout(DEFAULT_TIMEOUT_INTERVAL);
 
     afterEach(function () {

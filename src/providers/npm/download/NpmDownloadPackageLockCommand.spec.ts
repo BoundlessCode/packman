@@ -9,7 +9,7 @@ import {
 
 import NpmDownloadPackageLockCommand from './NpmDownloadPackageLockCommand';
 
-describe('the (package-lock.json) command', function () {
+xdescribe('the (package-lock.json) command', function () {
     this.timeout(DEFAULT_TIMEOUT_INTERVAL);
 
     afterEach(function () {

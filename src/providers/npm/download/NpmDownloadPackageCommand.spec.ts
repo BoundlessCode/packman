@@ -8,7 +8,7 @@ import {
 
 import NpmDownloadPackageCommand from './NpmDownloadPackageCommand';
 
-describe('the (package) command', function () {
+xdescribe('the (package) command', function () {
     this.timeout(DEFAULT_TIMEOUT_INTERVAL);
 
     afterEach(function () {
