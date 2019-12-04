@@ -94,7 +94,9 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
     }
 
     if(lenientSsl !== undefined) {
-      clauses.push(`--strict-ssl${ lenientSsl === false ? ' false' : ''}`);
+      // if lenient-ssl is not specified, rely on system config
+      // if lenient-ssl is explicitly set, strict-ssl is the opposite
+      clauses.push(`--strict-ssl${ lenientSsl === true ? ' false' : ''}`);
     }
 
     await execute(`npm publish "${filePath}" ${clauses.join(' ')}`, { stdio: [0, 1, 2], logger });
