@@ -72,7 +72,9 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
 
   logger.debug(`fetch timeout: ${timeout}`);
 
-  const uri = normalizeUrl(options.uri);
+  logger.debug(`fetch options.uri: ${options.uri};`)
+  const uri = normalizeUrl(options.uri, options);
+  logger.debug(`fetch normalized uri: ${uri};`, options);
 
   const json = responseType === 'json' || uri.endsWith('json');
 
@@ -159,7 +161,8 @@ export type RetrieveFileOptions = LoggerOptions & {
   json?: boolean
 }
 
-function normalizeUrl(uri: URI): string {
+function normalizeUrl(uri: URI, { logger }): string {
+  logger.debug(`normalizeUrl start - uri ${uri}`.red);
   let url: string;
   if (uri instanceof URL) {
     url = uri.href;
@@ -170,6 +173,7 @@ function normalizeUrl(uri: URI): string {
   else {
     url = join(process.cwd(), uri);
   }
+  logger.debug(`normalizeUrl end - url ${url}`.red);
   return url;
 }
 
