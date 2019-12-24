@@ -52,6 +52,7 @@ export type PackageResponse = {
 
 export async function packageVersionExists(packageInfo: PackageInfo, { timeout, lenientSsl = false, logger }: PackageVersionExistsOptions): Promise<boolean> {
     const { packageName, packageVersion = '' } = packageInfo;
+    logger.debug(`packageVersionExists: packageInfo:`, packageInfo);
     const uri = getPackageUrl(packageInfo);
     try {
         logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
@@ -70,7 +71,7 @@ export async function packageVersionExists(packageInfo: PackageInfo, { timeout, 
             logger.debug(`the package ${packageName.cyan}@${(packageVersion || '').cyan} could not be found at ${uri}`.yellow);
             return false;
         }
-        logger.debug('package version exists error', { packageInfo, uri: uri, error });
+        logger.debug('package version exists error', { packageInfo, uri, statusCode, error });
         throw error;
     }
 }
