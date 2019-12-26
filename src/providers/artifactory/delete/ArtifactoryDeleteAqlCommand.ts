@@ -3,18 +3,14 @@ import isValidPath from 'is-valid-path';
 
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, ForceOption, forceOption } from '../../../core/commandOptions';
-import { runQuery, deleteArtifact, ArtifactoryOptions, artifactoryOptions } from '../artifactory-utils';
+import { deleteArtifact, ArtifactoryOptions, artifactoryOptions } from '../artifactory-utils';
+import ArtifactorySearchAqlCommand, { ArtifactorySearchAqlCommandOptions } from '../search/ArtifactorySearchAqlCommand';
 
 export type ArtifactoryDeleteAqlCommandOptions =
   GlobalOptions
   & ForceOption
   & ArtifactoryOptions
-  & {
-    // repo: string
-    // packageType: string
-    // byChecksum?: boolean
-    aql: string
-  }
+  & ArtifactorySearchAqlCommandOptions
 
 export default class ArtifactoryDeleteAqlCommand implements Command {
   get definition() {
@@ -23,7 +19,6 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
       flags: '<server> <aql>',
       description: 'execute the specified aql query and delete the matching packages',
       options: [
-        // registryOption,
         ...artifactoryOptions,
         forceOption,
         ...globalOptions,
@@ -32,18 +27,10 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
   }
 
   async execute(options: ArtifactoryDeleteAqlCommandOptions) {
-    const { aql, force, logger } = options;
+    const { force, logger } = options;
 
-    logger.info(options);
-
-    const query =
-      isValidPath(aql)
-        ? readFileSync(aql, 'utf8')
-        : aql;
-
-    logger.info(`Querying Artifactory for ${aql}`);
-    const { results } = await runQuery(query, options);
-    logger.info(results);
+    const search = new ArtifactorySearchAqlCommand();
+    const results = await search.execute(options);
 
     if (force) {
       logger.info('Force enabled: packages will really be deleted!'.red);

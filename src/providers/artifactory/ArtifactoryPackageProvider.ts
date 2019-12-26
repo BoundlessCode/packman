@@ -21,6 +21,15 @@ export default class ArtifactoryPackageProvider extends PackageProvider {
           },
         },
         {
+          name: 'search',
+          description: 'Search packages',
+          alias: 's',
+          loadChildren: {
+            base: __dirname,
+            dir: 'search',
+          },
+        },
+        {
           name: 'delete',
           description: 'Delete packages',
           alias: 'd',
