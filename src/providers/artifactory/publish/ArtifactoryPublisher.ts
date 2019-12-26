@@ -146,14 +146,12 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     }
 
     const file = createReadStream(filePath);
-    const formData = new FormData();
-    formData.append('file', file);
 
     await fetch({
       method: 'put',
       uri: publishUrl,
-      formData,
-      contentType: 'multipart/form-data',
+      data: file,
+      contentType: 'application/octet-stream',
       lenientSsl,
       headers,
       timeout,
