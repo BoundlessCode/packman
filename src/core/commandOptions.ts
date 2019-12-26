@@ -63,7 +63,10 @@ export const registryOption = '--registry [registry]';
 export const outputFileOption = '--outputFile [outputFile]';
 export const catalogOption = '--catalog [catalogFile]';
 export const forceOption = '--force';
-export const timeoutOption = '--timeout';
+export const timeoutOption = {
+    flags: '--timeout',
+    description: 'Set the http request timeout (in seconds)',
+};
 export const lenientSslOption = '--lenient-ssl';
 export const verboseOption = '-v, --verbose';
 export const proxyOption = {

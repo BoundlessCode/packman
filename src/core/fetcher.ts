@@ -56,7 +56,7 @@ interface FetchResponse<T> {
   success: boolean
 }
 
-export const DEFAULT_TIMEOUT = 30000;
+export const DEFAULT_TIMEOUT = 30;
 
 let activeRequests = 0;
 
@@ -70,7 +70,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     logger,
   } = options;
 
-  logger.debug(`fetch timeout: ${timeout}`);
+  logger.debug(`fetch timeout: ${timeout} seconds`);
 
   logger.debug(`fetch options.uri: ${options.uri};`)
   const uri = normalizeUrl(options.uri, options);
@@ -104,7 +104,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
     headers: fromEntries(headers),
     data: options.formData || options.data,
     responseType,
-    timeout,
+    timeout: timeout * 1000,
     maxContentLength: Infinity,
     proxy: axiosProxy,
   };
@@ -126,7 +126,7 @@ export async function fetch<TResponse>(options: FetchOptions): Promise<FetchResp
   requestOptions.agents = agents;
   const instance = axios.create(agents);
 
-  const summary = `${method} ${uri}${qs || ''} [type:${responseType}] [timeout:${timeout}]`.yellow;
+  const summary = `${method} ${uri}${qs || ''} [type:${responseType}] [timeout:${timeout}s]`.yellow;
 
   try {
     activeRequests++;
