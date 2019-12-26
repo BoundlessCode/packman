@@ -32,10 +32,13 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
     const search = new ArtifactorySearchAqlCommand();
     const results = await search.execute(options);
 
+    let deletedMessage: string;
     if (force) {
+      deletedMessage = 'Deleted';
       logger.info('Force enabled: packages will really be deleted!'.red);
     }
     else {
+      deletedMessage = 'Would have deleted';
       logger.info('Force disabled: packages will NOT be deleted'.yellow)
     }
 
@@ -43,7 +46,7 @@ export default class ArtifactoryDeleteAqlCommand implements Command {
       logger.info('Deleting', item);
       if (force) {
         await deleteArtifact(item, options);
-        logger.info('Deleted'.green, item);
+        logger.info(deletedMessage.green, item);
       }
     }
   }
