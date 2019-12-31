@@ -8,7 +8,7 @@ import { LoggerOptions } from '../logger';
 import CatalogPersister from './CatalogPersister';
 import Entry from './Entry';
 
-const DEFAULT_FILE_NAME = '.catalog.packman';
+const DEFAULT_CATALOG_FILE_NAME = '.catalog.packman';
 
 export type FileCatalogPersisterOptions =
   LoggerOptions
@@ -27,7 +27,7 @@ export default class FileCatalogPersister implements CatalogPersister {
     private options: FileCatalogPersisterOptions,
     private basePersister: CatalogPersister,
   ) {
-    const { catalogFile = DEFAULT_FILE_NAME, logger } = options;
+    const { catalogFile = DEFAULT_CATALOG_FILE_NAME, logger } = options;
     this.fullPath =
       isAbsolute(catalogFile)
         ? catalogFile
