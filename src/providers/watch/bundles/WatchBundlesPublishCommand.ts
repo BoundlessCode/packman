@@ -1,5 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
+import { PublisherOptions, publisherOptions } from '../../../core/Publisher';
 import Watcher from '../../../core/watcher/Watcher';
 import { WatchOptions, watchOptions } from "../../../core/watcher/watcher-options";
 import Bundler from '../../../core/Bundler';
@@ -7,6 +8,7 @@ import Bundler from '../../../core/Bundler';
 export type WatchCommandOptions =
   WatchOptions
   & GlobalOptions
+  & PublisherOptions
   & {
   }
 
@@ -18,6 +20,7 @@ export default class WatchBundlesPublishCommand implements Command {
       description: 'watch a directory for new bundles to publish',
       options: [
         ...watchOptions,
+        ...publisherOptions,
         ...globalOptions,
       ],
     };

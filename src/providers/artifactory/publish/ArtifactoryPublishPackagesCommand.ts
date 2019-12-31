@@ -1,9 +1,11 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
+import { publisherOptions, PublisherOptions } from '../../../core/Publisher';
 import ArtifactoryPublisher from './ArtifactoryPublisher';
 
 export type ArtifactoryPublishPackagesCommandOptions =
   GlobalOptions
+  & PublisherOptions
   & {
     packagesPath: string
     server: string
@@ -34,6 +36,7 @@ export default class ArtifactoryPublishPackagesCommand implements Command {
           flags: '--force',
           description: 'publish packages even if they have already been published'
         },
+        ...publisherOptions,
         ...globalOptions,
       ],
     };

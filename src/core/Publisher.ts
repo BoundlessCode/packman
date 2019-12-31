@@ -11,6 +11,10 @@ export type PublisherOptions =
     alternatePublish?: (options: any) => Promise<any>
   }
 
+export const publisherOptions =
+  [
+  ];
+
 export type PackageVersionExistsOptions =
   LoggerOptions
   & SslOptions

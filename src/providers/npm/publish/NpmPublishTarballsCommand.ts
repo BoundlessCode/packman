@@ -1,10 +1,12 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, registryOption } from '../../../core/commandOptions';
+import { PublisherOptions, publisherOptions } from '../../../core/Publisher';
 import NpmPublisher from './NpmPublisher';
 import { NpmRegistryOption } from '../npm-options';
 
 export type NpmPublishTarballsCommandOptions =
   NpmRegistryOption
+  & PublisherOptions
   & GlobalOptions
   & {
     packagesPath: string
@@ -19,6 +21,7 @@ export default class NpmPublishTarballsCommand implements Command {
       description: 'use npm to publish tarballs (.tgz files) at the specified path to the registry',
       options: [
         registryOption,
+        ...publisherOptions,
         ...globalOptions,
       ],
     };

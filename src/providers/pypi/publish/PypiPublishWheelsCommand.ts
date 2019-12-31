@@ -1,10 +1,12 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, registryOption } from '../../../core/commandOptions';
+import { PublisherOptions, publisherOptions } from '../../../core/Publisher';
 import PypiPublisher from './PypiPublisher';
 import { PypiRegistryOption } from '../pypi-options';
 
 export type PypiPublishWheelsCommandOptions =
   PypiRegistryOption
+  & PublisherOptions
   & GlobalOptions
   & {
     packagesPath: string
@@ -19,6 +21,7 @@ export default class PypiPublishWheelsCommand implements Command {
       description: 'use twine to publish wheels (.whl files) at the specified path to the registry',
       options: [
         registryOption,
+        ...publisherOptions,
         ...globalOptions,
       ],
     };

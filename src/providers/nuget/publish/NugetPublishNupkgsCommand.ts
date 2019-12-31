@@ -1,9 +1,11 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, registryOption } from '../../../core/commandOptions';
+import { PublisherOptions, publisherOptions } from '../../../core/Publisher';
 import NugetPublisher from './NugetPublisher';
 
 export type NugetPublishNupkgsCommandOptions =
   GlobalOptions
+  & PublisherOptions
   & {
     registry: string
     packagesPath: string
@@ -17,6 +19,7 @@ export default class NugetPublishNupkgsCommand implements Command {
       description: 'use dotnet nuget to publish nupkgs (.nupkg files) at the specified path to the registry',
       options: [
         registryOption,
+        ...publisherOptions,
         ...globalOptions,
       ],
     };
