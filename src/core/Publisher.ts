@@ -3,16 +3,24 @@ import { collectFilePaths, CollectFileOptions } from './collector';
 import Counter from './counter';
 import PackageInfo from './PackageInfo';
 import { SslOptions, TimeoutOption } from './commandOptions';
+import { generateFileName } from './generators';
+import Cataloger from './catalog/Cataloger';
+import { DEFAULT_CATALOG_FILE_NAME } from './catalog/FileCatalogPersister';
 
 export type PublisherOptions =
   LoggerOptions
   & SslOptions
   & {
     alternatePublish?: (options: any) => Promise<any>
+    failureCatalogFile?: string
   }
 
 export const publisherOptions =
   [
+    {
+      flags: '--failure-catalog-file [failureCatalogFile]',
+      description: 'outputs failed packages to a catalog file with the optionally specified file name',
+    },
   ];
 
 export type PackageVersionExistsOptions =
@@ -28,7 +36,7 @@ export type GetPackageFileInfoOptions = {
   counter: Counter
 }
 
-export type PublishErrorHandler = (message: string) => void
+export type PublishErrorHandler = (message: string, packageInfo: PackageInfo) => void
 export type PublishErrorHandlerList = PublishErrorHandler[]
 
 export default abstract class Publisher<TOptions extends PublisherOptions, TPackageInfo extends PackageInfo> {
@@ -66,7 +74,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
         const errorMessage: string = (error && error.message ? error.message : error).red;
         const packageSummary = `[${packageInfo.index}] ${(packageInfo.filePath || '').yellow}`;
         const message = `${'failed to publish'.red} ${packageSummary} because '${errorMessage}'`;
-        errorHandlers.forEach(errorHandler => errorHandler(message));
+        errorHandlers.forEach(errorHandler => errorHandler(message, packageInfo));
       }
     }
 
@@ -82,6 +90,19 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
 
     const { errors } = options;
     errorHandlers.push((message) => errors.push(`[${'error'.red}] ${message}`));
+
+    const { failureCatalogFile } = options;
+    logger.info(`===> failureCatalogFile: ${failureCatalogFile}`);
+    if(failureCatalogFile) {
+      const failureCataloger = new Cataloger({
+        logger,
+        catalogFile: failureCatalogFile === true ? generateFileName(`failed-%DATE%${DEFAULT_CATALOG_FILE_NAME}`) : failureCatalogFile,
+      });
+      errorHandlers.push((_, packageInfo) => failureCataloger.catalog({
+        name: packageInfo.packageName,
+        version: packageInfo.packageVersion || packageInfo.filePath || '',
+      }));
+    }
   }
   
   * collectPackagesByPath(options: CollectFileOptions): Iterable<TPackageInfo> {

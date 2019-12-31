@@ -8,7 +8,7 @@ import { LoggerOptions } from '../logger';
 import CatalogPersister from './CatalogPersister';
 import Entry from './Entry';
 
-const DEFAULT_CATALOG_FILE_NAME = '.catalog.packman';
+export const DEFAULT_CATALOG_FILE_NAME = '.catalog.packman';
 
 export type FileCatalogPersisterOptions =
   LoggerOptions
