@@ -28,6 +28,9 @@ export type GetPackageFileInfoOptions = {
   counter: Counter
 }
 
+export type PublishErrorHandler = (message: string) => void
+export type PublishErrorHandlerList = PublishErrorHandler[]
+
 export default abstract class Publisher<TOptions extends PublisherOptions, TPackageInfo extends PackageInfo> {
   constructor(protected options: TOptions) {
   }
@@ -50,7 +53,8 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
 
   async collectAndPublishPackages(options) {
     const errors: string[] = [];
-    const { logger } = options;
+    const errorHandlers: PublishErrorHandlerList = [];
+    this.initializePublishErrorHandlers(errorHandlers, { ...options, errors });
 
     const packageInfos: Iterable<TPackageInfo> = this.collectPackagesByPath(options);
 
@@ -62,8 +66,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
         const errorMessage: string = (error && error.message ? error.message : error).red;
         const packageSummary = `[${packageInfo.index}] ${(packageInfo.filePath || '').yellow}`;
         const message = `${'failed to publish'.red} ${packageSummary} because '${errorMessage}'`;
-        logger.info(message);
-        errors.push(`[${'error'.red}] ${message}`);
+        errorHandlers.forEach(errorHandler => errorHandler(message));
       }
     }
 
@@ -73,6 +76,14 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
     }
   }
 
+  initializePublishErrorHandlers(errorHandlers: PublishErrorHandlerList, options) {
+    const { logger } = options;
+    errorHandlers.push((message) => logger.info(message));
+
+    const { errors } = options;
+    errorHandlers.push((message) => errors.push(`[${'error'.red}] ${message}`));
+  }
+  
   * collectPackagesByPath(options: CollectFileOptions): Iterable<TPackageInfo> {
     const { logger } = options;
 
