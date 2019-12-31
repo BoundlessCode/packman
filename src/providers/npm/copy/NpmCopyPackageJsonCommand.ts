@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
-
 import Command from '../../../core/Command';
+import { generateFileName } from '../../../core/generators';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import { NpmCopyOptions, npmCopyOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
 import { getCurrentRegistry } from '../npm-utils';
@@ -35,7 +34,7 @@ export default class NpmCopyPackageJsonCommand implements Command {
       throw new Error('The source registry must be specified');
     }
 
-    const directory = options.directory || `copy-${dayjs().format('YYYYMMDD-HHmmss')}`;
+    const directory = options.directory || generateFileName(`copy-%DATE%`);
     logger.info(`using the directory ${directory}`);
 
     const downloadCommand = new NpmDownloadPackageJsonCommand();

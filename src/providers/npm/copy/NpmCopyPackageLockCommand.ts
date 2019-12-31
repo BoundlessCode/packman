@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
-
 import Command from '../../../core/Command';
+import { generateFileName } from '../../../core/generators';
 import { GlobalOptions, globalOptions, DirectoryOption, directoryOption } from '../../../core/commandOptions';
 import { getCurrentRegistry } from '../npm-utils';
 import NpmDownloadPackageLockCommand from '../download/NpmDownloadPackageLockCommand';
@@ -33,7 +32,7 @@ export default class NpmCopyPackageLockCommand implements Command {
   async execute(options: NpmCopyPackageLockCommandOptions) {
     const { logger } = options;
 
-    const directory = options.directory || `copy-${dayjs().format('YYYYMMDD-HHmmss')}`;
+    const directory = options.directory || generateFileName(`copy-%DATE%`);
     logger.info(`using the directory ${directory}`);
 
     const downloadCommand = new NpmDownloadPackageLockCommand();
