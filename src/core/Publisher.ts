@@ -12,13 +12,13 @@ export type PublisherOptions =
   & SslOptions
   & {
     alternatePublish?: (options: any) => Promise<any>
-    failureCatalogFile?: string
+    failureCatalog?: string
   }
 
 export const publisherOptions =
   [
     {
-      flags: '--failure-catalog-file [failureCatalogFile]',
+      flags: '--failure-catalog [failureCatalog]',
       description: 'outputs failed packages to a catalog file with the optionally specified file name',
     },
   ];
@@ -91,12 +91,12 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
     const { errors } = options;
     errorHandlers.push((message) => errors.push(`[${'error'.red}] ${message}`));
 
-    const { failureCatalogFile } = options;
-    logger.info(`===> failureCatalogFile: ${failureCatalogFile}`);
-    if(failureCatalogFile) {
+    const { failureCatalog } = options;
+    logger.debug(`===> failureCatalog: ${failureCatalog}`);
+    if(failureCatalog) {
       const failureCataloger = new Cataloger({
         logger,
-        catalogFile: failureCatalogFile === true ? generateFileName(`failed-%DATE%${DEFAULT_CATALOG_FILE_NAME}`) : failureCatalogFile,
+        catalogFile: failureCatalog === true ? generateFileName(`failed-%DATE%${DEFAULT_CATALOG_FILE_NAME}`) : failureCatalog,
       });
       errorHandlers.push((_, packageInfo) => failureCataloger.catalog({
         name: packageInfo.packageName,
