@@ -78,7 +78,7 @@ export default class Bundler {
     else if(typeof bundleName === 'string') {
       targetBundleName = bundleName;
     }
-    targetBundleName = targetBundleName || 'packman';
+    targetBundleName = targetBundleName || directoryName || 'packman';
 
     const { name: fileName, ext } = path.parse(targetBundleName);
 
