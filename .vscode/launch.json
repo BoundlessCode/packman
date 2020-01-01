@@ -779,5 +779,31 @@
             "protocol": "inspector",
             "sourceMaps": true,
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "artifactory publish catalog",
+            "program": "${workspaceFolder}/bin/packman",
+            "args": [
+                "artifactory",
+                "publish",
+                "catalog",
+                "./failed-20191231-153147.catalog.packman",
+                "https://artifactory-host/artifactory/",
+                "repo-name",
+                "conda",
+            ],
+            "outputCapture": "std",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js",
+            ],
+            "preLaunchTask": "npm: build",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ],
+            "protocol": "inspector",
+            "sourceMaps": true,
+        },
     ]
 }

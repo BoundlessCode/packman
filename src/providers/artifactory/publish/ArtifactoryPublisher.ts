@@ -52,7 +52,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
   async initializeOptions(options: ArtifactoryPublisherOptions): Promise<any> {
     const { logger, server, repo, packagesPath } = options;
 
-    const rootPath = normalizeRootedDirectory(packagesPath, { logger });
+    const rootPath = packagesPath ? normalizeRootedDirectory(packagesPath, { logger }) : '';
     logger.info(`root path: ${rootPath.green}`);
 
     const api = new URL(`${repo}/`, server.endsWith('/') ? server : `${server}/`);
