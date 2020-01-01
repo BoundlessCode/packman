@@ -1,6 +1,5 @@
 import path from 'path';
 import { URL } from 'url';
-import FormData from 'form-data';
 import { createReadStream } from 'graceful-fs';
 
 import { TimeoutOption, GlobalOptions, globalOptions } from '../../../core/commandOptions';
