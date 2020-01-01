@@ -4,10 +4,12 @@ import glob from 'glob';
 
 import { LoggerOptions } from '../core/logger';
 
-export type CollectFileOptions = LoggerOptions & {
-    rootPath: string
-    extension: string
-}
+export type CollectFileOptions =
+    LoggerOptions
+    & {
+        rootPath: string
+        extension: string
+    }
 
 export function collectFilePaths({ rootPath, logger, extension }: CollectFileOptions): Iterable<string> {
     const stat = fs.lstatSync(rootPath);
