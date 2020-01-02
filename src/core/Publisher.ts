@@ -64,7 +64,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
     const errorHandlers: PublishErrorHandlerList = [];
     this.initializePublishErrorHandlers(errorHandlers, { ...options, errors });
 
-    const collectPackages: (options: TOptions) => Iterable<TPackageInfo> = options.collectPackages || this.collectPackagesByPath;
+    const collectPackages: (options: TOptions) => Iterable<TPackageInfo> = options.collectPackages || this.collectPackagesByPath.bind(this);
     const packageInfos: Iterable<TPackageInfo> = collectPackages(options);
 
     for (const packageInfo of packageInfos) {
