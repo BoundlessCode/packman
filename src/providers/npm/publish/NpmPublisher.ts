@@ -70,7 +70,7 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
     }
 
     logger.info(debugMessageFormat, 'publishing'.cyan);
-    await this.executePublishCommand(fullPackageInfo);
+    await this.executePublishCommand(fullPackageInfo, options);
     logger.info(infoMessageFormat, 'published'.green);
 
     // we only support updating the dist-tag when the package comes from the target registry
@@ -81,9 +81,9 @@ export default class NpmPublisher extends Publisher<NpmPublisherOptions, NpmPack
     }
   }
 
-  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
-    const target = registry || this.options.registry;
-    const { logger, lenientSsl } = this.options;
+  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }, options: NpmPublisherOptions) {
+    const target = registry || options.registry;
+    const { logger, lenientSsl } = options;
 
     const clauses: string[] = [];
 

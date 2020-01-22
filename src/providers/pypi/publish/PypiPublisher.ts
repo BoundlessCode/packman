@@ -68,13 +68,13 @@ export default class PypiPublisher extends Publisher<PypiPublisherOptions, PypiP
     // }
 
     logger.info(debugMessageFormat, 'publishing'.cyan);
-    await this.executePublishCommand(fullPackageInfo);
+    await this.executePublishCommand(fullPackageInfo, options);
     logger.info(infoMessageFormat, 'published'.green);
   }
 
-  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
-    const target = registry || this.options.registry;
-    const { logger } = this.options;
+  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }, options: PypiPublisherOptions) {
+    const target = registry || options.registry;
+    const { logger } = options;
     await execute(`twine upload --repository-url ${target} --skip-existing "${filePath}"`, { stdio: [0, 1, 2], logger });
   }
 }
