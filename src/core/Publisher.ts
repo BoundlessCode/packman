@@ -11,7 +11,7 @@ export type PublisherOptions =
   LoggerOptions
   & SslOptions
   & {
-    alternatePublish?: (options: any) => Promise<any>
+    alternatePublish?: (data: unknown, options: unknown) => Promise<unknown>
     failureCatalog?: string
   }
 
@@ -50,7 +50,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
     };
 
     if(options.alternatePublish) {
-      await options.alternatePublish(options);
+      await options.alternatePublish(undefined, options);
     }
     else {
       await this.collectAndPublishPackages(options);
