@@ -3,16 +3,30 @@ import path from 'path';
 import glob from 'glob';
 
 import { execute, normalizeRootedDirectory } from '../../../core/shell';
-import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
+import { GlobalOptions, globalOptions, registryOption } from '../../../core/commandOptions';
+import Publisher, { PublisherOptions, GetPackageFileInfoOptions, publisherOptions } from '../../../core/Publisher';
 import NugetPackageProvider from '../NugetPackageProvider';
 import NugetPackageInfo from '../NugetPackageInfo';
 
 const NUPKG_EXTENSION = 'nupkg';
 
-export type NugetPublisherOptions = PublisherOptions & {
-  registry: string
-  packagesPath: string
-}
+export type NugetPublisherOptions =
+  GlobalOptions
+  & PublisherOptions
+  & {
+    registry: string
+    apiKey?: string
+  }
+
+export const nugetPublisherOptions = [
+  {
+    flags: '--api-key <apiKey>',
+    description: 'your Nuget API Key',
+  },
+  registryOption,
+  ...publisherOptions,
+  ...globalOptions,
+];
 
 export default class NugetPublisher extends Publisher<NugetPublisherOptions, NugetPackageInfo> {
   private provider: NugetPackageProvider = new NugetPackageProvider();
@@ -83,13 +97,27 @@ export default class NugetPublisher extends Publisher<NugetPublisherOptions, Nug
     const infoMessageFormat = `${baseMessageFormat} ${packageName} ${packageVersion}`;
 
     logger.debug(debugMessageFormat, 'publishing'.cyan);
-    await this.executePublishCommand(packageInfo);
+    await this.executePublishCommand(packageInfo, options);
     logger.info(infoMessageFormat, 'published'.green);
   }
 
-  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }) {
-    const target = registry || this.options.registry;
-    const { logger } = this.options;
-    await execute(`dotnet nuget push "${filePath}" -s ${target}`, { stdio: [0, 1, 2], logger });
+  async executePublishCommand({ filePath, registry }: { filePath?: string, registry?: string }, options: NugetPublisherOptions) {
+    const target = registry || options.registry;
+    const { apiKey, timeout, logger } = options;
+    const parts = [
+      `dotnet nuget push`,
+      `"${filePath}"`,
+      `--source ${target}`,
+      `--disable-buffering true`,
+    ];
+    if(apiKey !== undefined) {
+      parts.push(`--api-key ${apiKey}`);
+    }
+    if(timeout !== undefined) {
+      parts.push(`--timeout ${timeout}`);
+    }
+    const command = parts.join(' ');
+    logger.info(`executing command: ${command}`);
+    await execute(command, { stdio: [0, 1, 2], logger });
   }
 }
