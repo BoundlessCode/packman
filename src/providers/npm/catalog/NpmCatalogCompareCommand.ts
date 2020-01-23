@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, CatalogFileOption } from '../../../core/commandOptions';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import Cataloger from '../../../core/catalog/Cataloger';
 import EntryInfo from "../../../core/catalog/EntryInfo";
 import FileCatalogPersister from '../../../core/catalog/FileCatalogPersister';
@@ -67,9 +67,12 @@ export default class NpmCatalogCompareCommand implements Command {
 }
 
 async function createCataloger(options: NpmCatalogSameCommandOptions): Promise<Cataloger> {
-  const { registry, logger } = options;
+  const { registry, lenientSsl, logger } = options;
   const uri = getAllEndpointUrl(registry, options);
-  const { body: searchResults } = await fetch<SearchResults>({ ...options, uri, responseType: 'json' });
+  const fetcher = new Fetcher({
+    lenientSsl,
+  });
+  const { body: searchResults } = await fetcher.fetch<SearchResults>({ ...options, uri, responseType: 'json' });
 
   const cataloger = new Cataloger({ ...options, mode: 'memory' });
   const { catalogFile } = options;
@@ -85,7 +88,7 @@ async function createCataloger(options: NpmCatalogSameCommandOptions): Promise<C
     }
 
     const packageUrl = getPackageUrl({ packageName, registry });
-    const { body: { versions } } = await fetch<NpmPackageManifest>({ ...options, uri: packageUrl, responseType: 'json' });
+    const { body: { versions } } = await fetcher.fetch<NpmPackageManifest>({ ...options, uri: packageUrl, responseType: 'json' });
 
     if (versions) {
       for (const packageVersion of Object.keys(versions)) {

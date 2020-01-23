@@ -1,6 +1,6 @@
 import { URL } from 'url';
 
-import { Headers, fetch } from '../../core/fetcher';
+import { Headers, Fetcher } from '../../core/fetcher';
 import { GlobalOptions, CommandOption } from '../../core/commandOptions';
 
 export type AqlArtifact = any
@@ -74,12 +74,14 @@ export async function runQuery(query: string, options: AqlQueryOptions): Promise
   // const trimmedQuery = query.replace(/[\r\n]/g, ' ');
   logger.debug(`Running AQL query on ${uri.href.yellow}: ${query}`);
 
-  const response = await fetch<AqlResponse>({
+  const fetcher = new Fetcher({
+    lenientSsl,
+  });
+  const response = await fetcher.fetch<AqlResponse>({
     method: 'post',
     uri,
     contentType: 'text/plain',
     responseType: 'json',
-    lenientSsl,
     headers,
     data: query,
     proxy,
@@ -122,12 +124,14 @@ export async function deleteArtifact(artifact, options) {
 
   const headers = createArtifactoryHeaders(apiKey);
 
-  await fetch({
+  const fetcher = new Fetcher({
+    lenientSsl,
+  });
+  await fetcher.fetch({
     method: 'delete',
     uri,
     contentType: 'text/plain',
     responseType: 'json',
-    lenientSsl,
     headers,
     timeout,
     logger,

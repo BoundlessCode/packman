@@ -2,7 +2,7 @@ import { URL } from 'url';
 import { createReadStream } from 'fs';
 
 import Publisher, { PublisherOptions, GetPackageFileInfoOptions } from '../../../core/Publisher';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import NexusPackageInfo from '../NexusPackageInfo';
 
 type NexusPublisherOptions = PublisherOptions & {
@@ -47,7 +47,10 @@ export default class NexusPublisher extends Publisher<NexusPublisherOptions, Nex
       return;
     }
 
-    const { body: { statusCode } } = await fetch<PublishResponse>({
+    const fetcher = new Fetcher({
+      lenientSsl,
+    });
+    const { body: { statusCode } } = await fetcher.fetch<PublishResponse>({
       uri: uploadComponentUrl,
       qs: { repository: 'npm' },
       method: 'post',
@@ -57,7 +60,6 @@ export default class NexusPublisher extends Publisher<NexusPublisherOptions, Nex
         'npm.asset': createReadStream(packagesPath),
       },
       responseMode: 'full-response',
-      lenientSsl,
       logger,
     });
 

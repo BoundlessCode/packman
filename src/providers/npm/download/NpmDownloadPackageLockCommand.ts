@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, DirectoryOption, directoryOption, ForceOption, forceOption } from '../../../core/commandOptions';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import { downloadFromPackageLock } from './downloader';
 import NpmPackageManifest from '../NpmPackageManifest';
 
@@ -27,7 +27,10 @@ export default class NpmDownloadPackageLockCommand implements Command {
   }
 
   async execute(options: NpmDownloadPackageLockCommandOptions) {
-    const { body: packageLock } = await fetch<NpmPackageManifest>(options);
+    const fetcher = new Fetcher({
+      lenientSsl: options.lenientSsl,
+    });
+    const { body: packageLock } = await fetcher.fetch<NpmPackageManifest>(options);
     return downloadFromPackageLock(packageLock, options.directory, options);
   }
 }

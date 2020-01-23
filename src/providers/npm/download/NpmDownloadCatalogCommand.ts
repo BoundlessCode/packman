@@ -1,5 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, CatalogFileOption } from '../../../core/commandOptions';
+import { Fetcher } from '../../../core/fetcher';
 import EntryInfo from "../../../core/catalog/EntryInfo";
 import Cataloger from '../../../core/catalog/Cataloger';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
@@ -27,10 +28,13 @@ export default class NpmDownloadCatalogCommand implements Command {
   }
 
   async execute(options: NpmDownloadCatalogCommandOptions) {
-    const { logger } = options;
+    const { lenientSsl, logger } = options;
     const registry = options.registry || await getCurrentRegistry(options);
     const cataloger = new Cataloger(options);
     logger.debug(`Using catalog file: ${cataloger.persister.target}`);
+    const fetcher = new Fetcher({
+      lenientSsl,
+    }); 
     if (cataloger.exists()) {
       await cataloger.initialize();
       const packages = cataloger.stream<string>((entry) => {
@@ -38,7 +42,7 @@ export default class NpmDownloadCatalogCommand implements Command {
         const url = getPackageUrl(packageInfo);
         return url.href;
       });
-      return downloadFromIterable(packages, options.directory, options);
+      return await downloadFromIterable(packages, options.directory, { fetcher, ...options });
     }
     else {
       logger.info(`Could not find a catalog file at ${cataloger.persister.target}`);

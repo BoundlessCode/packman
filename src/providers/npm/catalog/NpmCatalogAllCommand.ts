@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, registryOption, CatalogFileOption } from '../../../core/commandOptions';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import Cataloger from '../../../core/catalog/Cataloger';
 import { getCurrentRegistry, isValidPackageName, getAllEndpointUrl, getPackageUrl } from '../npm-utils';
 import NpmPackageManifest from '../NpmPackageManifest';
@@ -27,10 +27,13 @@ export default class NpmCatalogAllCommand implements Command {
   }
 
   async execute(options: NpmCatalogAllCommandOptions) {
-    const { logger } = options;
+    const { lenientSsl, logger } = options;
     const registry = options.registry || await getCurrentRegistry(options);
     const allEndpointUrl = getAllEndpointUrl(registry, options);
-    const { body: searchResults } = await fetch<object>({ ...options, uri: allEndpointUrl, responseType: 'json' });
+    const fetcher = new Fetcher({
+      lenientSsl,
+    });
+    const { body: searchResults } = await fetcher.fetch<object>({ ...options, uri: allEndpointUrl, responseType: 'json' });
 
     const cataloger = new Cataloger(options);
     await cataloger.initialize();
@@ -44,7 +47,7 @@ export default class NpmCatalogAllCommand implements Command {
       }
 
       const packageUrl = getPackageUrl({ packageName, registry });
-      const { body: { versions } } = await fetch<NpmPackageManifest>({ ...options, uri: packageUrl, responseType: 'json' });
+      const { body: { versions } } = await fetcher.fetch<NpmPackageManifest>({ ...options, uri: packageUrl, responseType: 'json' });
 
       if (versions) {
         for (const packageVersion of Object.keys(versions)) {
