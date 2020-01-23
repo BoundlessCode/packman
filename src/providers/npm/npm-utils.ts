@@ -5,7 +5,7 @@ import path from 'path';
 import { LoggerOptions } from '../../core/logger';
 import { execute } from '../../core/shell';
 import PackageInfo from '../../core/PackageInfo';
-import { fetch } from '../../core/fetcher';
+import { Fetcher } from '../../core/fetcher';
 import { PackageVersionExistsOptions } from '../../core/Publisher';
 import NpmPackageInfo from './NpmPackageInfo';
 
@@ -56,10 +56,12 @@ export async function packageVersionExists(packageInfo: PackageInfo, { timeout, 
     const uri = getPackageUrl(packageInfo);
     try {
         logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
-        const { body: { version, versions } } = await fetch<PackageResponse>({
+        const fetcher = new Fetcher({
+            lenientSsl,
+        });
+        const { body: { version, versions } } = await fetcher.fetch<PackageResponse>({
             uri,
             responseType: 'json',
-            lenientSsl,
             timeout,
             logger,
         });
@@ -93,10 +95,10 @@ export function getPackageFileInfo({ filePath, extension }: GetPackageFileInfoOp
 
         const packageScope =
             parentDirectory.startsWith('@')
-            ? parentDirectory
-            : (
-                grandparentDirectory.startsWith('@') ? grandparentDirectory : undefined
-            );
+                ? parentDirectory
+                : (
+                    grandparentDirectory.startsWith('@') ? grandparentDirectory : undefined
+                );
 
         const fileName = fileInfo.name;
 

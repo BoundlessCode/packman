@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, DirectoryOption, directoryOption, ForceOption, forceOption } from '../../../core/commandOptions';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import { downloadFromIterable } from './downloader';
 import { endOfLine } from './generator';
 
@@ -27,7 +27,10 @@ export default class NpmDownloadFromGeneratedCommand implements Command {
   }
 
   async execute(options: NpmDownloadFromGeneratedCommandOptions) {
-    const { body: text } = await fetch<string>(options);
+    const fetcher = new Fetcher({
+      lenientSsl: options.lenientSsl,
+    });
+    const { body: text } = await fetcher.fetch<string>(options);
     const tarball = text.toString().split(endOfLine);
     return downloadFromIterable(tarball, options.directory, options);
   }

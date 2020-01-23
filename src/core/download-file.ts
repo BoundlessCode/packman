@@ -6,7 +6,7 @@ import { join } from 'path';
 import { promisify } from 'util';
 
 import { LoggerOptions } from './logger';
-import { fetch, StreamResponse } from './fetcher';
+import { Fetcher, StreamResponse } from './fetcher';
 import { TimeoutOption } from './commandOptions';
 
 const mkdirpAsync = promisify(mkdirp);
@@ -18,6 +18,7 @@ export type DownloadFileOptions =
     filename?: string
     directory: string
     force?: boolean
+    fetcher?: Fetcher
   }
 
 type DownloadFileResult = {
@@ -48,6 +49,8 @@ export default async function downloadFileAsync(fileUri: string, options: Downlo
   }
 
   const start = Date.now();
+  const fetcher = options.fetcher || new Fetcher();
+
   return await new Promise(async (resolve, reject) => {
     let fileClose: any;
     let responseEnd: any;
@@ -57,7 +60,7 @@ export default async function downloadFileAsync(fileUri: string, options: Downlo
     ];
 
     try {
-      const response = await fetch<StreamResponse>({
+      const response = await fetcher.fetch<StreamResponse>({
         uri: fileUri,
         timeout,
         responseMode: 'full-response',

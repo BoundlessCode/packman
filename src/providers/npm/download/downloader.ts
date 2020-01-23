@@ -6,7 +6,7 @@ import tar from 'tar';
 import semver from 'semver';
 
 import { LoggerOptions, Logger } from '../../../core/logger';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import downloadFileAsync, { DownloadFileOptions } from '../../../core/download-file';
 import NpmPackageManifest from '../NpmPackageManifest';
 
@@ -47,9 +47,12 @@ function _enumerateDependencies(tarballs: TarballInfo[], dependencies) {
   }
 }
 
-type DownloadTarballsOptions = LoggerOptions & {
-  force?: boolean
-}
+type DownloadTarballsOptions =
+  LoggerOptions
+  & {
+    force?: boolean
+    fetcher?: Fetcher
+  }
 
 function _downloadTarballs(tarballs: TarballInfo[], baseDirectory = './tarballs', { force = false, logger }: DownloadTarballsOptions) {
   if (!existsSync(baseDirectory)) {
@@ -90,7 +93,7 @@ export async function getTarballUrl(tarballUrl: string, directory: string, logge
   const packagePath = pathParts.join('/');
   const packageUrl = new URL(packagePath, url.origin);
   logger.debug('fetching package manifest from', packageUrl.href.yellow, 'for version', packageVersion);
-  const { body: packageManifest } = await fetch<NpmPackageManifest>({ uri: packageUrl, responseType: 'json', logger });
+  const { body: packageManifest } = await new Fetcher().fetch<NpmPackageManifest>({ uri: packageUrl, responseType: 'json', logger });
 
   if (!packageManifest) {
     logger.info(`Could not retrieve package manifest from '${tarballUrl}'`.yellow);

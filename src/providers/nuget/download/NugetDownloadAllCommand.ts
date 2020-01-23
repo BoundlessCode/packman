@@ -4,7 +4,7 @@ import { URL } from 'url';
 
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions, registryOption, directoryOption, catalogOption, CatalogFileOption } from '../../../core/commandOptions';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import downloadFileAsync from '../../../core/download-file';
 import Cataloger from '../../../core/catalog/Cataloger';
 import NugetPackageProvider from '../NugetPackageProvider';
@@ -72,8 +72,10 @@ export default class NugetDownloadAllCommand implements Command {
       await cataloger.initialize();
     }
 
+    const fetcher = new Fetcher();
+
     const uri = new URL('v3/index.json', registry);
-    const { body: searchResults } = await fetch<NugetIndexSearchResults>({ uri, responseType: 'json', logger });
+    const { body: searchResults } = await fetcher.fetch<NugetIndexSearchResults>({ uri, responseType: 'json', logger });
     logger.info('nuget index version', searchResults ? searchResults.version : 'missing');
     const nugetClientVersion = "4.4.0";
     const catalogVersion = 'Catalog/3.0.0';
@@ -92,11 +94,11 @@ export default class NugetDownloadAllCommand implements Command {
     const type = types[0];
     const serviceEntry = index[type];
     const serviceEntryUri = serviceEntry.Uri;
-    const { body: pages } = await fetch<NugetServiceEntryResults>({ uri: serviceEntryUri, responseType: 'json', logger });
+    const { body: pages } = await fetcher.fetch<NugetServiceEntryResults>({ uri: serviceEntryUri, responseType: 'json', logger });
     logger.info('pages:', pages && pages.count);
     for (const page of pages.items) {
       const pageUrl = page['@id'];
-      const { body: pageResults } = await fetch<NugetPageResults>({ uri: pageUrl, responseType: 'json', logger });
+      const { body: pageResults } = await fetcher.fetch<NugetPageResults>({ uri: pageUrl, responseType: 'json', logger });
       logger.info('page:', pageUrl, pageResults && pageResults.items && pageResults.items.length);
       pageResults.items.forEach(async (item) => {
         const itemUrl = item['@id'];

@@ -2,13 +2,13 @@ import semver from 'semver';
 
 import { Logger } from '../../../core/logger';
 import { execute } from '../../../core/shell';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import { getPackageUrl, PackageResponse } from '../npm-utils';
 
 export async function updateDistTagToLatest(registry: string, packageName: string, logger: Logger) {
     const childLogger = logger.child({ area: 'update dist-tag' });
     try {
-        const { body: packageDetails } = await fetch<PackageResponse>({
+        const { body: packageDetails } = await new Fetcher().fetch<PackageResponse>({
             uri: getPackageUrl({ registry, packageName }),
             responseType: 'json',
             logger,

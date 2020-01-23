@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import { getPackageJsonDependencies } from '../crawler';
 import NpmPackageManifest from '../NpmPackageManifest';
 import { NpmDownloadOptions, npmDownloadOptions, DependenciesOptions, dependenciesOptions } from '../npm-options';
@@ -29,7 +29,10 @@ export default class NpmDownloadPackageJsonCommand implements Command {
   }
 
   async execute(options: NpmDownloadPackageJsonCommandOptions) {
-    const { body: packageJson } = await fetch<NpmPackageManifest>(options);
+    const fetcher = new Fetcher({
+      lenientSsl: options.lenientSsl,
+    });
+    const { body: packageJson } = await fetcher.fetch<NpmPackageManifest>(options);
     const tarballsSet = await getPackageJsonDependencies({ ...options, packageJson });
     return downloadFromIterable(tarballsSet, options.directory, options);
   }

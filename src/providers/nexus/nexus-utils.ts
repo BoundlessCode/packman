@@ -1,7 +1,7 @@
 import { URL } from 'url';
 
 import { LoggerOptions } from '../../core/logger';
-import { fetch } from '../../core/fetcher';
+import { Fetcher } from '../../core/fetcher';
 import Cataloger from '../../core/catalog/Cataloger';
 import { SslOptions } from '../../core/commandOptions';
 
@@ -34,10 +34,12 @@ export async function fetchNexusCatalog({ repository, logger, endpoint, lenientS
     page++;
     logger.info(`Downloading page ${page} from ${componentsUrl}`);
 
-    const { body: { items, continuationToken } } = await fetch({
+    const fetcher = new Fetcher({
+      lenientSsl,
+    });
+    const { body: { items, continuationToken } } = await fetcher.fetch({
       uri: componentsUrl,
       responseType: 'json',
-      lenientSsl,
       logger,
     });
     logger.debug('items in page', items.length);

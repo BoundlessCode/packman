@@ -4,7 +4,7 @@ import { createReadStream } from 'graceful-fs';
 
 import { TimeoutOption, GlobalOptions, globalOptions } from '../../../core/commandOptions';
 import calculateChecksums from '../../../core/crypto/calculateChecksums';
-import { fetch, Headers, URI } from '../../../core/fetcher';
+import { Fetcher, Headers, URI } from '../../../core/fetcher';
 import { normalizeRootedDirectory } from '../../../core/shell';
 import Publisher, { PublisherOptions, publisherOptions, GetPackageFileInfoOptions, PackageVersionExistsOptions } from '../../../core/Publisher';
 import ArtifactoryPackageInfo from '../ArtifactoryPackageInfo';
@@ -43,7 +43,7 @@ export const artifactoryPublisherOptions = [
   ...publisherOptions,
   ...globalOptions,
 ];
-  
+
 export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisherOptions, ArtifactoryPackageInfo> {
   constructor(options: ArtifactoryPublisherOptions) {
     super(options);
@@ -71,7 +71,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
     if (fileName.endsWith(extension)) {
       counter.increment();
-      
+
       const packageName = fileName.substring(0, fileName.lastIndexOf(extension));
 
       const directoryParts = directoryPath.split(path.posix.sep);
@@ -103,37 +103,39 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
   async packageVersionExists({ packageName, uri }: { packageName: string, uri: URI }, { timeout, lenientSsl = false, logger }: PackageVersionExistsOptions): Promise<boolean> {
     try {
-        logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
-        const response = await fetch({
-            uri,
-            responseType: 'json',
-            lenientSsl,
-            timeout,
-            logger,
-        });
+      logger.debug(`checking packageVersionExists, lenientSsl: ${lenientSsl}, uri: ${uri}`);
+      const fetcher = new Fetcher({
+        lenientSsl,
+      });
+      const response = await fetcher.fetch({
+        uri,
+        responseType: 'json',
+        timeout,
+        logger,
+      });
 
-        return response.success;
+      return response.success;
     }
     catch (error) {
-        const statusCode = error.statusCode || (error.response && error.response.status);
-        if (statusCode === 404) {
-            logger.debug(`the package ${packageName} could not be found at ${uri}`.yellow);
-            return false;
-        }
-        logger.debug('package version exists error', { uri, error });
-        throw error;
+      const statusCode = error.statusCode || (error.response && error.response.status);
+      if (statusCode === 404) {
+        logger.debug(`the package ${packageName} could not be found at ${uri}`.yellow);
+        return false;
+      }
+      logger.debug('package version exists error', { uri, error });
+      throw error;
     }
-}
+  }
 
   async executePublishCommand(packageInfo: ArtifactoryPackageInfo, options: ArtifactoryPublisherOptions) {
     const { filePath, fileName, architecture } = packageInfo;
     const { api, apiKey, byChecksum, force, lenientSsl, timeout, logger } = options;
 
-    if(!filePath) {
+    if (!filePath) {
       throw new Error(`filePath is missing, cannot publish package`);
     }
 
-    if(!architecture) {
+    if (!architecture) {
       throw new Error(`architecture is missing, cannot publish package`);
     }
 
@@ -150,12 +152,12 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
     }
 
     let headers: Headers | undefined = undefined;
-    if(apiKey) {
+    if (apiKey) {
       headers = headers || new Map<string, any>();
       headers.set('X-JFrog-Art-Api', apiKey);
     }
 
-    if(byChecksum) {
+    if (byChecksum) {
       headers = headers || new Map<string, any>();
       const checksums = await calculateChecksums(filePath, ['sha256', 'sha1', 'md5']);
       headers.set('X-Checksum-Deploy', 'true');
@@ -166,12 +168,14 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
     const file = createReadStream(filePath);
 
-    await fetch({
+    const fetcher = new Fetcher({
+      lenientSsl,
+    });
+    await fetcher.fetch({
       method: 'put',
       uri: publishUrl,
       data: file,
       contentType: 'application/octet-stream',
-      lenientSsl,
       headers,
       timeout,
       logger,

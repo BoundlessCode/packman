@@ -4,7 +4,7 @@ import { URL } from 'url';
 
 import Predicate from '../../core/Predicate';
 import { Logger, LoggerOptions } from '../../core/logger';
-import { fetch } from '../../core/fetcher';
+import { Fetcher } from '../../core/fetcher';
 import { TimeoutOption } from '../../core/commandOptions';
 import NpmPackageProvider from './NpmPackageProvider';
 import { DependenciesOptions } from './npm-options';
@@ -216,7 +216,7 @@ function _getMaxSatisfyingVersion(allPackageVersionsDetails: any, version?: stri
 
 async function _retryGetRequest(uri: string, count: number, logger: Logger, timeout: number = requestTimeout): Promise<any> {
   try {
-    const { body } = await fetch<any>({
+    const { body } = await new Fetcher().fetch<any>({
       uri,
       responseType: 'json',
       timeout,

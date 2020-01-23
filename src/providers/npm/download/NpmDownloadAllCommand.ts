@@ -1,6 +1,6 @@
 import Command from '../../../core/Command';
 import { GlobalOptions, globalOptions } from '../../../core/commandOptions';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import { npmDownloadOptions, NpmDownloadOptions } from '../npm-options';
 import { getCurrentRegistry, getAllEndpointUrl } from '../npm-utils';
 import { getDependenciesFromSearchResults, SearchResults } from '../crawler';
@@ -28,7 +28,10 @@ export default class NpmDownloadAllCommand implements Command {
   async execute(options: NpmDownloadAllCommandOptions) {
     const registry = options.registry || await getCurrentRegistry(options);
     const uri = getAllEndpointUrl(registry, options);
-    const { body: searchResults } = await fetch<SearchResults>({ ...options, uri, responseType: 'json' });
+    const fetcher = new Fetcher({
+      lenientSsl: options.lenientSsl,
+    });
+    const { body: searchResults } = await fetcher.fetch<SearchResults>({ ...options, uri, responseType: 'json' });
     const packages = await getDependenciesFromSearchResults(searchResults, {
       ...options,
       registry,

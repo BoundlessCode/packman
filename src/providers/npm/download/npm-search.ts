@@ -1,5 +1,5 @@
 import { LoggerOptions } from '../../../core/logger';
-import { fetch } from '../../../core/fetcher';
+import { Fetcher } from '../../../core/fetcher';
 import NpmPackageProvider from '../NpmPackageProvider';
 import NpmPackageManifest from '../NpmPackageManifest';
 
@@ -27,7 +27,7 @@ export async function generatePackageJson(options: GeneratePackageJsonOptions) {
   const uri = `${registry}/-/v1/search?text=keywords:${keyword}&size=1000`;
   logger.info('searching', uri.blue);
 
-  const { body: { objects } } = await fetch<PackageJsonResponse>({
+  const { body: { objects } } = await new Fetcher().fetch<PackageJsonResponse>({
     uri,
     responseType: 'json',
     logger,
