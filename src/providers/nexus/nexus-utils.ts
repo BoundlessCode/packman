@@ -21,7 +21,7 @@ export async function fetchNexusCatalog({ repository, logger, endpoint, lenientS
   logger.debug('repositoryUrl', repositoryUrl.href);
 
   const pattern = /(.+)\/repository\/([^\/]+)\/?$/;
-  const [, base, repositoryName] = pattern.exec(repositoryUrl.href);
+  const [, base, repositoryName] = pattern.exec(repositoryUrl.href) || [];
   logger.debug('base:', base, 'repositoryName:', repositoryName);
 
   const componentsUrl = new URL('service/rest/v1/' + endpoint, base);
