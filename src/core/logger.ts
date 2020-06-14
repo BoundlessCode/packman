@@ -4,6 +4,20 @@ import prettifier from '@boco/pino-pretty';
 
 import processLevel from './log-processors/processLevel';
 
+declare module "pino" {
+  type NamedProcessor = string;
+  interface AppliedProcessor {
+    parse(input: any, context: any): any;
+    build(lineParts: any, options: { prettified: { level: any; }; }): void;
+  }
+  type Processor = NamedProcessor | AppliedProcessor;
+
+  interface PrettyOptions {
+    processors?: Processor[]
+    skipObjectKeys?: string[]
+  }
+}
+
 const processors = [
   processLevel,
   'semicolon',
