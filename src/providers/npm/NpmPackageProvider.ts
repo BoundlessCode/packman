@@ -2,7 +2,7 @@ import PackageProvider from '../../core/PackageProvider';
 
 export default class NpmPackageProvider extends PackageProvider {
   constructor() {
-    super({ defaultRegistry: 'http://registry.npmjs.org' });
+    super({ defaultRegistry: 'https://registry.npmjs.org' });
   }
 
   get definition() {
