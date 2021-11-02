@@ -7,7 +7,7 @@ export type PackageProviderOptions = {
 
 export default abstract class PackageProvider implements HasCommandDefinition {
     defaultRegistry?: string;
-    maxRetries: number = 5;
+    maxRetries: number = 2;
     requestTimeout: number = DEFAULT_TIMEOUT;
     
     constructor({ defaultRegistry }: PackageProviderOptions = {}) {
