@@ -9,8 +9,6 @@ import { LoggerOptions } from './logger';
 import { Fetcher, StreamResponse } from './fetcher';
 import { TimeoutOption } from './commandOptions';
 
-const mkdirpAsync = promisify(mkdirp);
-
 export type DownloadFileOptions =
   LoggerOptions
   & TimeoutOption
@@ -69,7 +67,7 @@ export default async function downloadFileAsync(fileUri: string, options: Downlo
       });
 
       if (!existsSync(directory)) {
-        await mkdirpAsync(directory);
+        await mkdirp(directory);
       }
 
       const writer = fs.createWriteStream(path);

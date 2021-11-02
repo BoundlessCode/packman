@@ -57,7 +57,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
     }
   }
 
-  async abstract initializeOptions(options: TOptions): Promise<any>;
+  abstract initializeOptions(options: TOptions): Promise<any>;
 
   async collectAndPublishPackages(options) {
     const errors: string[] = [];
@@ -71,7 +71,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
       try {
         await this.publishPackage(packageInfo, options);
       }
-      catch (error) {
+      catch (error: any) {
         const errorMessage: string = (error && error.message ? error.message : error).red;
         const packageSummary = `[${packageInfo.index}] ${(packageInfo.filePath || '').yellow}`;
         const message = `${'failed to publish'.red} ${packageSummary} because '${errorMessage}'`;
@@ -125,7 +125,7 @@ export default abstract class Publisher<TOptions extends PublisherOptions, TPack
 
   abstract getPackageFileInfo(options: GetPackageFileInfoOptions): TPackageInfo | undefined;
 
-  abstract async publishPackage(packageInfo: TPackageInfo, options: TOptions);
+  abstract publishPackage(packageInfo: TPackageInfo, options: TOptions): Promise<void>;
 
   printErrors(error: (string | Error)[] | Error = []) {
     const { logger } = this.options;

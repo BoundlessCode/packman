@@ -67,7 +67,7 @@ export async function packageVersionExists(packageInfo: PackageInfo, { timeout, 
         });
         return !!packageVersion && (version === packageVersion || !!versions[packageVersion]);
     }
-    catch (error) {
+    catch (error: any) {
         const statusCode = error.statusCode || (error.response && error.response.status);
         if (statusCode === 404) {
             logger.debug(`the package ${packageName.cyan}@${(packageVersion || '').cyan} could not be found at ${uri}`.yellow);

@@ -226,7 +226,7 @@ async function _retryGetRequest(uri: string, count: number, logger: Logger, time
       logger.info(`download success:`.green, uri, count);
     }
     return body;
-  } catch (error) {
+  } catch (error: any) {
     const message = (error.cause && error.cause.code) || error.message;
     logger.error(`download failure: ${message}`.red, uri, count);
     if (count > 0) {

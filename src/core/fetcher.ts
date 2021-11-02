@@ -155,7 +155,7 @@ export class Fetcher {
         body: (resolveWithFullResponse ? response : response.data) as TResponse,
         success: response.status >= 200 && response.status < 300,
       };
-    } catch (error) {
+    } catch (error: any) {
       activeRequests--;
       if (!(error.response && error.response.status === 404)) {
         logger.error(`failed to fetch [${activeRequests}]:`.red, summary, 'message' in error ? error.message.red : error);

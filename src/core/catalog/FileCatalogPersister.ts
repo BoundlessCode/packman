@@ -2,7 +2,7 @@ import { resolve, isAbsolute } from 'path';
 import { once } from 'events';
 import { appendFileSync, createReadStream, existsSync } from 'fs';
 import { createInterface } from 'readline';
-import replace from 'replace-in-file';
+import { replaceInFile } from 'replace-in-file';
 
 import { LoggerOptions } from '../logger';
 import CatalogPersister from './CatalogPersister';
@@ -82,7 +82,7 @@ export default class FileCatalogPersister implements CatalogPersister {
     const { logger } = options;
 
     try {
-      const results = await replace({
+      const results = await replaceInFile({
         files: fullPath,
         from: new RegExp(`^${entry}\n`, 'gm'),
         to: '',
@@ -90,7 +90,7 @@ export default class FileCatalogPersister implements CatalogPersister {
       logger.debug('file persister remove replace results:', results);
       await this.basePersister.remove(entry);
     }
-    catch (error) {
+    catch (error: any) {
       logger.debug(`Unable to remove entry ${entry} from file ${fullPath} because`, 'message' in error ? error.message : error);
     }
   }

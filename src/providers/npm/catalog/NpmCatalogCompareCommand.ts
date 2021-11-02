@@ -126,7 +126,7 @@ async function compareRegistries(catalogers: Catalogers, options: NpmCatalogSame
     try {
       exists = await packageVersionExists(packageInfo, options);
     }
-    catch (error) {
+    catch (error: any) {
       logger.debug('package not found', `${packageInfo.packageName}@${packageInfo.packageVersion}`.magenta, 'message' in error ? error.message.red : error);
     }
 

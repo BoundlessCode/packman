@@ -132,7 +132,7 @@ async function _downloadFileWithRetry(url: string, position: string, count: numb
       return { path, url, position, duration };
     }
     else throw new Error('Error downloading tgz, retrying... ');
-  } catch (error) {
+  } catch (error: any) {
     const errorMessage = error ? error.message || error : '<no error message>';
     logger.info('failed to download tgz'.red, String(errorMessage).magenta, url, count);
     logger.error(error);

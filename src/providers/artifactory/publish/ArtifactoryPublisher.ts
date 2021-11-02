@@ -116,7 +116,7 @@ export default class ArtifactoryPublisher extends Publisher<ArtifactoryPublisher
 
       return response.success;
     }
-    catch (error) {
+    catch (error: any) {
       const statusCode = error.statusCode || (error.response && error.response.status);
       if (statusCode === 404) {
         logger.debug(`the package ${packageName} could not be found at ${uri}`.yellow);

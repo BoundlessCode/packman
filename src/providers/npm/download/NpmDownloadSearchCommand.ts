@@ -36,7 +36,7 @@ export default class NpmDownloadSearchCommand implements Command {
       const tarballsSet = await getPackageJsonDependencies({ ...options, packageJson });
       return downloadFromIterable(tarballsSet, options.directory, options);
     }
-    catch (error) {
+    catch (error: any) {
       if (error.statusCode === 404) {
         logger.info('fast search not available, trying alternate method');
 
