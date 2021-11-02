@@ -185,7 +185,7 @@ export type RetrieveFileOptions = LoggerOptions & {
 }
 
 function normalizeUrl(uri: URI, { logger }): string {
-  logger.debug(`normalizeUrl start - uri ${uri}`.red);
+  logger.debug(`normalizeUrl start - uri ${uri}`.cyan);
   let url: string;
   if (uri instanceof URL) {
     url = uri.href;
@@ -196,7 +196,7 @@ function normalizeUrl(uri: URI, { logger }): string {
   else {
     url = join(process.cwd(), uri);
   }
-  logger.debug(`normalizeUrl end - url ${url}`.red);
+  logger.debug(`normalizeUrl end - url ${url}`.cyan);
   return url;
 }
 
